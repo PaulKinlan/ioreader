@@ -1,9 +1,27 @@
 $(function() {
+
+  $(".categories").click(function() {
+    console.log("categoriesState");
+    $("html").attr("class", "menuState");
+    $(".category").removeClass("active");
+  });
+
   $(".category").click(function() {
-    $("html").attr("class", "categoriesState");
+    console.log("categoryState");
+    $("html").attr("class", "categoryState");
     $(".category").removeClass("active");
     $(this).addClass("active");
+    return false;
   });
+
+  $("[dlc=story]").click(function() {
+    $("html").attr("class", "storyState");
+    $(".category").removeClass("active");
+    $(this).closest(".category").addClass("active");
+    $(".story").attr("src", this.href);
+    return false;
+  });
+
 });
 
 /*

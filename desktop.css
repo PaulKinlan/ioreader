@@ -1,37 +1,33 @@
-
-html, body { margin: 0; padding: 0; }
+html, body { margin: 0; padding: 0; background: black; overflow: hidden; }
 body > div { overflow: hidden; }
 ul { list-style-type: none; }
-/* .menu { position: absolute; z-index: 0; background: green; top: 0; bottom: 0; right: 0; } */
 .menu { display: none; }
 .categories { background: black; height: 100%; }
-.category { background: pink; width: 15em; float: left; margin: 1em 1em; cursor: pointer; opacity: 0.5; }
+.category { background: pink; width: 15em; float: left; margin: 1em 1em; cursor: pointer; opacity: 0.5; left: -35%; }
 .category:hover { opacity: 1; }
 .category.active { opacity: 1; }
 .category img { display: block; }
 .category.active img { display: inline ; }
-.story { background: orange; z-index: 1; display: none; }
+.story { background: orange; z-index: 1; width: 55%; top: 0; left: 100%; height: 100%; }
 
 html.menuState .categories { width: 100%; height: 100%; }
 
-html.categoriesState .categories { margin-left: 35%; width: 65%; }
-html.categoriesState .category.active { position: absolute; left: 0; right: 35%; margin: 0; height: 100%; }
+html.storyState .categories, html.categoryState .categories { margin-left: 35%; width: 65%; }
+.category.active { position: absolute; left: 0; width: 35%; margin: 0; height: 100%; }
+
 .category.active { left: 0; width: 35%; }
 
-html.showing-story { }
+html.storyState .story { position: absolute; z-index: 2; left: 45%; }
 
-/* html[data-resource=category] .story { left: 48%; width: 4%; } */
-
-html.storyState .story { position: absolute; z-index: 2; left: 40%; right: 0; display: block; }
-
-/*
-.categories {
-  -webkit-transition-property: left, width;
-  -moz-transition-property: left, width;
-  -webkit-transition-duration: 1s, 1s;
-  -moz-transition-duration: 1s, 1s;
+.storyState .category, .categoryState .category { /* don't animate when category already active. This would be more clearly stated as a sibling selector of .category.active */
+  left: 0;
+}
+.storyState .category, .categoryState .category, .story {
+  -webkit-transition-property: left;
+  -moz-transition-property: left;
+  -webkit-transition-duration: 1s;
+  -moz-transition-duration: 1s;
  }
- */
 
 
 html { font-family: sans-serif; }

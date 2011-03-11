@@ -3,12 +3,23 @@ body > div { overflow: hidden; }
 ul { list-style-type: none; }
 .menu { display: none; }
 .categories { background: black; height: 100%; }
-.category { background: pink; margin: 1em 1em; cursor: pointer; }
+.category { background: pink; margin: 1em 1em; cursor: pointer;}
 .category:hover { opacity: 1; }
 .category.active { opacity: 1; z-index: 1;
   -webkit-box-shadow: 5px 0 5px 5px rgba(0,0,0,0.5);
 }
-.category img { display: none; }
+.category ul li {width: 150px; height: 150px; position: relative;}
+.category img { width: 150px; height: 150px; }
+.category span {
+  position: absolute;
+  box-sizing:border-box;
+  padding: 5px;
+  left: 0;
+  bottom: 0;
+  height: 80px;
+  width: 150px;
+  background-color: rgba(0, 0, 0, 0.5);
+}
 .category.active img { display: inline ; }
 .story { position: absolute; z-index: 1; width: 55%; top: 0; left: 100%; height: 100%; background-color: white; 
   -webkit-box-shadow: -5px 0 5px 5px rgba(0,0,0,0.5);
@@ -48,7 +59,6 @@ h1 { margin-bottom: 1em; }
 .category {
   display: -webkit-box;
   -webkit-box-orient: horizontal;
-  height: 150px;  
   background-color: #444444;
   background-image: -moz-linear-gradient(top, #444444, #999999); /* FF3.6 */
   background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0, #444444),color-stop(1, #999999)); /* Saf4+, Chrome */
@@ -73,6 +83,7 @@ h1 { margin-bottom: 1em; }
   background-color: red;
   color:white;
   text-orientation: vertical;
+  text-align: center;
   -webkit-transform: rotate(-90deg) translate(-150px, 0px);
   -webkit-transform-origin: 0% 0%;
   width: 150px;

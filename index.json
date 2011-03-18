@@ -1,0 +1,15 @@
+{
+  "categories" : {
+    "tech" : {
+      "name" : "Technology",
+      "url" : "/tech/index.html",
+      "dataUrl" : "/tech/index.json"
+    },
+    "business" : {
+      "name" : "Business",
+      "url" : "/business/index.html",
+      "dataUrl" : "/business/index.json"
+    }
+  },
+  "lastUpdate" : "2011-03-03T21:00:001Z"
+}

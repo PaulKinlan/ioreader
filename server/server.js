@@ -1,10 +1,12 @@
 var express = require('express');
 var app = express.createServer();
 var m = require('mustache');
+var fs = require('fs');
 
 var conf = {
   name: "test",
   description: "The Guardian News Reader",
+  baseDir: "../client/",
   categories: {
     "Technology": { 
       name: "Technology",
@@ -35,8 +37,12 @@ Proxy.prototype.fetchArticle = function(id) {
 
 var NPRProxy = function(configuration) {
   var urlStructure = ""
+};
 
-  this.prototype.fetchCategory = function(name, callback) {
+NPRProxy.prototype = new Proxy();
+NPRProxy.prototype.constructor = Proxy.constructor;
+
+NPRProxy.prototype.fetchCategory = function(name, callback) {
     if(!!callback == false) throw new Exception("No Callback defined");
     // Create the url to fetch the articles in a category.  
     var category =  new CategoryData(); 
@@ -50,12 +56,14 @@ var NPRProxy = function(configuration) {
 
     callback(category);
   };
-
 };
 
 var GuardianProxy = function(configuration) {
   this.fetchCategory = function(name) {};
 };
+
+GuardianProxy.prototype = new Proxy();
+GuardianProxy.prototype.constructor = Proxy.constructor;
 
 var TestProxy = function(configuration) {
 };
@@ -69,18 +77,11 @@ TestProxy.prototype.fetchCategories = function(callback){
 };
  
 TestProxy.prototype.fetchCategory = function(name, callback) {
- if(!!callback == false) throw new NoCallbackException();
-   var data = {data:1};
-   callback(data);
+  if(!!callback == false) throw new NoCallbackException();
+ 
+  var data = {data:1};
+  callback(data);
 };
-
-
-NPRProxy.prototype = Proxy;
-NPRProxy.prototype.constructor = Proxy.constructor;
-
-GuardianProxy.prototype = Proxy;
-GuardianProxy.prototype.constructor = Proxy.constructor;
-
 
 var Exception = function() {
 
@@ -149,13 +150,20 @@ var ProxyFactoryTests = function() {
 
 var Controller = function(configuration) {
   var proxy = new ProxyFactory().create(configuration);  
-  
-  this.fetchCategories = function(callback) {
+   
+  var loadTemplate = function(file, callback) {
+    fs.readFile(file, function(err, data) {
+      if(err) throw err;
+      callback(data);
+    });
+  };
+ 
+  this.fetchCategories = function(format, callback) {
     if(!!callback == false) throw new NoCallbackException("No callback");
+    
     proxy.fetchCategories(function(data) {
       // Render the data. 
-      // Somehow we need to get the template
-      var template = ""; // Load the template.
+      var template = loadTemplate(configuration.baseDir + "index." + format);
       callback(m.to_html(template, data)); 
     }); 
   };
@@ -166,8 +174,7 @@ var Controller = function(configuration) {
     
     proxy.fetchCategory(name, function(data) {
       // Render the data. 
-      // Somehow we need to get the template
-      var template = "";
+      var template = loadTemplate(configuration.baseDir + "category." + format);
       callback(m.to_html(template, data)); 
     }); 
   };
@@ -175,10 +182,10 @@ var Controller = function(configuration) {
   this.fetchArticle = function(name, callback) {
     if(!!name == false) throw new Exception("Article name not specified");
     if(!!callback == false) throw new NoCallbackException("No callback");
+    
     proxy.fetchArticle(name, function(data) {
       // Render the data. 
-      // Somehow we need to get the template 
-      var template = "";
+      var template = loadTemplate(configuration.baseDir + "article." + format);
       callback(m.to_html(template, data)); 
     }); 
   };

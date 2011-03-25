@@ -3,12 +3,19 @@
     "tech" : {
       "name" : "Technology",
       "url" : "/tech/index.html",
-      "dataUrl" : "/tech/index.json"
+      "dataUrl" : "/tech/index.json",
+      "feedType" : "feed"
     },
     "business" : {
       "name" : "Business",
       "url" : "/business/index.html",
       "dataUrl" : "/business/index.json"
+    },
+    "nature" : {
+      "name" : "Scenes of Nature",
+      "url" : "/nature/index.html",
+      "dataUrl" : "/nature/index.json",
+      "feedType" : "image"
     }
   },
   "lastUpdate" : "2011-03-03T21:00:001Z"

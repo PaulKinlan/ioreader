@@ -1,0 +1,25 @@
+<style>
+  #target { background: -webkit-linear-gradient(#f00,#600); color: white;
+            height: 500px; }
+</style>
+<script src="jquery-1.5.min.js"></script>
+<script src="jquery.swipe.js"></script>
+<script>
+$(function() {
+  $("#target").swipe(function(ev) {
+    console.log("swipe back", this, ev.dx, ev.dy, ev.distance);
+  }, {
+    move: function(ev) {
+      console.log("move back", this, ev.dx, ev.dy, ev.distance);
+    },
+    small: function(ev) {
+      console.log("small back", this, ev.dx, ev.dy, ev.distance);
+    },
+    direction: "x"
+  });
+});
+</script>
+
+<div id="target">
+swipe here
+</div>

@@ -1,0 +1,22 @@
+<style>
+  p { margin: 0.5em 0; cursor: pointer; }
+</style>
+
+<script src="lib/jquery-1.5.min.js"></script>
+<script>
+  $(function() {
+    $("span").click(function() { $(this).prev().click(); });
+    $("[name=ui]").click(function() {
+      localStorage.ui = this.value;
+    });
+  });
+</script>
+
+<p>This is a little dashboard to support development.</p>
+
+<h4>Which UI do you want to see?</h4>
+
+<p><input type="radio" name="ui" value="phone" /><span>Phone</span></p>
+<p><input type="radio" name="ui" value="tablet"><span>Tablet</span></p>
+<p><input type="radio" name="ui" value="tv"><span>TV</span></p>
+<p><input type="radio" name="ui" value="desktop" /><span>Desktop</span></p>

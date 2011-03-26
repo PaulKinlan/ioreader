@@ -14,16 +14,21 @@ ul { list-style-type: none; }
   -webkit-box-shadow: -5px 0 5px 5px rgba(0,0,0,0.5);
 }
 
-html.menuState .categories { width: 100%; height: 100%; }
+html[data-resource=menu] .categories { width: 100%; height: 100%; }
 
-html.storyState .categories, html.categoryState .categories { margin-left: 35%; width: 65%; }
+html[data-resource=story] .categories, html[data-resource=category] .categories {
+  margin-left: 35%; width: 65%;
+}
+
 .category.active { position: absolute; left: 0; width: 35%; margin: 0; height: 100%; }
+html[data-resource=story] .story { z-index: 2; left: 45%; }
 
-html.storyState .story { z-index: 2; left: 45%; }
-
-.storyState .category, .categoryState .category { /* don't animate when category already active. This would be more clearly stated as a sibling selector of .category.active */
+/* Don't animate when category already active.
+   This would be more clearly stated as a sibling selector of .category.active */
+html[data-resource=story] .category, html[data-resource=category] .category {
   left: 0;
 }
+
 .category, .story {
   -webkit-transition-property: left;
   -moz-transition-property: left;

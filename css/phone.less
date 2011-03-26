@@ -1,0 +1,70 @@
+/**********/
+/* MACROS */
+/**********/
+
+html { background: black; }
+
+.linearGradient(@color1:#ccc, @color2:#ddd) {
+  background-image:-webkit-gradient(linear, left bottom, left top, color-stop(0, @color1), color-stop(100%, @color2));
+  background-image:-moz-linear-gradient(center bottom, @color1 0, @color2 100%);
+  background-image:-o-linear-gradient(center bottom, @color1 0, @color2 100%);
+  background-image:linear-gradient(center bottom, @color1 0, @color2 100%);
+  background-color: @color1;
+}
+
+/********************/
+/* GENERAL ELEMENTS */
+/********************/
+a,a:visited { text-decoration: none; color: white; }
+.thumbnail,.lowres,.hires { display: none; }
+.category { .linearGradient(pink,yellow); width: 100%; }
+
+/******************/
+/* PAGE STRUCTURE */
+/******************/*
+html { overflow: hidden; }
+html[data-resource=menu] { display: none; } /* not supported in this UI */
+
+/***********************************/
+/* MAIN (CATEGORY AND STORY) STATE */
+/***********************************/
+
+.categories {
+
+  width: 100%;
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: start; 
+
+  .category { height: 100%; }
+  h2 { padding: 1em 2em; background: red; }
+
+  article {
+    padding: 1.5em 1em 1em;
+    width: 100%; 
+    border-bottom: 2px solid black;
+    min-height: 1.5em;
+  }
+
+  h3 {
+    display: inline;
+    padding: 0.5em;
+    height: 1.5em;
+    overflow: hidden;
+    cursor: pointer;
+    background: orange; 
+    padding: 0.5em;
+    border-radius: 2em;
+  }
+
+}
+
+[data-resource=category] .category { cursor: move; }
+
+
+/******************/
+/* STORY STATE */
+/******************/*
+
+[data-resource=story] article.active .story { background: #ddd; margin: 2em 0; }
+[data-resourece=story] article.active h3 { font-weight: bold; }

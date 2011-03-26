@@ -24,9 +24,9 @@ var Proxy = function() {
   };
 };
 
-  /*
-    fetchCategory - fetches the category from the service and returns a consistent data structure.
-  */
+/*
+  fetchCategory - fetches the category from the service and returns a consistent data structure.
+*/
 Proxy.prototype.fetchCategory = function(name) {
   throw new Exception("fetchCategory Not Implemented");
 };
@@ -73,7 +73,7 @@ TestProxy.prototype.constructor = Proxy.constructor;
 
 TestProxy.prototype.fetchCategories = function(callback){
   if(!!callback == false) throw new NoCallbackException();
-    callback({"data": 1});
+  callback({"data": 1});
 };
  
 TestProxy.prototype.fetchCategory = function(name, callback) {
@@ -125,7 +125,7 @@ var ProxyFactory = function() {
   this.create = function(configuration) {
     if(!!configuration == false) throw new Exception("Unable to create proxy. No configuration specified");
     if(!!proxies[configuration.name] == false) throw new Exception(configuration.name + " Proxy doesn't exist.")
-    return new proxies[configuration.name](configuration); 
+    return new proxies[configuration.name](configuration); // this might be a module load instead - need to think about it. 
   };
 };
 

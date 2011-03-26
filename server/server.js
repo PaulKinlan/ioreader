@@ -149,7 +149,10 @@ var ProxyFactoryTests = function() {
 
 var Controller = function(configuration) {
   var proxy = new ProxyFactory().create(configuration);  
-   
+  
+  /*
+    Loads the template from the file system.
+  */ 
   var loadTemplate = function(file, callback) {
     if(!!callback == false) throw new NoCallbackException("No callback");
     fs.readFile(file,'utf8', function(err, data) {
@@ -157,7 +160,10 @@ var Controller = function(configuration) {
       callback(data);
     });
   };
- 
+
+  /*
+    Fetches and renders the categories for a given format.
+  */ 
   this.fetchCategories = function(format, callback) {
     if(!!callback == false) throw new NoCallbackException("No callback");
     proxy.fetchCategories(function(data) {
@@ -167,7 +173,10 @@ var Controller = function(configuration) {
     }); 
   };
 
-  this.fetchCategory = function(name, callback) {
+  /*
+    For a given category fetch and render the list of articles.
+  */
+  this.fetchCategory = function(name,format, callback) {
     if(!!name == false) throw new Exception("Category name not specified");
     if(!!callback == false) throw new NoCallbackException("No callback");
     
@@ -178,7 +187,7 @@ var Controller = function(configuration) {
     }); 
   };
 
-  this.fetchArticle = function(name, callback) {
+  this.fetchArticle = function(name, format, callback) {
     if(!!name == false) throw new Exception("Article name not specified");
     if(!!callback == false) throw new NoCallbackException("No callback");
     
@@ -242,6 +251,14 @@ app.configure('production', function() {
   console.log("Running in Production");
 });
 
+app.get('/', function(req, res) {
+  var format = "html"; 
+  var controller = new Controller(conf);
+  controller.fetchCategories(format, function(output) { 
+    res.send(output);
+  });
+});
+
 app.get('/index.:format', function(req, res) {
   var format = req.params.format;
   var controller = new Controller(conf);
@@ -250,16 +267,15 @@ app.get('/index.:format', function(req, res) {
   });
 });
 
-/*
 app.get('/:category', function(req, res) {
   var category = req.params.category;
   
   // fetch the category html.
   var controller = new Controller(conf);
-  controller.fetchCategory(name, function(output) { 
+  controller.fetchCategory(name, "html", function(output) { 
     res.send(output);
   });
-});*/
+});
 
 app.get('/:category.:format', function(req, res) {
   var category = req.params.category;
@@ -267,7 +283,7 @@ app.get('/:category.:format', function(req, res) {
   var controller = new Controller(conf);
    
   // request the category list i
-  controller.fetchArticle(category, function(output) { 
+  controller.fetchCategory(category, function(output) { 
     res.send(output);
   });
 });

@@ -6,7 +6,7 @@ var fs = require('fs');
 var conf = {
   name: "test",
   description: "The Guardian News Reader",
-  baseDir: "../client/",
+  baseDir: "client/templates/",
   categories: {
     "Technology": { 
       name: "Technology",
@@ -151,7 +151,8 @@ var Controller = function(configuration) {
   var proxy = new ProxyFactory().create(configuration);  
    
   var loadTemplate = function(file, callback) {
-    fs.readFile(file, function(err, data) {
+    if(!!callback == false) throw new NoCallbackException("No callback");
+    fs.readFile(file,'utf8', function(err, data) {
       if(err) throw err;
       callback(data);
     });
@@ -159,11 +160,10 @@ var Controller = function(configuration) {
  
   this.fetchCategories = function(format, callback) {
     if(!!callback == false) throw new NoCallbackException("No callback");
-    
     proxy.fetchCategories(function(data) {
-      // Render the data. 
-      var template = loadTemplate(configuration.baseDir + "index." + format);
-      callback(m.to_html(template, data)); 
+      var template = loadTemplate(configuration.baseDir + "index." + format, function(template) {
+        callback(m.to_html(template, data));
+      });
     }); 
   };
 
@@ -219,14 +219,18 @@ var ControllerTests = function() {
 */
 app.configure(function() {
   app.use(app.router);
-  app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+  //app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+});
+
+app.configure('test', function() {
+  console.log("Running in Test");
 });
 
 /* 
   Development mode runs all the code uncompressed
 */
 app.configure('development', function() {
-  app.use(express.static(__dirname + '../client'));
+  console.log("Running in Development");
 });
 
 /*
@@ -234,15 +238,14 @@ app.configure('development', function() {
   is minified.  Exceptions are not shown either.
 */
 app.configure('production', function() {
-  app.use(express.static(__dirname + '../client'));
-  app.use(express.errorHandler());
+  //app.use(express.errorHandler());
+  console.log("Running in Production");
 });
 
 app.get('/index.:format', function(req, res) {
   var format = req.params.format;
   var controller = new Controller(conf);
-
-  controller.fetchCategories(function(output) { 
+  controller.fetchCategories(format, function(output) { 
     res.send(output);
   });
 });

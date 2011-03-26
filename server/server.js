@@ -43,19 +43,18 @@ NPRProxy.prototype = new Proxy();
 NPRProxy.prototype.constructor = Proxy.constructor;
 
 NPRProxy.prototype.fetchCategory = function(name, callback) {
-    if(!!callback == false) throw new Exception("No Callback defined");
-    // Create the url to fetch the articles in a category.  
-    var category =  new CategoryData(); 
-    var data = fetchCategory(name);
+  if(!!callback == false) throw new Exception("No Callback defined");
+  // Create the url to fetch the articles in a category.  
+  var category =  new CategoryData(); 
+  var data = fetchCategory(name);
 
-    // for(var item in data.items) 
-    {
-      var newItem = new CategoryItem();
-      category.addItem(newItem);     
-    }
+  // for(var item in data.items) 
+  {
+    var newItem = new CategoryItem();
+    category.addItem(newItem);     
+  }
 
-    callback(category);
-  };
+  callback(category);
 };
 
 var GuardianProxy = function(configuration) {

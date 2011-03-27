@@ -3,12 +3,12 @@ var app = express.createServer();
 var m = require('mustache');
 var fs = require('fs');
 
-var conf = {
+var conf = { 
   name: "test",
   description: "The Guardian News Reader",
   baseDir: "client/templates/",
   categories: {
-    "Technology": { 
+    "technology": { 
       name: "Technology",
       description: "Technology News as you need it",
       display: "list",
@@ -18,10 +18,6 @@ var conf = {
 };
 
 var Proxy = function() {
-  
-  var fetch = function() {
-
-  };
 };
 
 /*
@@ -45,24 +41,95 @@ NPRProxy.prototype.constructor = Proxy.constructor;
 NPRProxy.prototype.fetchCategory = function(name, callback) {
   if(!!callback == false) throw new Exception("No Callback defined");
   // Create the url to fetch the articles in a category.  
-  var category =  new CategoryData(); 
-  var data = fetchCategory(name);
-
-  // for(var item in data.items) 
-  {
-    var newItem = new CategoryItem();
-    category.addItem(newItem);     
-  }
+  var category = new CategoryData(); 
 
   callback(category);
 };
 
 var GuardianProxy = function(configuration) {
-  this.fetchCategory = function(name) {};
+  var domain = "content.guardianapis.com";
+  var api_key = "";
+
+  this._fetchCategory = function(name, callback) {
+    if(!!callback == false) throw new NoCallbackException();
+    
+    var client = http.createClient(80, categoryQuery);
+    var headers = {
+      section: name,
+      fields: "all",
+      format: "json",
+      use-date: "last-modified",
+      api-key: api_key;
+    };
+
+    var req = client.request('GET', "/search", headers);
+
+    req.on('response', function(response) {
+      var data = ""; 
+      response.on('data', function(chunk) {
+        data += chunk;
+      });
+
+      response.on('end', function() {
+        callback(JSON.stringify(data));
+      });
+    });
+    req.end();
+  };
+
+  this._fetchArticle = function(id, callback) {
+    if(!!callback == false) throw new NoCallbackException();
+    
+    var client = http.createClient(80, categoryQuery);
+    var headers = {
+      format: "json",
+      fields: "all",
+      api-key: api_key; 
+    };
+
+    var req = client.request('GET', "/" + id, headers);
+
+    req.on('response', function(response) {
+      var data = ""; 
+      response.on('data', function(chunk) {
+        data += chunk;
+      });
+
+      response.on('end', function() {
+        callback(JSON.stringify(data));
+      });
+    });
+    req.end();
+  };
 };
 
 GuardianProxy.prototype = new Proxy();
-GuardianProxy.prototype.constructor = Proxy.constructor;
+GuardianProxy.prototype.constructor = GuardianProxy;
+
+GuardianProxy.prototype.fetchCategory = function(name, callback) {
+  if(!!callback == false) throw new NoCallbackException();
+  
+  var category = new CategoryData();
+
+  var data = this._fetchCategory(name, function(data) {
+    if(!!data.response == false || data.response.status != "ok") return; 
+    var results = data.response.results;
+
+    for(var r in results) {
+      var result = results[r];
+      var item = new CategoryItem(result.id, result.webTitle, results.fields.standfirst);
+      category.addItem(item); 
+    }
+
+    callback(category);
+  });
+
+};
+
+GuardianProxy.prototype.fetchArticle = function(name, callback) {
+
+};
+
 
 var TestProxy = function(configuration) {
 };
@@ -72,7 +139,11 @@ TestProxy.prototype.constructor = Proxy.constructor;
 
 TestProxy.prototype.fetchCategories = function(callback){
   if(!!callback == false) throw new NoCallbackException();
-  callback({"data": 1});
+  
+  var category = new CategoryData();
+  category.addItem(new CategoryItem("XOOM Rock"));
+
+  callback();
 };
  
 TestProxy.prototype.fetchCategory = function(name, callback) {
@@ -90,8 +161,12 @@ var NoCallbackException = function() {
 
 };
 
-NoCallbackException.prototype = Exception;
-NoCallbackException.prototype.constructor = Exception;
+NoCallbackException.prototype = new Exception();
+NoCallbackException.prototype.constructor = Exception.constructor;
+
+var RequiredException = function() {};
+RequiredException.prototype = new Exception();
+RequiredException.prototype.constructor = Exception.constructor;
 
 /*
   A Basic data holder
@@ -111,10 +186,10 @@ var CategoryData = function() {
 /*
   A data item in the category.
 */
-var CategoryItem = function(title, shortDescription, longDescription) {
+var CategoryItem = function(id, title, shortDescription) {
+  this.id = id;
   this.title = title;
   this.shortDescription = shortDescription;
-  this.longDescription = longDescription;
 };
 
 var ProxyFactory = function() {
@@ -247,7 +322,6 @@ app.configure('development', function() {
   is minified.  Exceptions are not shown either.
 */
 app.configure('production', function() {
-  //app.use(express.errorHandler());
   console.log("Running in Production");
 });
 

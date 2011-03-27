@@ -7,17 +7,17 @@ var conf = {
   name: "test",
   description: "The Guardian News Reader",
   baseDir: "client/templates/",
-  categories: {
-    "technology": { 
-      name: "Technology",
-      description: "Technology News as you need it",
-      display: "list",
-      url: "tech" // Url = "tech"/
-    }
-  }
+  categories: ["technology", "business"]
 };
 
 var Proxy = function() {
+};
+
+/*
+  fetchCategories - fetches a list of categories
+*/
+Proxy.prototype.fetchCategories = function() {
+  throw new Exception("fetchCategories Not Implemented");
 };
 
 /*
@@ -32,7 +32,6 @@ Proxy.prototype.fetchArticle = function(id) {
 };
 
 var NPRProxy = function(configuration) {
-  var urlStructure = ""
 };
 
 NPRProxy.prototype = new Proxy();
@@ -49,6 +48,31 @@ NPRProxy.prototype.fetchCategory = function(name, callback) {
 var GuardianProxy = function(configuration) {
   var domain = "content.guardianapis.com";
   var api_key = "";
+
+  this._fetchCategories = function(categories, callback) {
+    if(!!callback == false) throw new NoCallbackException();
+    
+    var client = http.createClient(80, categoryQuery);
+    var headers = {
+      section: categories.join(" "),
+      format: "json",
+      "api-key": api_key
+    };
+
+    var req = client.request('GET', "/sections", headers);
+
+    req.on('response', function(response) {
+      var data = ""; 
+      response.on('data', function(chunk) {
+        data += chunk;
+      });
+
+      response.on('end', function() {
+        callback(JSON.stringify(data));
+      });
+    });
+    req.end();
+  };
 
   this._fetchCategory = function(name, callback) {
     if(!!callback == false) throw new NoCallbackException();
@@ -106,6 +130,23 @@ var GuardianProxy = function(configuration) {
 GuardianProxy.prototype = new Proxy();
 GuardianProxy.prototype.constructor = GuardianProxy;
 
+GuardianProxy.prototype.fetchCategories = function(callback) {
+  if(!!callback == false) throw new NoCallbackException();
+  
+  var data = this._fetchCategories(conf.categories, function(data) {
+    if(!!data.response == false || data.response.status != "ok") return; 
+    var results = data.response.results;
+    
+    for(var r in results) {
+      var result = results[r];
+      categories.push(new CategoryData(result.id, result.webTitle));
+    }
+
+    callback(categories);
+  });
+
+};
+
 GuardianProxy.prototype.fetchCategory = function(name, callback) {
   if(!!callback == false) throw new NoCallbackException();
   
@@ -145,10 +186,10 @@ TestProxy.prototype.constructor = Proxy.constructor;
 
 TestProxy.prototype.fetchCategories = function(callback){
   if(!!callback == false) throw new NoCallbackException();
-  
-  var category = new CategoryData();
-  category.addItem(new CategoryItem("XOOM Rock"));
-  callback(category);
+  var categories = [];
+  categories.push(new CategoryData("tech", "Technology"));
+  categories.push(new CategoryData("business", "Business"));
+  callback(categories);
 };
  
 TestProxy.prototype.fetchCategory = function(name, callback) {
@@ -176,9 +217,9 @@ RequiredException.prototype.constructor = Exception.constructor;
 /*
   A Basic data holder
 */
-var CategoryData = function() {
-  this.id = function() {return "";};
-  this.name = function() {return "";};
+var CategoryData = function(id, name) {
+  this.id = id; 
+  this.name = name;
   this.articles = [];
 
   /*
@@ -249,7 +290,7 @@ var Controller = function(configuration) {
     if(!!callback == false) throw new NoCallbackException("No callback");
     proxy.fetchCategories(function(data) {
       var template = loadTemplate(configuration.baseDir + "index." + format, function(template) {
-        callback(m.to_html(template, data));
+        callback(m.to_html(template, {"categories" : data}));
       });
     }); 
   };

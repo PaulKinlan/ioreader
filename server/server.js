@@ -2,9 +2,11 @@ var express = require('express');
 var app = express.createServer();
 var m = require('mustache');
 var fs = require('fs');
+var async = require('async');
+var http = require('http');
 
 var conf = { 
-  name: "test",
+  name: "guardian",
   description: "The Guardian News Reader",
   baseDir: "client/templates/",
   categories: ["technology", "business"]
@@ -47,82 +49,80 @@ NPRProxy.prototype.fetchCategory = function(name, callback) {
 
 var GuardianProxy = function(configuration) {
   var domain = "content.guardianapis.com";
-  var api_key = "";
+  var api_key = "nedz73wwdsqgjhrf8t57f7nq";
 
+  var fetchResults = function(res, callback) {
+    var data = "";
+    res.setEncoding('utf-8');
+    res.on('data', function(chunk) {
+      console.log(chunk);
+      data += chunk;
+    });
+
+    res.on('end', function() {
+      callback(JSON.parse(data));
+    });
+  };
+
+  var toQueryString = function(opts) {
+    var qs = []; 
+   
+    for(var q in opts) {
+      qs.push(encodeURIComponent(q) + "=" + opts[q]);
+    }
+    return qs.join("&");
+  };
+ 
   this._fetchCategories = function(categories, callback) {
     if(!!callback == false) throw new NoCallbackException();
     
-    var client = http.createClient(80, categoryQuery);
-    var headers = {
-      section: categories.join(" "),
+    var query = {
+      q: categories.join("+"),
       format: "json",
       "api-key": api_key
     };
 
-    var req = client.request('GET', "/sections", headers);
-
-    req.on('response', function(response) {
-      var data = ""; 
-      response.on('data', function(chunk) {
-        data += chunk;
-      });
-
-      response.on('end', function() {
-        callback(JSON.stringify(data));
-      });
-    });
-    req.end();
+    var options = {
+      host: domain, 
+      port: 80,
+      path: '/sections?' + toQueryString(query) 
+    };
+    var client = http.get(options, function(res) {fetchResults(res, callback);} ); 
   };
 
   this._fetchCategory = function(name, callback) {
     if(!!callback == false) throw new NoCallbackException();
     
-    var client = http.createClient(80, categoryQuery);
-    var headers = {
+    var query = {
       section: name,
-      fields: "all",
+      "show-fields": "all",
       format: "json",
       "use-date": "last-modified",
       "api-key": api_key
     };
 
-    var req = client.request('GET', "/search", headers);
+    var options = {
+      host: domain,
+      port: 80,
+      path: '/search?' + toQueryString(query)
+    };
 
-    req.on('response', function(response) {
-      var data = ""; 
-      response.on('data', function(chunk) {
-        data += chunk;
-      });
 
-      response.on('end', function() {
-        callback(JSON.stringify(data));
-      });
-    });
-    req.end();
+    http.get(options, function(res) { fetchResults(res, callback);});
   };
 
   this._fetchArticle = function(id, callback) {
     if(!!callback == false) throw new NoCallbackException();
     
-    var client = http.createClient(80, categoryQuery);
+    var client = http.createClient(80, domain);
     var headers = {
       format: "json",
-      fields: "all",
+      "show-fields": "all",
       "api-key": api_key
     };
 
     var req = client.request('GET', "/" + id, headers);
-
-    req.on('response', function(response) {
-      var data = ""; 
-      response.on('data', function(chunk) {
-        data += chunk;
-      });
-
-      response.on('end', function() {
-        callback(JSON.stringify(data));
-      });
-    });
+    fetchResults(req, callback);
     req.end();
   };
 };
@@ -132,17 +132,25 @@ GuardianProxy.prototype.constructor = GuardianProxy;
 
 GuardianProxy.prototype.fetchCategories = function(callback) {
   if(!!callback == false) throw new NoCallbackException();
-  
+  var self = this;
   var data = this._fetchCategories(conf.categories, function(data) {
     if(!!data.response == false || data.response.status != "ok") return; 
     var results = data.response.results;
-    
+    var categories = [];    
     for(var r in results) {
       var result = results[r];
-      categories.push(new CategoryData(result.id, result.webTitle));
+      var category = new CategoryData(result.id, result.webTitle);
+      var output_callback = (function(cat) {
+        return function(inner_callback) {
+          self.fetchCategory(cat.id, function(category_data) { category_data.id = cat.id; category_data.name = cat.name; inner_callback(null, category_data);  }  );
+        };
+      })(category);
+      categories.push(output_callback); 
     }
 
-    callback(categories);
+    // execute the category requests in parallel.
+    async.parallel(categories, function(err, results){ callback(results); });
+
   });
 
 };
@@ -158,7 +166,8 @@ GuardianProxy.prototype.fetchCategory = function(name, callback) {
 
     for(var r in results) {
       var result = results[r];
-      var item = new CategoryItem(result.id, result.webTitle, result.fields.standfirst);
+      var item = new CategoryItem(result.id, result.webTitle, result.fields.standfirst, category);
+      item.thumbnail = result.fields.thumbnail;
       category.addItem(item); 
     }
 
@@ -233,10 +242,13 @@ var CategoryData = function(id, name) {
 /*
   A data item in the category.
 */
-var CategoryItem = function(id, title, shortDescription) {
+var CategoryItem = function(id, title, shortDescription, category) {
   this.id = id;
   this.title = title;
   this.shortDescription = shortDescription;
+  this.thumbnail = "";
+  this.category = category;
+  this.url = function () { return category.id + "/" + this.id;  }; // do not like.
 };
 
 var ProxyFactory = function() {
@@ -289,7 +301,7 @@ var Controller = function(configuration) {
   this.fetchCategories = function(format, callback) {
     if(!!callback == false) throw new NoCallbackException("No callback");
     proxy.fetchCategories(function(data) {
-      var template = loadTemplate(configuration.baseDir + "index." + format, function(template) {
+      loadTemplate(configuration.baseDir + "index." + format, function(template) {
         callback(m.to_html(template, {"categories" : data}));
       });
     }); 
@@ -304,8 +316,9 @@ var Controller = function(configuration) {
     
     proxy.fetchCategory(name, function(data) {
       // Render the data. 
-      var template = loadTemplate(configuration.baseDir + "category." + format);
-      callback(m.to_html(template, data)); 
+      loadTemplate(configuration.baseDir + "category." + format, function(template) {
+        callback(m.to_html(template, data)); 
+      });
     }); 
   };
 
@@ -315,8 +328,9 @@ var Controller = function(configuration) {
     
     proxy.fetchArticle(name, function(data) {
       // Render the data. 
-      var template = loadTemplate(configuration.baseDir + "article." + format);
-      callback(m.to_html(template, data)); 
+      loadTemplate(configuration.baseDir + "article." + format, function(template) {
+        callback(m.to_html(template, data)); 
+      });
     }); 
   };
 };
@@ -393,7 +407,7 @@ app.get('/:category', function(req, res) {
   
   // fetch the category html.
   var controller = new Controller(conf);
-  controller.fetchCategory(name, "html", function(output) { 
+  controller.fetchCategory(category, "html", function(output) { 
     res.send(output);
   });
 });

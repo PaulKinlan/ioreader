@@ -117,7 +117,7 @@ GuardianProxy.prototype.fetchCategory = function(name, callback) {
 
     for(var r in results) {
       var result = results[r];
-      var item = new CategoryItem(result.id, result.webTitle, results.fields.standfirst);
+      var item = new CategoryItem(result.id, result.webTitle, result.fields.standfirst);
       category.addItem(item); 
     }
 
@@ -126,8 +126,14 @@ GuardianProxy.prototype.fetchCategory = function(name, callback) {
 
 };
 
-GuardianProxy.prototype.fetchArticle = function(name, callback) {
-
+GuardianProxy.prototype.fetchArticle = function(id, callback) {
+  if(!!callback == false) throw new NoCallbackException();
+  
+  this._fetchArticle(id, function(data) {
+    if(!!data.response == false || data.response.status != "ok") return;
+    var item = new CategoryItem(result.id, result.webTitle, results.fields.standfirst);
+    callback(item);
+  }); 
 };
 
 

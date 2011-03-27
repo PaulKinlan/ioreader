@@ -8,7 +8,7 @@ var http = require('http');
 var conf = { 
   name: "guardian",
   description: "The Guardian News Reader",
-  baseDir: "client/templates/",
+  baseDir: "server/templates/",
   categories: ["technology", "business"]
 };
 
@@ -55,7 +55,6 @@ var GuardianProxy = function(configuration) {
     var data = "";
     res.setEncoding('utf-8');
     res.on('data', function(chunk) {
-      console.log(chunk);
       data += chunk;
     });
 
@@ -87,7 +86,7 @@ var GuardianProxy = function(configuration) {
       port: 80,
       path: '/sections?' + toQueryString(query) 
     };
-    var client = http.get(options, function(res) {fetchResults(res, callback);} ); 
+    http.get(options, function(res) {fetchResults(res, callback);} ); 
   };
 
   this._fetchCategory = function(name, callback) {
@@ -107,7 +106,6 @@ var GuardianProxy = function(configuration) {
       path: '/search?' + toQueryString(query)
     };
 
-
     http.get(options, function(res) { fetchResults(res, callback);});
   };
 
@@ -115,15 +113,19 @@ var GuardianProxy = function(configuration) {
     if(!!callback == false) throw new NoCallbackException();
     
     var client = http.createClient(80, domain);
-    var headers = {
+    var query = {
       format: "json",
       "show-fields": "all",
       "api-key": api_key
     };
-
-    var req = client.request('GET', "/" + id, headers);
-    fetchResults(req, callback);
-    req.end();
+   
+    var options = {
+      host: domain,
+      port: 80,
+      path: '/' + id
+    }
+     
+    http.get(options, function(res) {fetchResults(res, callback);});  
   };
 };
 
@@ -368,6 +370,8 @@ app.configure(function() {
 });
 
 app.configure('test', function() {
+  app.use(express.static(__dirname + '/client/'));
+  console.log(__dirname);
   console.log("Running in Test");
 });
 
@@ -375,6 +379,8 @@ app.configure('test', function() {
   Development mode runs all the code uncompressed
 */
 app.configure('development', function() {
+  app.use(express.static(__dirname + '/client/'));
+  console.log(__dirname);
   console.log("Running in Development");
 });
 
@@ -383,6 +389,7 @@ app.configure('development', function() {
   is minified.  Exceptions are not shown either.
 */
 app.configure('production', function() {
+  app.use(express.static(__dirname + '/client-min/'));
   console.log("Running in Production");
 });
 
@@ -402,7 +409,7 @@ app.get('/index.:format', function(req, res) {
   });
 });
 
-app.get('/:category', function(req, res) {
+app.get('/reader/:category', function(req, res) {
   var category = req.params.category;
   
   // fetch the category html.
@@ -412,7 +419,7 @@ app.get('/:category', function(req, res) {
   });
 });
 
-app.get('/:category.:format', function(req, res) {
+app.get('/reader/:category.:format', function(req, res) {
   var category = req.params.category;
   var format = req.params.format;
   var controller = new Controller(conf);
@@ -423,13 +430,13 @@ app.get('/:category.:format', function(req, res) {
   });
 });
 
-app.get('/:category/:article.:format', function(req, res) {
+app.get('/reader/:category/:article.:format', function(req, res) {
   var category = req.params.category;
   var article = req.params.article;
   var format = req.params.format;
   var controller = new Controller(conf);
 
-  controller.fetchArticle(category, name, function(output) { 
+  controller.fetchArticle(category, article, function(output) { 
     res.send(output);
   });
 });

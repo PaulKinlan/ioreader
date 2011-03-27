@@ -58,8 +58,8 @@ var GuardianProxy = function(configuration) {
       section: name,
       fields: "all",
       format: "json",
-      use-date: "last-modified",
-      api-key: api_key;
+      "use-date": "last-modified",
+      "api-key": api_key
     };
 
     var req = client.request('GET', "/search", headers);
@@ -84,7 +84,7 @@ var GuardianProxy = function(configuration) {
     var headers = {
       format: "json",
       fields: "all",
-      api-key: api_key; 
+      "api-key": api_key
     };
 
     var req = client.request('GET', "/" + id, headers);
@@ -148,8 +148,7 @@ TestProxy.prototype.fetchCategories = function(callback){
   
   var category = new CategoryData();
   category.addItem(new CategoryItem("XOOM Rock"));
-
-  callback();
+  callback(category);
 };
  
 TestProxy.prototype.fetchCategory = function(name, callback) {
@@ -161,7 +160,7 @@ TestProxy.prototype.fetchCategory = function(name, callback) {
 
 var Exception = function() {
 
-}
+};
 
 var NoCallbackException = function() {
 
@@ -178,14 +177,15 @@ RequiredException.prototype.constructor = Exception.constructor;
   A Basic data holder
 */
 var CategoryData = function() {
-  this.name = function() {}
-  this.items = [];
+  this.id = function() {return "";};
+  this.name = function() {return "";};
+  this.articles = [];
 
   /*
    Adds an item in to the category
   */
   this.addItem = function(item) {
-    this.items.push(item);
+    this.articles.push(item);
   };
 };
 

@@ -25,7 +25,7 @@ Proxy.prototype.fetchCategories = function() {
 /*
   fetchCategory - fetches the category from the service and returns a consistent data structure.
 */
-Proxy.prototype.fetchCategory = function(name) {
+Proxy.prototype.fetchCategory = function(id) {
   throw new Exception("fetchCategory Not Implemented");
 };
  
@@ -39,7 +39,7 @@ var NPRProxy = function(configuration) {
 NPRProxy.prototype = new Proxy();
 NPRProxy.prototype.constructor = Proxy.constructor;
 
-NPRProxy.prototype.fetchCategory = function(name, callback) {
+NPRProxy.prototype.fetchCategory = function(id, callback) {
   if(!!callback == false) throw new Exception("No Callback defined");
   // Create the url to fetch the articles in a category.  
   var category = new CategoryData(); 
@@ -89,12 +89,12 @@ var GuardianProxy = function(configuration) {
     http.get(options, function(res) {fetchResults(res, callback);} ); 
   };
 
-  this._fetchCategory = function(name, callback) {
+  this._fetchCategory = function(id, fields, callback) {
     if(!!callback == false) throw new NoCallbackException();
     
     var query = {
-      section: name,
-      "show-fields": "all",
+      section: id,
+      "show-fields": fields.join(","),
       format: "json",
       "use-date": "last-modified",
       "api-key": api_key
@@ -152,30 +152,47 @@ GuardianProxy.prototype.fetchCategories = function(callback) {
 
     // execute the category requests in parallel.
     async.parallel(categories, function(err, results){ callback(results); });
-
   });
-
 };
 
-GuardianProxy.prototype.fetchCategory = function(name, callback) {
+GuardianProxy.prototype.fetchCategory = function(id, callback) {
   if(!!callback == false) throw new NoCallbackException();
   
-  var category = new CategoryData();
-
-  var data = this._fetchCategory(name, function(data) {
+  var self = this;
+  var data = this._fetchCategories(conf.categories, function(data) {
     if(!!data.response == false || data.response.status != "ok") return; 
     var results = data.response.results;
-
+    var categories = [];    
     for(var r in results) {
       var result = results[r];
-      var item = new CategoryItem(result.id, result.webTitle, result.fields.standfirst, category);
-      item.thumbnail = result.fields.thumbnail;
-      category.addItem(item); 
+      var category = new CategoryData(result.id, result.webTitle);
+      var output_callback = (function(cat) {
+        return function(inner_callback) {
+          if(cat.id == id) {
+            self._fetchCategory(cat.id, ["all"], function(category_data) {
+              if(!!category_data.response == false || category_data.response.status != "ok") return; 
+              var cat_results = category_data.response.results;
+              for(var cat_r in cat_results) {
+                var cat_result = cat_results[cat_r];
+                var item = new CategoryItem(cat_result.id, cat_result.webTitle, cat_result.fields.standfirst, category);
+                item.thumbnail = cat_result.fields.thumbnail;
+                cat.addItem(item); 
+              }
+              
+              inner_callback(null, cat);
+            });
+          }
+          else { 
+            // If it is not the current category, don't go and fetch it, just use the basic information
+            inner_callback(null, cat);
+          }
+        };
+      })(category);
+      categories.push(output_callback);
     }
 
-    callback(category);
+    async.parallel(categories, function(err, presults){ callback(presults); });
   });
-
 };
 
 GuardianProxy.prototype.fetchArticle = function(id, callback) {
@@ -187,7 +204,6 @@ GuardianProxy.prototype.fetchArticle = function(id, callback) {
     callback(item);
   }); 
 };
-
 
 var TestProxy = function(configuration) {
 };
@@ -203,7 +219,7 @@ TestProxy.prototype.fetchCategories = function(callback){
   callback(categories);
 };
  
-TestProxy.prototype.fetchCategory = function(name, callback) {
+TestProxy.prototype.fetchCategory = function(id, callback) {
   if(!!callback == false) throw new NoCallbackException();
  
   var data = {data:1};
@@ -313,23 +329,23 @@ var Controller = function(configuration) {
   /*
     For a given category fetch and render the list of articles.
   */
-  this.fetchCategory = function(name,format, callback) {
-    if(!!name == false) throw new Exception("Category name not specified");
+  this.fetchCategory = function(id, format, callback) {
+    if(!!id == false) throw new Exception("Category id not specified");
     if(!!callback == false) throw new NoCallbackException("No callback");
     
-    proxy.fetchCategory(name, function(data) {
+    proxy.fetchCategory(id, function(data) {
       // Render the data. 
       loadTemplate(configuration.baseDir + "category." + format, function(template) {
-        callback(m.to_html(template, data)); 
+        callback(m.to_html(template, {"categories": data})); 
       });
     }); 
   };
 
-  this.fetchArticle = function(name, format, callback) {
-    if(!!name == false) throw new Exception("Article name not specified");
+  this.fetchArticle = function(id, format, callback) {
+    if(!!id == false) throw new Exception("Article id not specified");
     if(!!callback == false) throw new NoCallbackException("No callback");
     
-    proxy.fetchArticle(name, function(data) {
+    proxy.fetchArticle(id, function(data) {
       // Render the data. 
       loadTemplate(configuration.baseDir + "article." + format, function(template) {
         callback(m.to_html(template, data)); 

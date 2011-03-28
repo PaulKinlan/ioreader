@@ -250,7 +250,8 @@ var CategoryItem = function(id, title, shortDescription, category) {
   this.shortDescription = shortDescription;
   this.thumbnail = "";
   this.category = category;
-  this.url = function () { return category.id + "/" + this.id;  }; // do not like.
+  this.url = function () { return category.id + "/" + this.id + ".html"; }; 
+  this.dataUrl = function () { return category.id + "/" + this.id + ".json"; };
 };
 
 var ProxyFactory = function() {
@@ -366,12 +367,12 @@ var ControllerTests = function() {
 */
 app.configure(function() {
   app.use(app.router);
-  //app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 });
 
 app.configure('test', function() {
   app.use(express.static(__dirname + '/client/'));
-  console.log(__dirname);
+  app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+  conf.name = "test"; // force test mode.
   console.log("Running in Test");
 });
 
@@ -380,7 +381,7 @@ app.configure('test', function() {
 */
 app.configure('development', function() {
   app.use(express.static(__dirname + '/client/'));
-  console.log(__dirname);
+  app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
   console.log("Running in Development");
 });
 

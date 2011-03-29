@@ -178,23 +178,18 @@ GuardianProxy.prototype.fetchCategory = function(id, callback) {
       var category = new CategoryData(result.id, result.webTitle);
       var output_callback = (function(cat) {
         return function(inner_callback) {
-          if(cat.id == id) {
-            self._fetchCategory(cat.id, ["all"], function(category_data) {
-              if(!!category_data.response == false || category_data.response.status != "ok") return; 
-              var cat_results = category_data.response.results;
-              for(var cat_r in cat_results) {
-                var cat_result = cat_results[cat_r];
-                var item = new CategoryItem(cat_result.id, cat_result.webTitle, cat_result.fields.standfirst, cat);
-                item.thumbnail = cat_result.fields.thumbnail;
-                cat.addItem(item); 
-              }
-              inner_callback(null, cat);
-            });
-          }
-          else { 
-            // If it is not the current category, don't go and fetch it, just use the basic information
+          self._fetchCategory(cat.id, ["all"], function(category_data) {
+            if(!!category_data.response == false || category_data.response.status != "ok") return;
+            if(cat.id == id) cat.state = "active";
+            var cat_results = category_data.response.results;
+            for(var cat_r in cat_results) {
+              var cat_result = cat_results[cat_r];
+              var item = new CategoryItem(cat_result.id, cat_result.webTitle, cat_result.fields.standfirst, cat);
+              item.thumbnail = cat_result.fields.thumbnail;
+              cat.addItem(item); 
+            }
             inner_callback(null, cat);
-          }
+          });
         };
       })(category);
       categories.push(output_callback);

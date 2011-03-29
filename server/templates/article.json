@@ -7,7 +7,7 @@
       "status" : "{{active}}",
       "articles": [
       {{#articles}}
-        { "href": "{{url}}", "datahref": {{dataUrl}}, "thumbnail": "{{thumbnail}}", "title": "{{title}}"},
+        { "href": "{{url}}", "datahref": {{dataUrl}}, "thumbnail": "{{thumbnail}}", "title": "{{title}}", "body": "{{body}}"},
       {{/articles}}
       ]
     },

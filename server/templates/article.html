@@ -23,7 +23,10 @@
         <h1>{{name}}</h1>
         <ul>
           {{#articles}}
-          <li><a dlc="story" href="{{url}}"><img src="{{thumbnail}}" /><span>{{title}}</span></a></li>
+          <li>
+            <a dlc="story" href="{{url}}"><img src="{{thumbnail}}" /><span>{{title}}</span></a>
+            <span>{{body}}</span>
+          </li>
           {{/articles}}
         </ul>
       </div>

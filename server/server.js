@@ -189,7 +189,7 @@ GuardianProxy.prototype.fetchCategory = function(id, callback) {
               cat.addItem(item); 
             }
             inner_callback(null, cat);
-          });
+           });
         };
       })(category);
       categories.push(output_callback);
@@ -217,9 +217,10 @@ GuardianProxy.prototype.fetchArticle = function(id, category, callback) {
             if(!!article_data.response == false || article_data.response.status != "ok") return;
             var article_result = article_data.response.content;
             var item = new CategoryItem(article_result.id, article_result.webTitle, article_result.fields.trailText, cat);
-            item.body = article_result.body;
-            item.thumbnail = article_result.thumbnail;
+            item.body = article_result.fields.body;
+            item.thumbnail = article_result.fields.thumbnail;
             cat.addItem(item);
+      
             inner_callback(null, cat);
           }); 
         }
@@ -377,7 +378,7 @@ var Controller = function(configuration) {
     proxy.fetchArticle(id, category, function(data) {
       // Render the data. 
       loadTemplate(configuration.baseDir + "article." + format, function(template) {
-        callback(m.to_html(template, data)); 
+        callback(m.to_html(template, {"categories": data})); 
       });
     }); 
   };

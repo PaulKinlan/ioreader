@@ -112,9 +112,7 @@ var GuardianProxy = function(configuration) {
   this._fetchArticle = function(id, category, callback) {
     if(!!callback == false) throw new NoCallbackException();
     
-    var client = http.createClient(80, domain);
     var query = {
-      "section": category,
       "format": "json",
       "show-fields": "all",
       "api-key": api_key
@@ -123,8 +121,10 @@ var GuardianProxy = function(configuration) {
     var options = {
       host: domain,
       port: 80,
-      path: '/' + id
+      path: "/" + decodeURIComponent(id) + "?" + toQueryString(query)
     }
+
+    console.log(options.path);
      
     http.get(options, function(res) {fetchResults(res, callback);});  
   };
@@ -142,7 +142,7 @@ GuardianProxy.prototype.fetchCategories = function(callback) {
     var categories = [];    
     for(var r in results) {
       var result = results[r];
-      var category = new CategoryData(result.id, result.webTitle);
+      var new_category = new CategoryData(result.id, result.webTitle);
       var output_callback = (function(cat) {
         return function(inner_callback) {
           self._fetchCategory(cat.id, ["standfirst", "thumbnail"], function(category_data) {
@@ -151,14 +151,14 @@ GuardianProxy.prototype.fetchCategories = function(callback) {
             
             for(var cat_r in cat_results) {
               var cat_res = cat_results[cat_r];
-              var item = new CategoryItem(cat_res.id, cat_res.webTitle, cat_res.fields.standfirst, category);
+              var item = new CategoryItem(cat_res.id, cat_res.webTitle, cat_res.fields.standfirst, cat);
               item.thumbnail = cat_res.fields.thumbnail;
               cat.addItem(item);
             }
             inner_callback(null, cat);
           });
         };
-      })(category);
+      })(new_category);
       categories.push(output_callback); 
     }
 
@@ -186,7 +186,7 @@ GuardianProxy.prototype.fetchCategory = function(id, callback) {
               var cat_results = category_data.response.results;
               for(var cat_r in cat_results) {
                 var cat_result = cat_results[cat_r];
-                var item = new CategoryItem(cat_result.id, cat_result.webTitle, cat_result.fields.standfirst, category);
+                var item = new CategoryItem(cat_result.id, cat_result.webTitle, cat_result.fields.standfirst, cat);
                 item.thumbnail = cat_result.fields.thumbnail;
                 cat.addItem(item); 
               }
@@ -210,24 +210,26 @@ GuardianProxy.prototype.fetchCategory = function(id, callback) {
 
 GuardianProxy.prototype.fetchArticle = function(id, category, callback) {
   if(!!callback == false) throw new NoCallbackException();
- 
-  var data = this._fetchCategories(conf.categories, function(data) {
+  var self = this;
+  this._fetchCategories(conf.categories, function(data) {
     if(!!data.response == false || data.response.status != "ok") return; 
     var results = data.response.results;
     var categories = [];
     var fetching = false;
-    
+     
     for(var r in results) {
       var result = results[r];
-      var category = new CategoryData(result.id, result.webTitle);
- 
+      var newCat = new CategoryData(result.id, result.webTitle);
       var outer_function = (function(cat) { return function(inner_callback) {
         if(cat.id == category) {
-          this._fetchArticle(id, cat.id, function(article_data) {
-            if(!!data.response == false || data.response.status != "ok") return; 
-            var article_result = data.response.results[0];
-            var item = new CategoryItem(article_result.id, article_result.webTitle, article_result.fields.standfirst);
+          self._fetchArticle(id, cat.id, function(article_data) {
+            if(!!article_data.response == false || article_data.response.status != "ok") return;
+            var article_result = article_data.response.content;
+            var item = new CategoryItem(article_result.id, article_result.webTitle, article_result.fields.trailText, cat);
+            item.body = article_result.body;
+            item.thumbnail = article_result.thumbnail;
             cat.addItem(item);
+            console.log(cat);
             inner_callback(null, cat);
           }); 
         }
@@ -235,9 +237,8 @@ GuardianProxy.prototype.fetchArticle = function(id, category, callback) {
           inner_callback(null, cat);
         }
       }
+      })(newCat);
       categories.push(outer_function);
-      })(category);
-
     }
     // If there is no matching category, it will lock.
     async.parallel(categories, function(err, presults){ callback(presults); });
@@ -383,7 +384,6 @@ var Controller = function(configuration) {
   this.fetchArticle = function(id, category, format, callback) {
     if(!!id == false) throw new Exception("Article id not specified");
     if(!!callback == false) throw new NoCallbackException("No callback");
-    console.log(id); 
     proxy.fetchArticle(id, category, function(data) {
       // Render the data. 
       loadTemplate(configuration.baseDir + "article." + format, function(template) {
@@ -476,9 +476,8 @@ app.get('/reader/:category.:format?', function(req, res) {
 });
 
 app.get('/reader/:category/:article.:format?', function(req, res) {
-  console.log(req.params);
   var category = req.params.category;
-  var article = req.params[0] || "";
+  var article = req.params.article;
   var format = req.params.format || "html";
   var controller = new Controller(conf);
   controller.fetchArticle(article, category, format, function(output) { 

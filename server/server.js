@@ -123,8 +123,6 @@ var GuardianProxy = function(configuration) {
       port: 80,
       path: "/" + decodeURIComponent(id) + "?" + toQueryString(query)
     }
-
-    console.log(options.path);
      
     http.get(options, function(res) {fetchResults(res, callback);});  
   };
@@ -151,6 +149,7 @@ GuardianProxy.prototype.fetchCategories = function(callback) {
             
             for(var cat_r in cat_results) {
               var cat_res = cat_results[cat_r];
+              if(!!cat_res.fields == false) continue;
               var item = new CategoryItem(cat_res.id, cat_res.webTitle, cat_res.fields.standfirst, cat);
               item.thumbnail = cat_res.fields.thumbnail;
               cat.addItem(item);
@@ -169,7 +168,6 @@ GuardianProxy.prototype.fetchCategories = function(callback) {
 
 GuardianProxy.prototype.fetchCategory = function(id, callback) {
   if(!!callback == false) throw new NoCallbackException();
-  console.log("sup"); 
   var self = this;
   var data = this._fetchCategories(conf.categories, function(data) {
     if(!!data.response == false || data.response.status != "ok") return; 
@@ -190,12 +188,10 @@ GuardianProxy.prototype.fetchCategory = function(id, callback) {
                 item.thumbnail = cat_result.fields.thumbnail;
                 cat.addItem(item); 
               }
-              console.log("fetch") 
               inner_callback(null, cat);
             });
           }
           else { 
-            console.log("use")
             // If it is not the current category, don't go and fetch it, just use the basic information
             inner_callback(null, cat);
           }
@@ -229,7 +225,6 @@ GuardianProxy.prototype.fetchArticle = function(id, category, callback) {
             item.body = article_result.body;
             item.thumbnail = article_result.thumbnail;
             cat.addItem(item);
-            console.log(cat);
             inner_callback(null, cat);
           }); 
         }

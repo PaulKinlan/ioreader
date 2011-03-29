@@ -29,7 +29,7 @@ Proxy.prototype.fetchCategory = function(id) {
   throw new Exception("fetchCategory Not Implemented");
 };
  
-Proxy.prototype.fetchArticle = function(id) {
+Proxy.prototype.fetchArticle = function(id, category) {
   throw new Exception("fetchArticle Note Implemented");
 };
 
@@ -76,8 +76,8 @@ var GuardianProxy = function(configuration) {
     if(!!callback == false) throw new NoCallbackException();
     
     var query = {
-      q: categories.join("+"),
-      format: "json",
+      "q": categories.join("+"),
+      "format": "json",
       "api-key": api_key
     };
 
@@ -93,9 +93,9 @@ var GuardianProxy = function(configuration) {
     if(!!callback == false) throw new NoCallbackException();
     
     var query = {
-      section: id,
+      "section": id,
       "show-fields": fields.join(","),
-      format: "json",
+      "format": "json",
       "use-date": "last-modified",
       "api-key": api_key
     };
@@ -109,12 +109,13 @@ var GuardianProxy = function(configuration) {
     http.get(options, function(res) { fetchResults(res, callback);});
   };
 
-  this._fetchArticle = function(id, callback) {
+  this._fetchArticle = function(id, category, callback) {
     if(!!callback == false) throw new NoCallbackException();
     
     var client = http.createClient(80, domain);
     var query = {
-      format: "json",
+      "section": category,
+      "format": "json",
       "show-fields": "all",
       "api-key": api_key
     };
@@ -144,7 +145,18 @@ GuardianProxy.prototype.fetchCategories = function(callback) {
       var category = new CategoryData(result.id, result.webTitle);
       var output_callback = (function(cat) {
         return function(inner_callback) {
-          self.fetchCategory(cat.id, function(category_data) { category_data.id = cat.id; category_data.name = cat.name; inner_callback(null, category_data);  }  );
+          self._fetchCategory(cat.id, ["standfirst", "thumbnail"], function(category_data) {
+            if(!!category_data.response == false) return;
+            var cat_results = category_data.response.results;
+            
+            for(var cat_r in cat_results) {
+              var cat_res = cat_results[cat_r];
+              var item = new CategoryItem(cat_res.id, cat_res.webTitle, cat_res.fields.standfirst, category);
+              item.thumbnail = cat_res.fields.thumbnail;
+              cat.addItem(item);
+            }
+            inner_callback(null, cat);
+          });
         };
       })(category);
       categories.push(output_callback); 
@@ -157,7 +169,7 @@ GuardianProxy.prototype.fetchCategories = function(callback) {
 
 GuardianProxy.prototype.fetchCategory = function(id, callback) {
   if(!!callback == false) throw new NoCallbackException();
-  
+  console.log("sup"); 
   var self = this;
   var data = this._fetchCategories(conf.categories, function(data) {
     if(!!data.response == false || data.response.status != "ok") return; 
@@ -178,11 +190,12 @@ GuardianProxy.prototype.fetchCategory = function(id, callback) {
                 item.thumbnail = cat_result.fields.thumbnail;
                 cat.addItem(item); 
               }
-              
+              console.log("fetch") 
               inner_callback(null, cat);
             });
           }
           else { 
+            console.log("use")
             // If it is not the current category, don't go and fetch it, just use the basic information
             inner_callback(null, cat);
           }
@@ -195,13 +208,39 @@ GuardianProxy.prototype.fetchCategory = function(id, callback) {
   });
 };
 
-GuardianProxy.prototype.fetchArticle = function(id, callback) {
+GuardianProxy.prototype.fetchArticle = function(id, category, callback) {
   if(!!callback == false) throw new NoCallbackException();
-  
-  this._fetchArticle(id, function(data) {
-    if(!!data.response == false || data.response.status != "ok") return;
-    var item = new CategoryItem(result.id, result.webTitle, results.fields.standfirst);
-    callback(item);
+ 
+  var data = this._fetchCategories(conf.categories, function(data) {
+    if(!!data.response == false || data.response.status != "ok") return; 
+    var results = data.response.results;
+    var categories = [];
+    var fetching = false;
+    
+    for(var r in results) {
+      var result = results[r];
+      var category = new CategoryData(result.id, result.webTitle);
+ 
+      var outer_function = (function(cat) { return function(inner_callback) {
+        if(cat.id == category) {
+          this._fetchArticle(id, cat.id, function(article_data) {
+            if(!!data.response == false || data.response.status != "ok") return; 
+            var article_result = data.response.results[0];
+            var item = new CategoryItem(article_result.id, article_result.webTitle, article_result.fields.standfirst);
+            cat.addItem(item);
+            inner_callback(null, cat);
+          }); 
+        }
+        else {
+          inner_callback(null, cat);
+        }
+      }
+      categories.push(outer_function);
+      })(category);
+
+    }
+    // If there is no matching category, it will lock.
+    async.parallel(categories, function(err, presults){ callback(presults); });
   }); 
 };
 
@@ -261,13 +300,13 @@ var CategoryData = function(id, name) {
   A data item in the category.
 */
 var CategoryItem = function(id, title, shortDescription, category) {
-  this.id = id;
+  this.id = encodeURIComponent(id);
   this.title = title;
   this.shortDescription = shortDescription;
   this.thumbnail = "";
   this.category = category;
-  this.url = function () { return category.id + "/" + this.id + ".html"; }; 
-  this.dataUrl = function () { return category.id + "/" + this.id + ".json"; };
+  this.url = function () { return "reader/" + category.id + "/" + this.id + ".html"; }; 
+  this.dataUrl = function () { return "reader/" + category.id + "/" + this.id + ".json"; };
 };
 
 var ProxyFactory = function() {
@@ -341,11 +380,11 @@ var Controller = function(configuration) {
     }); 
   };
 
-  this.fetchArticle = function(id, format, callback) {
+  this.fetchArticle = function(id, category, format, callback) {
     if(!!id == false) throw new Exception("Article id not specified");
     if(!!callback == false) throw new NoCallbackException("No callback");
-    
-    proxy.fetchArticle(id, function(data) {
+    console.log(id); 
+    proxy.fetchArticle(id, category, function(data) {
       // Render the data. 
       loadTemplate(configuration.baseDir + "article." + format, function(template) {
         callback(m.to_html(template, data)); 
@@ -387,7 +426,7 @@ app.configure(function() {
 
 app.configure('test', function() {
   app.use(express.static(__dirname + '/client/'));
-  app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+  //app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
   conf.name = "test"; // force test mode.
   console.log("Running in Test");
 });
@@ -397,7 +436,7 @@ app.configure('test', function() {
 */
 app.configure('development', function() {
   app.use(express.static(__dirname + '/client/'));
-  app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+  //app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
   console.log("Running in Development");
 });
 
@@ -426,34 +465,23 @@ app.get('/index.:format', function(req, res) {
   });
 });
 
-app.get('/reader/:category', function(req, res) {
+app.get('/reader/:category.:format?', function(req, res) {
   var category = req.params.category;
-  
-  // fetch the category html.
+  var format = req.params.format || "html";
   var controller = new Controller(conf);
-  controller.fetchCategory(category, "html", function(output) { 
-    res.send(output);
-  });
-});
-
-app.get('/reader/:category.:format', function(req, res) {
-  var category = req.params.category;
-  var format = req.params.format;
-  var controller = new Controller(conf);
-   
   // request the category list i
-  controller.fetchCategory(category, function(output) { 
+  controller.fetchCategory(category, format, function(output) { 
     res.send(output);
   });
 });
 
-app.get('/reader/:category/:article.:format', function(req, res) {
+app.get('/reader/:category/:article.:format?', function(req, res) {
+  console.log(req.params);
   var category = req.params.category;
-  var article = req.params.article;
-  var format = req.params.format;
+  var article = req.params[0] || "";
+  var format = req.params.format || "html";
   var controller = new Controller(conf);
-
-  controller.fetchArticle(category, article, function(output) { 
+  controller.fetchArticle(article, category, format, function(output) { 
     res.send(output);
   });
 });

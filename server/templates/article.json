@@ -4,6 +4,7 @@
     "{{id}}": {
       "name": "{{name}}",
       "url": "{{url}}",
+      "status" : "{{active}}",
       "articles": [
       {{#articles}}
         { "href": "{{url}}", "datahref": {{dataUrl}}, "thumbnail": "{{thumbnail}}", "title": "{{title}}"},

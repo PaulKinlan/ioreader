@@ -1,7 +1,9 @@
 <html class="menuState">
   <head>
     <script src="/lib/jquery-1.5.min.js"></script>
+    <script src="/scripts/routes.js"></script>
     <script src="/scripts/index.js"></script>
+
     <link rel="stylesheet" href="/css/reset.css" />
     <link rel="stylesheet" href="/css/desktop.css" />
   </head>
@@ -12,7 +14,7 @@
       <h1>Categories</h1>
       <ul>
         {{#categories}}
-        <li><a dlc="category" href="{{url}}">{{name}}</a></li>
+        <li><a dlc="category" href="/{{url}}">{{name}}</a></li>
         {{/categories}}
       </ul>
     </div>
@@ -23,7 +25,7 @@
         <h1>{{name}}</h1>
         <ul>
           {{#articles}}
-          <li><a dlc="story" href="{{url}}"><img src="{{thumbnail}}" /><span>{{title}}</span></a></li>
+          <li><a dlc="story" href="/{{url}}"><img src="{{thumbnail}}" /><span>{{title}}</span></a></li>
           {{/articles}}
         </ul>
       </div>

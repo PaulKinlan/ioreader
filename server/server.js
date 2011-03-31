@@ -211,6 +211,9 @@ GuardianProxy.prototype.fetchArticle = function(id, category, callback) {
     for(var r in results) {
       var result = results[r];
       var newCat = new CategoryData(result.id, result.webTitle);
+
+      // Get the basic article information to blend it into the results
+
       var outer_function = (function(cat) { return function(inner_callback) {
         if(cat.id == category) {
           self._fetchArticle(id, cat.id, function(article_data) {

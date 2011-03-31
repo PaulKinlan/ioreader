@@ -8,6 +8,16 @@ $("a[href='/']").live("click", function(e) {
   window.history.pushState(e.target.href, "");
 });
 
+var ui = localStorage.ui || "phone";
+$.get("css/"+ui+".less", function(lessSheet) {
+  (new less.Parser).parse(lessSheet, function(err,tree) {
+    if (err) { console.log("stylesheet error", err); }
+    $("<style/>").html(tree.toCSS()).appendTo("body");
+  });
+});
+$("<script src='js/"+ui+".js' />").appendTo("body");
+
+
 $(".categories").click(function() {
   window.history.pushState(undefined, "IO-reader", "/");
   $("html").attr("class", "menuState");

@@ -1,3 +1,6 @@
+
+var app = /app
+
 var controller = function() {
   var _fetchArticle = function() {
 

@@ -9,28 +9,24 @@
   </head>
 
   <body>
+    <header>
+      <h1>News Reader</h1>
+      <p>An ace news reader</p>
+    </header>
     
-    <div class="menu">
-      <h1>Categories</h1>
-      <ul>
-        {{#categories}}
-        <li><a dlc="category" href="/{{url}}">{{name}}</a></li>
-        {{/categories}}
-      </ul>
-    </div>
-
     <div class="categories">
-     {{#categories}}
-      <div class="category" id="{{id}}">
-        <h1>{{name}}</h1>
-        <ul>
-          {{#articles}}
-          <li><a dlc="story" href="/{{url}}"><img src="{{thumbnail}}" /><span>{{title}}</span></a></li>
-          {{/articles}}
-        </ul>
-      </div>
+      {{#categories}}
+      <section class="category" id="{{id}}">
+      <h2>{{name}}</h2>
+      {{#articles}}
+        <article id="{{id}}">
+          <h3>{{title}}</h3>
+          <img class="thumbnail" src="{{thumbnail}}" />
+          <div class="story"></div>
+        </article>
+      {{/articles}}
+      </section>
       {{/categories}}
     </div>
-
   </body>
 </html>

@@ -1,35 +1,30 @@
 <html class="menuState">
   <head>
     <script src="/lib/jquery-1.5.min.js"></script>
+    <script src="/scripts/routes.js"></script>
     <script src="/scripts/index.js"></script>
     <link rel="stylesheet" href="/css/reset.css" />
     <link rel="stylesheet" href="/css/desktop.css" />
   </head>
 
   <body>
+    <header>
+      <h1>News Reader</h1>
+      <p>An ace news reader</p>
+    </header>
     
-    <div class="menu">
-      <h1>Categories</h1>
-      <ul>
-        {{#categories}}
-        <li><a dlc="category" href="{{url}}">{{name}}</a></li>
-        {{/categories}}
-      </ul>
-    </div>
-
     <div class="categories">
      {{#categories}}
-      <div class="category" id="{{id}}">
-        <h1>{{name}}</h1>
-        <ul>
-          {{#articles}}
-          <li>
-            <a dlc="story" href="{{url}}"><img src="{{thumbnail}}" /><span>{{title}}</span></a>
-            <span>{{body}}</span>
-          </li>
-          {{/articles}}
-        </ul>
-      </div>
+      <section class="category" id="{{id}}">
+      <h2>{{name}}</h2>
+      {{#articles}}
+        <article id="{{id}}">
+          <h3>{{title}}</h3>
+          <img class="thumbnail" src="{{thumbnail}}" />
+          <div class="story">{{body}}</div>
+        </article>
+      {{/articles}}
+      </section>
       {{/categories}}
     </div>
 

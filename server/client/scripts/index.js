@@ -1,4 +1,5 @@
-  /*
+$(function() {
+ /*
    * Every internal link will use pushState
    *
    */
@@ -29,11 +30,19 @@ $("[dlc=story]").click(function() {
   $(".story").attr("src", this.href);
   return false;
 });
-
-var r = new routes();
-  r.get("/reader/:category.:format", function(req) {
-   console.log(req);
 });
+var r = new routes();
+  r.get("/reader/:category\\.:format", function(req) {
+   console.log(req);
+  });
+
+  r.get("/reader/:category", function(req) {
+    console.log(req);
+  });
+
+  r.get("/", function(req) {
+   console.log(req);
+  });
 
 /*
 $(function() {

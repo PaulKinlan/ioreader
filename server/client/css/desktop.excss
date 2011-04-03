@@ -4,10 +4,10 @@
 
 body {
   background-color: $bg;
-  color: white; 
-}
+  color: white;
+  overflow: hidden; 
 
-header {
+  &> header {
     position: fixed;
     z-index: 1000;
     left: 0;
@@ -24,6 +24,11 @@ header {
     & p {
 
     }
+  }
+
+  & ul li.active {
+    background-color: $bgdark;
+  }
 }
 
 .categories {
@@ -32,23 +37,24 @@ header {
   margin-left: $headerWidth;
 
   & .category {
-    display: -webkit-box;
-    -webkit-box-orient: horizontal;
-
     &.active {
       background-color: red;
     }
 
     & h2 {
       color: white;
+      display: block;
     }
-
+    & .articles {
+      display: -webkit-box;
+      -webkit-box-orient: horizontal;
+    }
     & article {
       position: relative;
       width: 300px; 
       margin: 5px;     
 
-      & h3 {
+      & header h1 {
         font-size: 2em;
         background-color: rgba(0,0,0,0.5);
         position: absolute;

@@ -35,14 +35,21 @@
     <div class="categories">
      {{#categories}}
       <section class="category {{state}}" id="{{id}}">
-      <h2>{{name}}</h2>
-      {{#articles}}
+        <h2>{{name}}</h2>
+        <div class="articles">
+        {{#articles}}
         <article id="{{id}}">
-          <h3>{{title}}</h3>
+          <header>
+            <h1>{{title}}</h1>
+            <p><time pubdate time="{{puddate}}"></time></p> 
+          </header>
           <img class="thumbnail" src="{{thumbnail}}" />
           <div class="summary">{{shortDescription}}</div>
           <div class="story">{{body}}</div>
+          <footer>
+          </footer>
         </article>
+        </div>
       {{/articles}}
       </section>
       {{/categories}}

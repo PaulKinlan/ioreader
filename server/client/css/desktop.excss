@@ -37,25 +37,34 @@ body {
   margin-left: $headerWidth;
 
   & .category {
-    &.active {
+    margin-top: 10px;
+    &.active .articles {
       background-color: red;
     }
 
     & h2 {
+      padding: 5px;
+      font-size: 1.6em;
+      margin-left: 5px;
+      background-color: red;
       color: white;
-      display: block;
+      display: inline;
     }
+
     & .articles {
       display: -webkit-box;
       -webkit-box-orient: horizontal;
     }
+
+    
+
     & article {
       position: relative;
       width: 300px; 
       margin: 5px;     
 
       & header h1 {
-        font-size: 2em;
+        font-size: 1.6em;
         background-color: rgba(0,0,0,0.5);
         position: absolute;
         color: white;
@@ -74,14 +83,12 @@ body {
      
       & .summary {
         font-size: 1.2em;
-
         background-color: rgba(0,0,0,0.5);
       }
 
       & .story {
 
       }
-
     }
   }
 }

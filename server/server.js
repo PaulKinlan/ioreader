@@ -143,7 +143,7 @@ GuardianProxy.prototype.fetchCategories = function(callback) {
       var new_category = new CategoryData(result.id, result.webTitle);
       var output_callback = (function(cat) {
         return function(inner_callback) {
-          self._fetchCategory(cat.id, ["standfirst", "thumbnail"], function(category_data) {
+          self._fetchCategory(cat.id, ["byline", "standfirst", "thumbnail"], function(category_data) {
             if(!!category_data.response == false) return;
             var cat_results = category_data.response.results;
             
@@ -152,6 +152,9 @@ GuardianProxy.prototype.fetchCategories = function(callback) {
               if(!!cat_res.fields == false) continue;
               var item = new CategoryItem(cat_res.id, cat_res.webTitle, cat_res.fields.standfirst, cat);
               item.thumbnail = cat_res.fields.thumbnail;
+              item.pubDate = cat_res.webPublicationDate;
+              item.author = cat_res.fields.byline;
+              item.url = cat_res.webUrl;
               cat.addItem(item);
             }
             inner_callback(null, cat);
@@ -186,6 +189,9 @@ GuardianProxy.prototype.fetchCategory = function(id, callback) {
               var cat_result = cat_results[cat_r];
               var item = new CategoryItem(cat_result.id, cat_result.webTitle, cat_result.fields.standfirst, cat);
               item.thumbnail = cat_result.fields.thumbnail;
+              item.pubDate = cat_result.webPublicationDate;
+              item.author = cat_result.fields.byline;
+              item.url = cat.webUrl;
               cat.addItem(item); 
             }
             inner_callback(null, cat);
@@ -222,6 +228,9 @@ GuardianProxy.prototype.fetchArticle = function(id, category, callback) {
             var item = new CategoryItem(article_result.id, article_result.webTitle, article_result.fields.trailText, cat);
             item.body = article_result.fields.body;
             item.thumbnail = article_result.fields.thumbnail;
+            item.pubDate = cat.webPublicationDate;
+            item.author = cat.fields.byline;
+            item.url = cat.webUrl;
             cat.addItem(item);
       
             inner_callback(null, cat);

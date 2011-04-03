@@ -25,6 +25,11 @@
     <header>
       <h1>News Reader</h1>
       <p>An ace news reader</p>
+      <ul>
+      {{#categories}}
+      <li class="category {{state}}"><a href="/reader/{{id}}">{{name}}</a></li>
+      {{/categories}}
+    </ul>
     </header>
 
     <div class="categories">
@@ -35,6 +40,8 @@
         <article id="{{id}}">
           <h3>{{title}}</h3>
           <img class="thumbnail" src="{{thumbnail}}" />
+          <img class="large" src="{{thumbnail}}" />
+          <div class="summary">{{shortDescription}}</div>
           <div class="story"></div>
         </article>
       {{/articles}}

@@ -1,8 +1,0 @@
-<script src="../lib/less-1.0.40.js"></script>
-<script>
-  var parser = new (less.Parser);
-  parser.parse("body { background: pink; &:hover { background: blue; } }", function(err,tree) {
-    if (err) { return sys.error(err); }
-    console.log(tree.toCSS());
-  });
-</script>

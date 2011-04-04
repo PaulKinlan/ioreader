@@ -1,6 +1,5 @@
-var Controller = (function() {
+var controller = function() {
   // An external controller can be mixed in that provides the interaction with the different form factors
-  var externalController;
     
   var fireEvent = function(name, data) {
     var e = document.createEvent("Event");
@@ -9,10 +8,6 @@ var Controller = (function() {
     window.dispatchEvent(e);
   };
 
-  var applyController = function(controller) {
-    externalController = controller;
-  };
-   
   var onRootChanged = function(request) {
     fireEvent("rootchanged", {});
   };
@@ -24,6 +19,10 @@ var Controller = (function() {
   var onArticleChanged = function(request) {
     var data = request.params;
     fireEvent("articlechanged", {category: data.category, article: data.article});
+  };
+
+  var gotoRoot = function() {
+
   };
 
   var changeCategory = function(category) {
@@ -48,8 +47,9 @@ var Controller = (function() {
     onArticleChanged: onArticleChanged,
 
     // 
+    gotoRoot: gotoRoot,
     changeArticle: changeArticle,
     changeCategory: changeCategory
 
   };
-})();
+};

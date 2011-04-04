@@ -4,6 +4,7 @@
     <script src="/lib/formfactor.js"></script>
     <script src="/lib/routes.js"></script>
     <script src="/scripts/index.js"></script>
+    <script src="/scripts/controller.js"></script>
     <link rel="stylesheet" href="/css/reset.css" />
     <script>
       formfactor.register({
@@ -15,7 +16,7 @@
       formfactor.detect([
         {
           "formfactor": "desktop",
-          "resources": ["/lib/excss.js", "/css/desktop/desktop.excss"]
+          "resources": ["/scripts/desktop/controller.js", "/lib/excss.js", "/css/desktop/desktop.excss"]
         }
       ]);
     </script>

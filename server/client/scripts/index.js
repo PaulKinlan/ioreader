@@ -4,7 +4,6 @@ $(function() {
    *
    */
 $("a[href='/']").live("click", function(e) {
-  debugger;
   window.history.pushState(e.target.href, "");
 });
 
@@ -31,18 +30,6 @@ $("[dlc=story]").click(function() {
   return false;
 });
 });
-var r = new routes();
-  r.get("/reader/:category\\.:format", function(req) {
-   console.log(req);
-  });
-
-  r.get("/reader/:category", function(req) {
-    console.log(req);
-  });
-
-  r.get("/", function(req) {
-   console.log(req);
-  });
 
 /*
 $(function() {

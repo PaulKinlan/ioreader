@@ -6,7 +6,9 @@
 <script>
   $(function() {
     $("span").click(function() { $(this).prev().click(); });
-    $("#clear").click(function() {document.cookie = "";});
+    $("#clear").click(function() {
+      document.cookie = "__formfactorJSOverride="+ this.value;
+    });
     $("[name=ui]").click(function() {
       document.cookie = "__formfactorJSOverride="+ this.value;
     });
@@ -21,3 +23,5 @@
 <p><input type="radio" name="ui" value="tablet"><span>Tablet</span></p>
 <p><input type="radio" name="ui" value="tv"><span>TV</span></p>
 <p><input type="radio" name="ui" value="desktop" /><span>Desktop</span></p>
+
+<p><button id="clear">Clear</button>

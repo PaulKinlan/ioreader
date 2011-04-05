@@ -39,6 +39,7 @@ var BaseController = function() {
 
     $("html").attr("class", "categoryState");
     $(".category").removeClass("active");
+    $("article").removeClass("active");
     $("li[data-category='"+ category +"']").addClass("active");
     $("section[data-category='"+ category +"']").addClass("active");
     
@@ -52,8 +53,6 @@ var BaseController = function() {
     $("li[data-category='"+ category +"']").addClass("active");
     $("section[data-category='"+ category +"']").addClass("active");
     $("article[data-article='" + article + "']").addClass("active");
-
-
 
     fireEvent("changearticle", {category: category, article: article});
   };

@@ -6,6 +6,7 @@
 <script>
   $(function() {
     $("span").click(function() { $(this).prev().click(); });
+    $("#clear").click(function() {document.cookie = "";});
     $("[name=ui]").click(function() {
       document.cookie = "__formfactorJSOverride="+ this.value;
     });

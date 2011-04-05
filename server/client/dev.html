@@ -7,7 +7,7 @@
   $(function() {
     $("span").click(function() { $(this).prev().click(); });
     $("[name=ui]").click(function() {
-      localStorage.ui = this.value;
+      document.cookie = "__formfactorJSOverride="+ this.value;
     });
   });
 </script>

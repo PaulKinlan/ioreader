@@ -32,13 +32,15 @@ var BaseController = function() {
     fireEvent("rootchanged", {});
   };
 
-  var changeCategory = function(category) {
+  var changeCategory = function(categoryElement) {
+    var category = categoryElement
+
     window.history.pushState(undefined, "", "/reader/" + category);
 
     $("html").attr("class", "categoryState");
     $(".category").removeClass("active");
-    $("li[data-category="+ category +"]").addClass("active");
-    $("section[data-category="+ category +"]").addClass("active");
+    $("li[data-category='"+ category +"']").addClass("active");
+    $("section[data-category='"+ category +"']").addClass("active");
     
     fireEvent("changecategory", {category: category});
   };
@@ -46,10 +48,25 @@ var BaseController = function() {
   var changeArticle = function(category, article) {
     window.history.pushState(undefined, "", "/reader/" +category + "/" + article );
     $(".category").removeClass("active");
-    $("li[data-category="+ category +"]").addClass("active");
-    $("section[data-category="+ category +"]").addClass("active");
-    $("article[data-article=" + article + "]").addClass("active");
+    $("li[data-category='"+ category +"']").addClass("active");
+    $("section[data-category='"+ category +"']").addClass("active");
+    $("article[data-article='" + article + "']").addClass("active");
     fireEvent("changearticle", {category: category, article: article});
+  };
+
+  var activate = function(element) {
+    var data = $(element).data();
+    
+    if(data.article) {
+      changeArticle(data.category, data.article);
+    }
+    else if(data.category) {
+      changeCategory(data.category);
+    }
+    else {
+      changeRoot();
+    }
+
   };
 
   var app = new routes(); 
@@ -63,10 +80,6 @@ var BaseController = function() {
     onCategoryChaged: onCategoryChanged,
     onArticleChanged: onArticleChanged,
 
-    // 
-    gotoRoot: gotoRoot,
-    changeArticle: changeArticle,
-    changeCategory: changeCategory
-
+    activate: activate
   };
 };

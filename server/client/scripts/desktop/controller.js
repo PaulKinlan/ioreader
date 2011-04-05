@@ -2,7 +2,7 @@
 var DesktopController = function() {
   var controller = this;
 
-  var rootClicked = funtion() {
+  var rootClicked = function() {
     controller.gotoRoot();
   };
 
@@ -17,12 +17,12 @@ var DesktopController = function() {
     controller.changeArticle(category, article);
   };
 
-  $(".categories").live("click", gotoRoot);
+  $(".categories").live("click", rootClicked);
   $(".category").live("click", categoryClicked);
   $("article").live("click", articleClicked);
 };
 
-DesktopController.prototype = new Controller();
+DesktopController.prototype = new BaseController();
 DesktopController.prototype.constructor = DesktopController;
 
 Controller = new DesktopController();

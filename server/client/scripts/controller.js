@@ -1,4 +1,4 @@
-var controller = function() {
+var BaseController = function() {
   // An external controller can be mixed in that provides the interaction with the different form factors
     
   var fireEvent = function(name, data) {
@@ -40,8 +40,6 @@ var controller = function() {
   app.get("/:category/:article.html", onArticleChanged);
 
   return {
-    applyController: applyController,
-
     onRootChanged: onRootChanged,
     onCategoryChaged: onCategoryChanged,
     onArticleChanged: onArticleChanged,

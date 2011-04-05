@@ -40,14 +40,14 @@
       <h2>{{name}}</h2>
         <div class="articles"> 
       {{#articles}}
-        <article id="{{id}}" data-article="{{id}}" data-category="{{#category}}{{id}}{{/category}}">
+        <article id="{{id}}" data-article="{{id}}" data-category="{{categoryId}}">
           <header>
             <h1>{{title}}</h1>
             <p><time pubdate time="{{puddate}}"></time></p> 
           </header>
           <img class="thumbnail" src="{{thumbnail}}" />
           <img class="large" src="{{thumbnail}}" />
-          <div class="summary">{{shortDescription}}</div>
+          <div class="summary">{{{shortDescription}}}</div>
           <div class="story"></div>
           <footer>
           </footer>

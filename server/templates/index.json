@@ -6,7 +6,7 @@
       "url": "{{url}}",
       "articles": [
       {{#articles}}
-        { "href": "{{url}}", "datahref": {{dataUrl}}, "thumbnail": "{{thumbnail}}", "title": "{{title}}"},
+        { "href": "{{url}}", "datahref": "{{dataUrl}}", "thumbnail": "{{thumbnail}}", "title": "{{{ title }}}"},
       {{/articles}}
       ]
     },

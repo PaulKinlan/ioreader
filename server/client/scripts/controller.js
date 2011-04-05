@@ -48,10 +48,27 @@ var BaseController = function() {
   var changeArticle = function(category, article) {
     window.history.pushState(undefined, "", "/reader/" +category + "/" + article );
     $(".category").removeClass("active");
+    $("article").removeClass("active");
     $("li[data-category='"+ category +"']").addClass("active");
     $("section[data-category='"+ category +"']").addClass("active");
     $("article[data-article='" + article + "']").addClass("active");
+
+
+
     fireEvent("changearticle", {category: category, article: article});
+  };
+
+  var fetchArticle = function(category, article, callback) { 
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function() {
+      if(xhr.readyState == 4 && xhr.status == 200) {
+        var article = JSON.parse(xhr.responseText);
+        callback(article);
+        fireEvent("articleready", article); 
+      }
+    };
+    xhr.open("GET", "/reader/" + category + "/" + article + ".json");
+    xhr.send();
   };
 
   var activate = function(element) {
@@ -59,6 +76,17 @@ var BaseController = function() {
     
     if(data.article) {
       changeArticle(data.category, data.article);
+      fetchArticle(data.category, data.article, function(result) {
+        var categories = result.categories;
+        var category;
+        for(var i = 0; category = categories[i]; i++) {
+          if(category.articles.length >0) {
+            $(".story", element).html(category.articles[0].body);
+            break;
+          }
+        } 
+
+      });
     }
     else if(data.category) {
       changeCategory(data.category);
@@ -66,7 +94,6 @@ var BaseController = function() {
     else {
       changeRoot();
     }
-
   };
 
   var app = new routes(); 

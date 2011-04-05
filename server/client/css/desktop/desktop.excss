@@ -56,8 +56,6 @@ body {
       -webkit-box-orient: horizontal;
     }
 
-    
-
     & article {
       position: relative;
       width: 300px; 
@@ -87,7 +85,13 @@ body {
       }
 
       & .story {
-
+        display: none;
+      }
+ 
+      &.active {
+        & .story {
+          display:block;
+        }
       }
     }
   }

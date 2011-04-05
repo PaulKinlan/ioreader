@@ -226,11 +226,11 @@ GuardianProxy.prototype.fetchArticle = function(id, category, callback) {
             if(!!article_data.response == false || article_data.response.status != "ok") return;
             var article_result = article_data.response.content;
             var item = new CategoryItem(article_result.id, article_result.webTitle, article_result.fields.trailText, cat);
-            item.body = article_result.fields.body;
+            item.body = article_result.fields.body.replace(/\"/gim,'\\"').replace(/\n/gim,"").replace(/\r/gim,"");
             item.thumbnail = article_result.fields.thumbnail;
-            item.pubDate = cat.webPublicationDate;
-            item.author = cat.fields.byline;
-            item.url = cat.webUrl;
+            item.pubDate = article_result.webPublicationDate;
+            item.author = article_result.fields.byline;
+            item.url = article_result.webUrl;
             cat.addItem(item);
       
             inner_callback(null, cat);
@@ -308,9 +308,9 @@ var CategoryItem = function(id, title, shortDescription, category) {
   this.title = title;
   this.shortDescription = shortDescription;
   this.thumbnail = "";
-  this.category = category;
-  this.url = function () { return "reader/" + category.id + "/" + this.id + ".html"; }; 
-  this.dataUrl = function () { return "reader/" + category.id + "/" + this.id + ".json"; };
+  this.categoryId = category.id;
+  this.url = function () { return "reader/" + categoryId + "/" + this.id + ".html"; }; 
+  this.dataUrl = function () { return "reader/" + categoryId + "/" + this.id + ".json"; };
 };
 
 var ProxyFactory = function() {
@@ -363,9 +363,14 @@ var Controller = function(configuration) {
   this.fetchCategories = function(format, callback) {
     if(!!callback == false) throw new NoCallbackException("No callback");
     proxy.fetchCategories(function(data) {
-      loadTemplate(configuration.baseDir + "index." + format, function(template) {
-        callback(m.to_html(template, {"categories" : data}));
-      });
+      if(format == "json") {
+        callback(JSON.stringify(data));
+      }
+      else {
+        loadTemplate(configuration.baseDir + "index." + format, function(template) {
+          callback(m.to_html(template, {"categories" : data}));
+        });
+      }
     }); 
   };
 
@@ -378,9 +383,14 @@ var Controller = function(configuration) {
     
     proxy.fetchCategory(id, function(data) {
       // Render the data. 
-      loadTemplate(configuration.baseDir + "category." + format, function(template) {
-        callback(m.to_html(template, {"categories": data})); 
-      });
+      if(format == "json") {
+        callback(JSON.stringify({categories: data}));
+      }
+      else {
+        loadTemplate(configuration.baseDir + "category." + format, function(template) {
+          callback(m.to_html(template, {"categories": data})); 
+        });
+      }
     }); 
   };
 
@@ -389,9 +399,14 @@ var Controller = function(configuration) {
     if(!!callback == false) throw new NoCallbackException("No callback");
     proxy.fetchArticle(id, category, function(data) {
       // Render the data. 
-      loadTemplate(configuration.baseDir + "article." + format, function(template) {
-        callback(m.to_html(template, {"categories": data})); 
-      });
+      if(format == "json") {
+        callback(JSON.stringify({categories: data}));
+      }
+      else {
+        loadTemplate(configuration.baseDir + "article." + format, function(template) {
+          callback(m.to_html(template, {"categories": data})); 
+        });
+      }
     }); 
   };
 };

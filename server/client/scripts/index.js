@@ -1,28 +1,6 @@
 $(function() {
- /*
-   * Every internal link will use pushState
-   *
-   */
-$("a[href='/']").live("click", function(e) {
-  window.history.pushState(e.target.href, "");
-});
-
-$(".categories").click(function() {
-  window.history.pushState(undefined, "IO-reader", "/");
-  $("html").attr("class", "menuState");
-  $(".category").removeClass("active");
-});
-
-$(".category").click(function() {
-  window.history.pushState(undefined, this.alt, "/reader/" + this.id);
-  $("html").attr("class", "categoryState");
-  $(".category").removeClass("active");
-  $(this).addClass("active");
-  return false;
-});
 
 $("[dlc=story]").click(function() {
-  window.history.pushState(undefined, this.alt, this.pathname);
   $("html").attr("class", "storyState");
   $(".category").removeClass("active");
   $(this).closest(".category").addClass("active");

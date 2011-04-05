@@ -28,7 +28,7 @@
       <nav>
         <ul>
         {{#categories}}
-        <li class="category {{state}}"><a href="/reader/{{id}}">{{name}}</a></li>
+        <li class="category {{state}}" data-category="{{id}}"><a href="/reader/{{id}}">{{name}}</a></li>
         {{/categories}}
         </ul>
       </nav>
@@ -36,11 +36,12 @@
 
     <div class="categories">
       {{#categories}}
-      <section class="category {{state}}" id="{{id}}">
+      <section class="category {{state}}" data-category="{{id}}" id="{{id}}">
         <h2>{{name}}</h2>
         <div class="articles">
+
       {{#articles}}
-        <article id="{{id}}">
+        <article id="{{id}}" data-article="{{id}}" data-category="{{#category}}{{id}}{{/category}}">
           <header>
             <h1>{{title}}</h1>
             <p><time pubdate time="{{puddate}}"></time></p> 

@@ -1,4 +1,4 @@
-#! /bin/sh
+#!/bin/bash
 
 if [ "$1" == "development" ] || [ "$1" == "production" ] || [ "$1" == "test" ]
 then

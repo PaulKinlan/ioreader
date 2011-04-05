@@ -24,8 +24,6 @@ var BaseController = function() {
 
   // Event triggers
   var gotoRoot = function() {
-    window.history.pushState(undefined, "", "/");
-
     $("html").attr("class", "menuState");
     $(".category").removeClass("active");
 
@@ -34,8 +32,6 @@ var BaseController = function() {
 
   var changeCategory = function(categoryElement) {
     var category = categoryElement
-
-    window.history.pushState(undefined, "", "/reader/" + category);
 
     $("html").attr("class", "categoryState");
     $(".category").removeClass("active");
@@ -47,7 +43,7 @@ var BaseController = function() {
   };
 
   var changeArticle = function(category, article) {
-    window.history.pushState(undefined, "", "/reader/" +category + "/" + article );
+
     $(".category").removeClass("active");
     $("article").removeClass("active");
     $("li[data-category='"+ category +"']").addClass("active");
@@ -74,6 +70,7 @@ var BaseController = function() {
     var data = $(element).data();
     
     if(data.article) {
+      window.history.pushState(undefined, "", "/reader/" + data.category + "/" + data.article );
       changeArticle(data.category, data.article);
       fetchArticle(data.category, data.article, function(result) {
         var categories = result.categories;
@@ -88,18 +85,22 @@ var BaseController = function() {
       });
     }
     else if(data.category) {
+      window.history.pushState(undefined, "", "/reader/" + data.category );
+
       changeCategory(data.category);
     }
     else {
+      window.history.pushState(undefined, "", "/reader/" + data.category + "/" + data.article );
+
       changeRoot();
     }
   };
 
   var app = new routes(); 
-  app.get("/", onRootChanged);
-  app.get("/:category", onCategoryChanged);
-  app.get("/:category.html", onCategoryChanged);
-  app.get("/:category/:article.html", onArticleChanged);
+  app.get("^/", onRootChanged);
+  app.get("^/reader/:category", onCategoryChanged);
+  app.get("^/reader/:category.html", onCategoryChanged);
+  app.get("^/reader/:category/:article", onArticleChanged);
 
   return {
     onRootChanged: onRootChanged,

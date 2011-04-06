@@ -57,39 +57,43 @@ body {
     }
 
     & article {
-      position: relative;
       width: 300px; 
-      margin: 5px;     
+      margin: 5px;
 
-      & header h1 {
-        font-size: 1.6em;
-        background-color: rgba(0,0,0,0.5);
-        position: absolute;
-        color: white;
-        top: 0;
-        left: 0;
-        right: 0; 
+      & header {
+        position: relative;
+        & h1 {
+          font-size: 1.6em;
+          background-color: rgba(0,0,0,0.5);
+          position: absolute;
+          color: white;
+          top: 0;
+          left: 0;
+          right: 0;
+        } 
+        
+        & img.thumbnail {
+          width: 100%;
+        }
+        
+
+
+        & .summary {
+          font-size: 1.2em;
+          background-color: rgba(0,0,0,0.5);
+        }
       } 
-     
-      & img.thumbnail {
-        width: 100%;
-      }
 
-      & img.large {
+      & section {
         display: none;
-      }
-     
-      & .summary {
-        font-size: 1.2em;
-        background-color: rgba(0,0,0,0.5);
-      }
-
-      & .story {
-        display: none;
+        
+        & img.large {
+          display: none;
+        }
       }
  
       &.active {
-        & .story {
+        & section {
           display:block;
         }
       }

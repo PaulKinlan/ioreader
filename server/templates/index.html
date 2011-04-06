@@ -49,11 +49,13 @@
           <header>
             <h1>{{title}}</h1>
             <p><time pubdate time="{{puddate}}"></time></p> 
+            <img class="thumbnail" src="{{thumbnail}}" />
+            <div class="summary">{{{shortDescription}}}</div>
           </header>
-          <img class="thumbnail" src="{{thumbnail}}" />
-          <img class="large" src="{{thumbnail}}" />
-          <div class="summary">{{{shortDescription}}}</div>
-          <div class="story"></div>
+          <section>
+            <img class="large" src="{{thumbnail}}" />
+            <div class="story"></div>
+          </section>
           <footer>
           </footer>
         </article>

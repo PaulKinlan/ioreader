@@ -19,7 +19,7 @@ a,a:visited { text-decoration: none; color: white; }
 /******************/
 /* PAGE STRUCTURE */
 /******************/*
-html { background: black; overflow-x: hidden; overflow-y: scroll !important; }
+html { background: black; }
 nav, html[data-resource=menu] { display: none; } /* not supported in this UI */
 
 /***********************************/
@@ -39,7 +39,8 @@ nav, html[data-resource=menu] { display: none; } /* not supported in this UI */
 
   article { position: relative; overflow: hidden; }
   article h1 { font-weight: bold; position: absolute; top: 0.4em; left: 6em; }
-  .summary { position: absolute; top: 1.8em; left: 6em; }
+  /* .summary { position: absolute; top: 1.8em; left: 6em; } */
+  .summary { display: none; }
   img.thumbnail { width: 4em; height: 3em; position: absolute; top: 0.4em; left: 1em; }
 
   article {

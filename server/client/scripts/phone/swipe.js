@@ -1,15 +1,19 @@
 !function($) {
 
-  log("defining swipe");
-
-  var mouseDownEvent = null;
-  var mouseMoveEvent = null;
+  var mouseDownEvent = mouseMoveEvent = null;
+  var touch = isTouchDevice();
 
   $.fn.swipe = function(swipeend, options) {
 
+    // might genericise this - no jQuery requirement
     var opts = $.extend({}, $.fn.swipe.defaults, options);
+    var el = $(this).get(0);
 
-    function enhanceEvent(ev,epochEvent) {
+    function enhance(ev,epochEvent) {
+      // touches[] is null for touchend and mouseMoveEvent *may* be null if a simple click
+      ev.x = touch ? (ev.touches && ev.touches[0] ? ev.touches[0].pageX : ((mouseMoveEvent||mouseDownEvent)["x"])) : ev.clientX;
+      ev.y = touch ? (ev.touches && ev.touches[0] ? ev.touches[0].pageY : ((mouseMoveEvent||mouseDownEvent)["y"])) : ev.clientY;
+      if (!epochEvent) return ev;
       ev.dx = ev.x - epochEvent.x;
       ev.dy = ev.y - epochEvent.y;
       switch(opts.direction) {
@@ -17,40 +21,30 @@
         case "y": ev.distance = Math.abs(ev.dy); break;
         default: ev.distance = Math.sqrt(ev.dx*ev.dx + ev.dy*ev.dy);
       }
+      return ev;
     }
 
-    $(this).mousedown(function(ev) {
-      log("md handler", ev.x,ev.y);
-    });
+    el[touch ? "ontouchstart" : "onmousedown"] = function(ev) { 
+      mouseDownEvent = enhance(ev);
+      return false;
+    };
 
-    /*
-    $(this).mouseout(function(ev) {
-      if (mouseDownEvent) {
-        enhanceEvent(ev,mouseDownEvent);
-        if (ev.distance > opts.threshold) swipeend(ev);
-        mouseDownEvent = null;
-        mouseMoveEvent = null;
-      }
-    });
-    */
+    el[touch ? "ontouchmove" : "onmousemove"] = function(ev) {
+      if (!mouseDownEvent) return; // we're only interested in diffs
+      mouseMoveEvent = enhance(ev,mouseMoveEvent||mouseDownEvent);
+      if (opts.move) opts.move(ev);
+    };
 
-    $(this).mouseup(function(ev) {
-      enhanceEvent(ev,mouseDownEvent);
+    el[touch ? "ontouchend" : "onmouseup"] = function(ev) { 
+      ev.x = touch ? mouseMoveEvent.x : mouseDownEvent.x;
+      ev.y = touch ? mouseMoveEvent.y : mouseDownEvent.y;
+      log("mu", ev.x, ev.y);
+      enhance(ev,mouseDownEvent);
       if (ev.distance > opts.threshold) swipeend(ev);
       else if (opts.small) opts.small(ev);
-      mouseDownEvent = null;
-      mouseMoveEvent = null;
-      log("mu handler");
-    });
-
-    $(this).mousemove(function(ev) {
-      if (!mouseDownEvent) return;
-      var lastEvent = mouseMoveEvent || mouseDownEvent;
-      enhanceEvent(ev,lastEvent);
-      mouseMoveEvent = ev;
-      if (opts.move) opts.move(ev);
-      log("mm handler", mouseMoveEvent.x, mouseMoveEvent.y);
-    });
+      mouseDownEvent = mouseMoveEvent = null;
+      return false;
+    };
 
   };
 
@@ -61,51 +55,7 @@
     threshold: 20
   };
 
-  var touchable = isTouch();
-
-  function neutralize(ev) {
-    ev.x = touchable ? ev.touches[0].pageX : ev.clientX;
-    ev.y = touchable ? ev.touches[0].pageY : ev.clientY;
-    return ev;
-  }
-
-  $.fn.mousedown = function(callback) {
-    alert("welcome");
-    $(this).each(function(i, el) {
-      log("md");
-      el.addEventListener(touchable ? "touchstart" : "mousedown", function(ev) { 
-        mouseDownEvent = neutralize(ev);
-        log(touchable ? "REGISTER ts" : "REGISTER md", ev.x, ev.y);
-        callback.call(el, neutralize(ev));
-        return false;
-      });
-    });
-  }
-
-  $.fn.mousemove = function(callback) {
-    $(this).each(function(i, el) {
-      // el.addEventListener(touchable ? "touchmove" : "mousemove", function(ev) { 
-      el[touchable ? "ontouchmove" : "onmousemove"] = function(ev) {
-        // log("mm", ev.x, ev.y);
-        callback.call(el, neutralize(ev));
-        return false;
-      };
-    });
-  }
-
-  $.fn.mouseup = function(callback) {
-    $(this).each(function(i, el) {
-      el.addEventListener(touchable ? "touchend" : "mouseup", function(ev) { 
-        ev.x = touchable ? mouseMoveEvent.x : mouseDownEvent.x;
-        ev.y = touchable ? mouseMoveEvent.y : mouseDownEvent.y;
-        log("mu", ev.x, ev.y);
-        callback.call(el, ev);
-        return false;
-      });
-    });
-  }
-
-  function isTouch() {
+  function isTouchDevice() {
     try {
       document.createEvent("TouchEvent");
       return true;
@@ -123,5 +73,3 @@ function log() { // combine into one string for android logcat
   }
   console.log(s);
 }
-
-

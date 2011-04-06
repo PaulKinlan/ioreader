@@ -70,7 +70,9 @@ var BaseController = function() {
     var data = $(element).data();
     
     if(data.article) {
-      window.history.pushState(undefined, "", "/reader/" + data.category + "/" + data.article );
+      if (window.history.pushState) {
+        window.history.pushState(undefined, "", "/reader/" + data.category + "/" + data.article );
+      }
       changeArticle(data.category, data.article);
       fetchArticle(data.category, data.article, function(result) {
         var categories = result.categories;
@@ -85,12 +87,16 @@ var BaseController = function() {
       });
     }
     else if(data.category) {
-      window.history.pushState(undefined, "", "/reader/" + data.category );
+      if (window.history.pushState) {
+        window.history.pushState(undefined, "", "/reader/" + data.category );
+      }
 
       changeCategory(data.category);
     }
     else {
-      window.history.pushState(undefined, "", "/reader/" + data.category + "/" + data.article );
+      if (window.history.pushState) {
+        window.history.pushState(undefined, "", "/reader/" + data.category + "/" + data.article );
+      }
 
       changeRoot();
     }

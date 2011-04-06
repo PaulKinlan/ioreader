@@ -99,6 +99,7 @@ var GuardianProxy = function(configuration) {
       "section": id,
       "show-fields": fields.join(","),
       "format": "json",
+      "show-media": "all",
       "use-date": "last-modified",
       "api-key": api_key
     };
@@ -118,6 +119,7 @@ var GuardianProxy = function(configuration) {
     var query = {
       "format": "json",
       "show-fields": "all",
+      "show-media": "all",
       "api-key": api_key
     };
    
@@ -158,6 +160,7 @@ GuardianProxy.prototype.fetchCategories = function(callback) {
               item.pubDate = cat_res.webPublicationDate;
               item.author = cat_res.fields.byline;
               item.url = cat_res.webUrl;
+              item.largeImage = self.findLargestImage(cat_res.mediaAssets).url;
               cat.addItem(item);
             }
             inner_callback(null, cat);
@@ -194,7 +197,8 @@ GuardianProxy.prototype.fetchCategory = function(id, callback) {
               item.thumbnail = cat_result.fields.thumbnail;
               item.pubDate = cat_result.webPublicationDate;
               item.author = cat_result.fields.byline;
-              item.url = cat.webUrl;
+              item.url = cat_result.webUrl;
+              item.largeImage = self.findLargestImage(cat_result.mediaAssets).url;
               cat.addItem(item); 
             }
             inner_callback(null, cat);
@@ -245,7 +249,8 @@ GuardianProxy.prototype.fetchArticle = function(id, category, callback) {
             if(!!article_data.response == false || article_data.response.status != "ok") return;
             var article_result = article_data.response.content;
             var item = new CategoryItem(article_result.id, article_result.webTitle, article_result.fields.trailText, cat);
-            item.body = article_result.fields.body.replace(/\"/gim,'\\"').replace(/\n/gim,"").replace(/\r/gim,"");
+            if(!!article_result.fields.body)
+              item.body = article_result.fields.body.replace(/\"/gim,'\\"').replace(/\n/gim,"").replace(/\r/gim,"");
             item.thumbnail = article_result.fields.thumbnail;
             item.largeImage = self.findLargestImage(article_result.mediaAssets).url;
             item.pubDate = article_result.webPublicationDate;

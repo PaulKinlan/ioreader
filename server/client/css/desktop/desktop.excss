@@ -32,17 +32,21 @@ body {
 
 .categories { 
   height: 100%;
+
   display: -webkit-box;
-  -webkit-box-orient: vertical;
+  -webkit-box-orient: horizontal;
   margin-left: $headerWidth;
   overflow: hidden;
 
   & .category {
     margin-top: 10px;
-    width: 100%;
-
-    &.active .articles {
-      background-color: red;
+    width: 200px;
+    overflow: hidden;
+    &.active{
+      & .articles {
+        opacity: 1;
+        background-color: red;
+      }
     }
 
     & h2 {
@@ -55,36 +59,32 @@ body {
     }
 
     & .articles {
+      -webkit-transition: opacity 0.2s ease-in-out;
+      opacity: 0.6;
+      &:hover {
+        opacity: 0.8;
+      }
 
-      overflow: scroll;
       height: 100%;
       width: 100%;
 
       & article {
+        margin-top: 5px;
         position: relative;
-        left: 50%;
  
         & header {
-          position: relative;
-          height: 200px; 
        
           & h1 {
             font-size: 1.4em;
             background-color: rgba(0,0,0,0.5);
-            position: absolute;
             color: white;
-            top: 0;
-            left: 50%;
-            right: 0;
-            width: 50%;
           } 
         
           & img.thumbnail {
-            width: 50%;
+            width: 100%;
           }
 
           & .summary {
-            postion: absolute;
             bottom: 0;
             font-size: 1.0em;
             background-color: rgba(0,0,0,0.5);
@@ -92,33 +92,12 @@ body {
         } 
 
         & section {
-          position: absolute;
-          top: 0;
-          bottom: 0;
-          right: 0;
-          opacity: 0;
-          left: 100%;
           background-color: white;
           overflow: scroll;
           color: black;
-      
+          display: none; 
           & img.large {
             display: none;
-          }
-        }
-      }
-
-      & article:nth-child(1) {
-        float: left;
-        position: relative;
-        top: 0;
-        left: 0;
-        width: 50%;
-  
-        & header {
- 
-          & h1 {
-            font-size: 2em;
           }
         }
       }

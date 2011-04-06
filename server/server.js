@@ -218,7 +218,7 @@ GuardianProxy.prototype.findLargestImage = function(mediaAssets) {
 
   if(!!mediaAssets == false) return largest;
 
-  for(var i = 0; asset = mediaAsset[i]; i++) {
+  for(var i = 0; asset = mediaAssets[i]; i++) {
     if(asset.type != "picture") continue;
     var size = parseInt(asset.fields.width,10) * parseInt(asset.fields.height,10);
     if(size > largest.size) {

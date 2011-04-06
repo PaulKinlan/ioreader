@@ -2,8 +2,6 @@
 /* MACROS */
 /**********/
 
-html { background: black; }
-
 .linearGradient(@color1:#ccc, @color2:#ddd) {
   background-image:-webkit-gradient(linear, left bottom, left top, color-stop(0, @color1), color-stop(100%, @color2));
   background-image:-moz-linear-gradient(center bottom, @color1 0, @color2 100%);
@@ -16,14 +14,13 @@ html { background: black; }
 /* GENERAL ELEMENTS */
 /********************/
 a,a:visited { text-decoration: none; color: white; }
-.thumbnail,.lowres,.hires { display: none; }
 .category { .linearGradient(pink,yellow); width: 100%; }
 
 /******************/
 /* PAGE STRUCTURE */
 /******************/*
-html { overflow: hidden; }
-html[data-resource=menu] { display: none; } /* not supported in this UI */
+html { background: black; overflow-x: hidden; overflow-y: scroll !important; }
+nav, html[data-resource=menu] { display: none; } /* not supported in this UI */
 
 /***********************************/
 /* MAIN (CATEGORY AND STORY) STATE */
@@ -37,7 +34,13 @@ html[data-resource=menu] { display: none; } /* not supported in this UI */
   -webkit-box-align: start; 
 
   .category { height: 100%; }
+  img.large { display: none; }
   h2 { padding: 1em 2em; background: red; }
+
+  article { position: relative; overflow: hidden; }
+  article h1 { font-weight: bold; position: absolute; top: 0.4em; left: 6em; }
+  .summary { position: absolute; top: 1.8em; left: 6em; }
+  img.thumbnail { width: 4em; height: 3em; position: absolute; top: 0.4em; left: 1em; }
 
   article {
     padding: 1.5em 1em 1em;

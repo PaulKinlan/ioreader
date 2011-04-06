@@ -9,7 +9,7 @@ var conf = {
   name: "guardian",
   description: "The Guardian News Reader",
   baseDir: "server/templates/",
-  categories: ["technology", "business"]
+  categories: ["technology", "business", "politics", "lifeandstyle", "music", "culture"]
 };
 
 var Proxy = function() {
@@ -471,7 +471,7 @@ app.get('/', function(req, res) {
   var format = "html"; 
   var controller = new Controller(conf);
   controller.fetchCategories(format, function(output) { 
-    res.send(output);
+    bustCache(res).send(output);
   });
 });
 
@@ -479,7 +479,7 @@ app.get('/index.:format', function(req, res) {
   var format = req.params.format;
   var controller = new Controller(conf);
   controller.fetchCategories(format, function(output) { 
-    res.send(output);
+    bustCache(res).send(output);
   });
 });
 
@@ -489,7 +489,7 @@ app.get('/reader/:category.:format?', function(req, res) {
   var controller = new Controller(conf);
   // request the category list i
   controller.fetchCategory(category, format, function(output) { 
-    res.send(output);
+    bustCache(res).send(output);
   });
 });
 
@@ -499,9 +499,18 @@ app.get('/reader/:category/:article.:format?', function(req, res) {
   var format = req.params.format || "html";
   var controller = new Controller(conf);
   controller.fetchArticle(article, category, format, function(output) { 
-    res.send(output);
+    bustCache(res).send(output);
   });
 });
+
+function bustCache(res) {
+  res.header("Expires","Mon, 26 Jul 1997 05:00:00 GMT");
+  res.header("Last-Modified", +new Date);
+  res.header("Cache-Control","no-store, no-cache, must-revalidate, max-age=0");
+  res.header("Cache-Control", "post-check=0, pre-check=0");
+  res.header("Pragma","no-cache");
+  return res;
+}
 
 app.listen(3000);
 

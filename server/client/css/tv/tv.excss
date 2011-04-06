@@ -1,0 +1,66 @@
+@var categoryHeight 50;
+@var itemHeight 130;
+@var shelfPadding 10;
+
+/* Categories lined along the bottom */
+body > header {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: $categoryHeight;
+  width: 100%;
+  border-top: 1px solid black;
+  padding: $shelfPadding 0;
+
+  & li {
+    float: left;
+    margin-left: 10px;
+  }
+
+  & h1, p {
+    display: none;
+  }
+}
+
+/* Items in the category lined along the middle and hidden */
+.categories {
+  & .category {
+    position: absolute;
+    bottom: 70px; /*$categoryHeight + 2*$shelfPadding;*/
+    height: $itemHeight;
+
+    overflow: hidden;
+
+    & .articles {
+
+      & article {
+        float: left;
+        width: 200px;
+        margin-right: 10px;
+        top: 0;
+      }
+    }
+
+    /* Don't show section for now */
+    & section {
+      display: none;
+
+      &:first-of-type {
+        display: block;
+        -webkit-transform: translate(0, -800px);
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 70%;
+      }
+    }
+
+    
+  }
+}
+
+/* Temporarily only show one category */
+#business {
+  display: none;
+}
+

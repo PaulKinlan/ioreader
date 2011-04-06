@@ -12,6 +12,10 @@ formfactor.detect([
   {
     "formfactor": "phone",
     "resources": ["/scripts/phone/swipe.js", "/scripts/phone/controller.js", "/lib/less.js", "/css/phone/phone.less"]
+  },
+  {
+    "formfactor": "tv",
+    "resources": ["/scripts/tv/controller.js", "/lib/excss.js", "/css/tv/tv.excss"]
   }
 
 ]);

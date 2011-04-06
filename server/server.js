@@ -12,6 +12,8 @@ var conf = {
   categories: ["technology", "business", "politics", "lifeandstyle", "music", "culture"]
 };
 
+var cache = {};
+
 var Proxy = function() {
 };
 
@@ -470,17 +472,29 @@ app.configure('production', function() {
 app.get('/', function(req, res) {
   var format = "html"; 
   var controller = new Controller(conf);
-  controller.fetchCategories(format, function(output) { 
-    bustCache(res).send(output);
-  });
+  if(cache[req.url]) {
+    bustCache(res).send(cache[req.url]);
+  }
+  else {
+    controller.fetchCategories(format, function(output) { 
+      cache[req.url] = output;
+      bustCache(res).send(output);
+    });
+  }
 });
 
 app.get('/index.:format', function(req, res) {
   var format = req.params.format;
   var controller = new Controller(conf);
-  controller.fetchCategories(format, function(output) { 
-    bustCache(res).send(output);
-  });
+  if(cache[req.url]) {
+    bustCache(res).send(cache[req.url]);
+  }
+  else {
+    controller.fetchCategories(format, function(output) { 
+      cache[req.url] = output;
+      bustCache(res).send(output);
+    });
+  }
 });
 
 app.get('/reader/:category.:format?', function(req, res) {
@@ -488,9 +502,16 @@ app.get('/reader/:category.:format?', function(req, res) {
   var format = req.params.format || "html";
   var controller = new Controller(conf);
   // request the category list i
-  controller.fetchCategory(category, format, function(output) { 
-    bustCache(res).send(output);
-  });
+
+  if(cache[req.url]) {
+    bustCache(res).send(cache[req.url]);
+  }
+  else {
+    controller.fetchCategory(category, format, function(output) { 
+      cache[req.url] = output;
+      bustCache(res).send(output);
+    });
+  }
 });
 
 app.get('/reader/:category/:article.:format?', function(req, res) {
@@ -498,9 +519,15 @@ app.get('/reader/:category/:article.:format?', function(req, res) {
   var article = req.params.article;
   var format = req.params.format || "html";
   var controller = new Controller(conf);
-  controller.fetchArticle(article, category, format, function(output) { 
-    bustCache(res).send(output);
-  });
+  if(cache[req.url]) {
+    bustCache(res).send(cache[req.url]);
+  }
+  else {
+    controller.fetchArticle(article, category, format, function(output) { 
+      cache[req.url] = output;
+      bustCache(res).send(output);
+    });
+  }
 });
 
 function bustCache(res) {

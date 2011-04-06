@@ -39,7 +39,7 @@ var BaseController = function() {
     $("li[data-category='"+ category +"']").addClass("active");
     $("section[data-category='"+ category +"']").addClass("active");
     
-    fireEvent("changecategory", {category: category});
+    fireEvent("categorychanged", {category: category});
   };
 
   var changeArticle = function(category, article) {
@@ -50,7 +50,7 @@ var BaseController = function() {
     $("section[data-category='"+ category +"']").addClass("active");
     $("article[data-article='" + article + "']").addClass("active");
 
-    fireEvent("changearticle", {category: category, article: article});
+    fireEvent("articlechanged", {category: category, article: article});
   };
 
   var fetchArticle = function(category, article, callback) { 

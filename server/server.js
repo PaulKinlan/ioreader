@@ -80,6 +80,7 @@ var GuardianProxy = function(configuration) {
     var query = {
       "q": categories.join("+"),
       "format": "json",
+      "show-media": "all",
       "api-key": api_key
     };
 
@@ -207,6 +208,22 @@ GuardianProxy.prototype.fetchCategory = function(id, callback) {
   });
 };
 
+GuardianProxy.prototype.findLargestImage = function(mediaAssets) {
+  var asset;
+  var largest = {size: 0, x: 0, y:0, url:""};
+
+  if(!!mediaAssets == false) return largest;
+
+  for(var i = 0; asset = mediaAsset[i]; i++) {
+    if(asset.type != "picture") continue;
+    var size = parseInt(asset.fields.width,10) * parseInt(asset.fields.height,10);
+    if(size > largest.size) {
+      largest = {size: size, x: asset.fields.width, y: asset.fields.height};
+    }
+  }
+  return largest;
+};
+
 GuardianProxy.prototype.fetchArticle = function(id, category, callback) {
   if(!!callback == false) throw new NoCallbackException();
   var self = this;
@@ -230,6 +247,7 @@ GuardianProxy.prototype.fetchArticle = function(id, category, callback) {
             var item = new CategoryItem(article_result.id, article_result.webTitle, article_result.fields.trailText, cat);
             item.body = article_result.fields.body.replace(/\"/gim,'\\"').replace(/\n/gim,"").replace(/\r/gim,"");
             item.thumbnail = article_result.fields.thumbnail;
+            item.largeImage = self.findLargestImage(article_result.mediaAssets).url;
             item.pubDate = article_result.webPublicationDate;
             item.author = article_result.fields.byline;
             item.url = article_result.webUrl;

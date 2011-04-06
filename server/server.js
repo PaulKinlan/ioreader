@@ -49,7 +49,7 @@ NPRProxy.prototype.fetchCategory = function(id, callback) {
 
 var GuardianProxy = function(configuration) {
   var domain = "content.guardianapis.com";
-  var api_key = "nedz73wwdsqgjhrf8t57f7nq";
+  var api_key = "ywyfby4r7zsfy2rc8eesk6q3";
 
   var fetchResults = function(res, callback) {
     var data = "";

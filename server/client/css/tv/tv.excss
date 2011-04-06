@@ -1,66 +1,119 @@
 @var categoryHeight 50;
 @var itemHeight 130;
+@var itemWidth 200;
 @var shelfPadding 10;
+@var border 1px solid black;
+@var bigImageWidth 30%;
 
-/* Categories lined along the bottom */
+@trait highlighted {
+  border: 2px solid red;
+  text-decoration: none;
+}
+
+/* SECTION: Category picker! */
 body > header {
   position: absolute;
   bottom: 0;
   left: 0;
   height: $categoryHeight;
   width: 100%;
-  border-top: 1px solid black;
+  border-top: $border;
   padding: $shelfPadding 0;
 
-  & li {
-    float: left;
-    margin-left: 10px;
-  }
-
-  & h1, p {
+  & > * {
     display: none;
   }
-}
 
-/* Items in the category lined along the middle and hidden */
-.categories {
-  & .category {
-    position: absolute;
-    bottom: 70px; /*$categoryHeight + 2*$shelfPadding;*/
-    height: $itemHeight;
+  & nav {
+    display: block;
 
-    overflow: hidden;
+    & li.category {
+      float: left;
+      margin-left: 10px;
 
-    & .articles {
-
-      & article {
-        float: left;
-        width: 200px;
-        margin-right: 10px;
-        top: 0;
+      &.active {
+        @mixin highlighted;
       }
     }
-
-    /* Don't show section for now */
-    & section {
-      display: none;
-
-      &:first-of-type {
-        display: block;
-        -webkit-transform: translate(0, -800px);
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 70%;
-      }
-    }
-
-    
   }
 }
 
-/* Temporarily only show one category */
-#business {
-  display: none;
+/* SECTION: Item picker! */
+.categories .category {
+  border-top: $border;
+  position: absolute;
+  bottom: 70px; /*$categoryHeight + 2*$shelfPadding;*/
+  height: $itemHeight;
+  overflow: hidden;
+
+  & > h2 {
+    display: none;
+  }
+
+  & article {
+    float: left;
+    margin: $shelfPadding 0 $shelfPadding $shelfPadding;
+    height: $itemHeight;
+
+    &.active {
+      @mixin highlighted;
+    }
+
+    & header {
+      width: $itemWidth;
+      margin-right: 10px;
+      top: 0;
+    }
+
+    /* Only show the active section */
+    & section {
+      display: none;
+    }
+
+    /* SECTION: Large view! */
+    &.active section {
+      display: block;
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 200px;
+      right: 0;
+      overflow: auto;
+      padding: 20px;
+
+      & h1 {
+        font-size: 30px;
+        font-weight: bold;
+      }
+      
+      & div.summary {
+        font-size: 20px;
+        margin-bottom: 10px;
+      }
+
+      & img.thumbnail {
+        display: none;
+      }
+
+      /* Show the large image */
+      & img.large {
+        width: $bigImageWidth;
+        float: left;
+      }
+
+      & div.story {
+        margin-left: $bigImageWidth;
+        padding-left: 20px;
+      }
+    }
+  }
 }
 
+/* Only show the active category */
+section.category {
+  display: none;
+
+  &.active {
+    display: block;
+  }
+}

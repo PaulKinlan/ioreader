@@ -4,9 +4,7 @@ var PhoneController = function() {
 
   $(function() {
 
-    log("controller", controller);
-
-    window.scrollTo(0,1);
+    // window.scrollTo(0,1);
 
     var categoryIndex = $(".category.active").prev().length;
     c=categoryIndex;
@@ -32,6 +30,8 @@ var PhoneController = function() {
       },
       direction: "x"
     });
+
+    $("article").css("background", "pink"); // quick hack to verify page loaded ok
 
     $("[data-link-category=story]").click(function() {
       $(".categories").stop().css({marginLeft: 0});

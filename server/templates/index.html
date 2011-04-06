@@ -42,7 +42,7 @@
     <div class="categories">
       {{#categories}}
       <section class="category {{state}}" data-category="{{id}}" id="{{id}}">
-      <h2>{{name}}</h2>
+        <h2>{{name}}</h2>
         <div class="articles"> 
       {{#articles}}
         <article id="{{id}}" data-article="{{id}}" data-category="{{categoryId}}">
@@ -53,6 +53,10 @@
             <div class="summary">{{{shortDescription}}}</div>
           </header>
           <section>
+            <h1>{{title}}</h1>
+            <p><time pubdate time="{{puddate}}"></time></p> 
+            <div class="summary">{{{shortDescription}}}</div>
+            <img class="thumbnail" src="{{thumbnail}}" />
             <img class="large" src="{{thumbnail}}" />
             <div class="story"></div>
           </section>

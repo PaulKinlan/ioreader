@@ -8,6 +8,13 @@ var DesktopController = function() {
     e.preventDefault();
     return false;
   });
+
+  window.addEventListener("categorychanged", function(e) {
+    //  Scroll to the category into views
+    console.log(e.data);
+    var top = $("#" +  e.data.category).offset().top;
+    $(".categories").scrollTop(top);
+  });
 };
 
 DesktopController.prototype = new BaseController();

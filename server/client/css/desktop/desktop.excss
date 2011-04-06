@@ -5,7 +5,6 @@
 body {
   background-color: $bg;
   color: white;
-  overflow: hidden; 
 
   &> header {
     position: fixed;
@@ -31,13 +30,17 @@ body {
   }
 }
 
-.categories {
+.categories { 
+  height: 100%;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   margin-left: $headerWidth;
+  overflow: hidden;
 
   & .category {
     margin-top: 10px;
+    width: 100%;
+
     &.active .articles {
       background-color: red;
     }
@@ -52,49 +55,71 @@ body {
     }
 
     & .articles {
-      display: -webkit-box;
-      -webkit-box-orient: horizontal;
-    }
 
-    & article {
-      width: 300px; 
-      margin: 5px;
+      overflow: scroll;
+      height: 100%;
+      width: 100%;
 
-      & header {
+      & article {
         position: relative;
-        & h1 {
-          font-size: 1.6em;
-          background-color: rgba(0,0,0,0.5);
-          position: absolute;
-          color: white;
-          top: 0;
-          left: 0;
-          right: 0;
+        left: 50%;
+ 
+        & header {
+          position: relative;
+          height: 200px; 
+       
+          & h1 {
+            font-size: 1.4em;
+            background-color: rgba(0,0,0,0.5);
+            position: absolute;
+            color: white;
+            top: 0;
+            left: 50%;
+            right: 0;
+            width: 50%;
+          } 
+        
+          & img.thumbnail {
+            width: 50%;
+          }
+
+          & .summary {
+            postion: absolute;
+            bottom: 0;
+            font-size: 1.0em;
+            background-color: rgba(0,0,0,0.5);
+          }
         } 
-        
-        & img.thumbnail {
-          width: 100%;
-        }
-        
 
-
-        & .summary {
-          font-size: 1.2em;
-          background-color: rgba(0,0,0,0.5);
-        }
-      } 
-
-      & section {
-        display: none;
-        
-        & img.large {
-          display: none;
+        & section {
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          right: 0;
+          opacity: 0;
+          left: 100%;
+          background-color: white;
+          overflow: scroll;
+          color: black;
+      
+          & img.large {
+            display: none;
+          }
         }
       }
+
+      & article:nth-child(1) {
+        float: left;
+        position: relative;
+        top: 0;
+        left: 0;
+        width: 50%;
+  
+        & header {
  
-      &.active {
-        & section {
-          display:block;
+          & h1 {
+            font-size: 2em;
+          }
         }
       }
     }

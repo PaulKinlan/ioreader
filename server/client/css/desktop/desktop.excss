@@ -90,6 +90,10 @@ background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#191C1
             width: 100%;
           }
 
+          & img.large { 
+            display: none;
+          }
+
           & .summary {
             bottom: 0;
             font-size: 1.0em;
@@ -102,6 +106,26 @@ background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#191C1
 
           & section {
             -webkit-transform: rotate3d(0,1,0, 0deg);
+            padding: 5px;
+            & h1 {
+              font-size: 2em;
+            }
+
+            & .summary {
+              font-style: italic;
+              color: #777;
+            }
+  
+            & .large {
+              display: block;
+            }
+
+            & .story {
+              margin-top: 5px;
+              & p {
+                margin-bottom: 5px;
+              }
+            }
           }
         }
 
@@ -117,8 +141,9 @@ background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#191C1
           left: 105%;
           top: 0px;
           width: 100%;
-          
-          & img.large {
+         
+  
+          & img.thumbnail {
             display: none;
           }
         }

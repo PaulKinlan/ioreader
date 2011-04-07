@@ -225,7 +225,7 @@ GuardianProxy.prototype.findLargestImage = function(mediaAssets) {
     if(asset.type != "picture") continue;
     var size = parseInt(asset.fields.width,10) * parseInt(asset.fields.height,10);
     if(size > largest.size) {
-      largest = {size: size, x: asset.fields.width, y: asset.fields.height};
+      largest = {size: size, x: asset.fields.width, y: asset.fields.height, url: asset.file };
     }
   }
   return largest;

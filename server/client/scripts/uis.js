@@ -11,7 +11,7 @@ formfactor.detect([
   },
   {
     "formfactor": "phone",
-    "resources": ["/scripts/phone/swipe.js", "/scripts/phone/controller.js", "/lib/less.js", "/css/phone/phone.less"]
+    "resources": ["/scripts/phone/jquery.touch.js", "/scripts/phone/controller.js", "/lib/less.js", "/css/phone/phone.less"]
   },
   {
     "formfactor": "tv",

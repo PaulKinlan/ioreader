@@ -81,6 +81,7 @@ var GuardianProxy = function(configuration) {
       "q": categories.join("+"),
       "format": "json",
       "show-media": "all",
+      "page-size": "8",
       "api-key": api_key
     };
 
@@ -99,6 +100,7 @@ var GuardianProxy = function(configuration) {
       "section": id,
       "show-fields": fields.join(","),
       "format": "json",
+      "page-size": "8",
       "show-media": "all",
       "use-date": "last-modified",
       "api-key": api_key
@@ -120,6 +122,7 @@ var GuardianProxy = function(configuration) {
       "format": "json",
       "show-fields": "all",
       "show-media": "all",
+      "page-size": "8",
       "api-key": api_key
     };
    

@@ -285,9 +285,12 @@ TestProxy.prototype.constructor = Proxy.constructor;
 TestProxy.prototype.fetchCategories = function(callback){
   if(!!callback == false) throw new NoCallbackException();
   var categories = [];
-  categories.push(new CategoryData("tech", "Technology"));
-  categories.push(new CategoryData("business", "Business"));
-  callback(categories);
+  var filename = "server/proxies/test/index.json";
+  
+  fs.readFile(filename,'utf8', function(err, data) {
+    if(err) throw err;
+    callback(JSON.parse(data));
+  });
 };
  
 TestProxy.prototype.fetchCategory = function(id, callback) {

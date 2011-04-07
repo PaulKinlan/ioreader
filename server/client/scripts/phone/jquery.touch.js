@@ -3,10 +3,10 @@
   var mouseDownEvent = mouseMoveEvent = null;
   var touch = isTouchDevice();
 
-  $.fn.swipe = function(swipeend, options) {
+  $.fn.touch = function(options) {
 
     // might genericise this - no jQuery requirement
-    var opts = $.extend({}, $.fn.swipe.defaults, options);
+    var opts = $.extend({}, $.fn.touch.defaults, options);
     var el = $(this).get(0);
 
     function enhance(ev,epochEvent) {
@@ -40,7 +40,7 @@
       ev.y = touch ? mouseMoveEvent.y : mouseDownEvent.y;
       log("mu", ev.x, ev.y);
       enhance(ev,mouseDownEvent);
-      if (ev.distance > opts.threshold) swipeend(ev);
+      if (ev.distance > opts.threshold) opts.swipeX(ev);
       else if (opts.small) opts.small(ev);
       mouseDownEvent = mouseMoveEvent = null;
       return false;
@@ -48,7 +48,7 @@
 
   };
 
-  $.fn.swipe.defaults = {
+  $.fn.touch.defaults = {
     move: null,
     small: null,
     direction: "any",

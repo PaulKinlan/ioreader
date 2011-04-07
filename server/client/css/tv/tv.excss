@@ -3,7 +3,7 @@
 @var itemWidth 200;
 @var shelfPadding 10;
 @var border 1px solid black;
-@var bigImageWidth 30%;
+@var bigImageWidth 35%;
 
 @trait highlighted {
   border: 2px solid red;
@@ -44,7 +44,9 @@ body > header {
   position: absolute;
   bottom: 70px; /*$categoryHeight + 2*$shelfPadding;*/
   height: $itemHeight;
-  overflow: hidden;
+  overflow-y: hidden;
+  overflow-x: auto;
+  clear: both;
 
   & > h2 {
     display: none;
@@ -54,6 +56,8 @@ body > header {
     float: left;
     margin: $shelfPadding 0 $shelfPadding $shelfPadding;
     height: $itemHeight;
+    cursor: pointer;
+    width: $itemWidth;
 
     &.active {
       @mixin highlighted;
@@ -67,6 +71,7 @@ body > header {
 
     /* Only show the active section */
     & section {
+      cursor: default;
       display: none;
     }
 
@@ -85,7 +90,7 @@ body > header {
         font-size: 30px;
         font-weight: bold;
       }
-      
+
       & div.summary {
         font-size: 20px;
         margin-bottom: 10px;
@@ -104,6 +109,10 @@ body > header {
       & div.story {
         margin-left: $bigImageWidth;
         padding-left: 20px;
+
+        & p {
+          margin-bottom: 10px;
+        }
       }
     }
   }

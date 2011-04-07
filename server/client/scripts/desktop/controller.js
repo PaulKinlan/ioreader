@@ -16,15 +16,19 @@ var DesktopController = function() {
     switch(e.keyCode) {
       case 37://left
         newControl = controller.getActiveCategory().prev();
+        if(newControl.length == 0) $("section.category").last();
         break;
       case 38://up
         newControl = controller.getActiveArticle().prev();
+        if(newControl.length == 0) newControl = $("section.active article").last(); 
         break;  
       case 39://right
         newControl = controller.getActiveCategory().next();
+        if(newControl.length == 0) newControl = $("section.category").first();
         break;
       case 40://down
         newControl = controller.getActiveArticle().next();
+        if(newControl.length == 0) newControl = $("section.active article").first(); 
         break;
     } 
 

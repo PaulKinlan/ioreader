@@ -81,6 +81,7 @@ background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#191C1
         outline: solid white 5px;
 
         &.active {
+          outline: solid red 5px;
         }
  
         & header {

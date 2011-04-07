@@ -49,7 +49,6 @@ background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#191C1
     margin-left: 10px;
     width: 400px;
     height: 800px;
-    overflow: hidden;
     -webkit-transition: -webkit-transform 0.2s ease-in-out;
     -webkit-transform-style: preserve-3d;
 
@@ -74,18 +73,13 @@ background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#191C1
       width: 100%;
       box-sizing: border-box;
       padding: 5px; 
+
       & article {
         margin-top: 5px;
-        position: relative;
-
         outline: solid white 5px;
-
-        &.active {
-          outline: solid red 5px;
-        }
+        position: relative;
  
         & header {
-       
           & h1 {
             font-size: 1.4em;
             background-color: rgba(0,0,0,0.5);
@@ -103,16 +97,33 @@ background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#191C1
           }
         } 
 
+        &.active {
+          outline: solid red 5px;
+
+          & section {
+            -webkit-transform: rotate3d(0,1,0, 0deg);
+          }
+        }
+
         & section {
+          -webkit-backface-visibility: hidden;
+          -webkit-transition: -webkit-transform 0.2s ease-in-out;
+          -webkit-transform-origin: top left;
+          -webkit-transform: rotate3d(0,1,0, 180deg);
+          position: absolute;
           background-color: white;
           overflow: scroll;
           color: black;
-          display: none; 
-
+          left: 105%;
+          top: 0px;
+          width: 100%;
+          
           & img.large {
             display: none;
           }
         }
+        
+
       }
     }
   }

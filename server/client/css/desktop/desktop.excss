@@ -3,11 +3,15 @@
 @var headerWidth 150px;
 
 body {
+  overflow: hidden;
+  -webkit-perspective: 800;
   background-color: $bg;
   color: white;
+background: #191C1B; /* old browsers */
+background: -moz-linear-gradient(top, #191C1B 0%, #363A39 50%, #0a0e0a 51%, #0a0809 100%); /* firefox */
 
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#191C1B), color-stop(50%,#363A39), color-stop(51%,#0a0e0a), color-stop(100%,#0a0809)); /* webkit */
   &> header {
-    position: fixed;
     z-index: 1000;
     left: 0;
     top: 0;
@@ -32,19 +36,26 @@ body {
 
 .categories { 
   height: 100%;
+  -webkit-transform-origin: 0% 100%;
+  -webkit-transform-style: preserve-3d;
+  -webkit-transform: translateX(100px) rotateY(45deg);
 
   display: -webkit-box;
   -webkit-box-orient: horizontal;
   margin-left: $headerWidth;
-  overflow: hidden;
 
   & .category {
     margin-top: 10px;
-    width: 200px;
+    margin-left: 10px;
+    width: 400px;
+    height: 800px;
     overflow: hidden;
+    -webkit-transition: -webkit-transform 0.2s ease-in-out;
+    -webkit-transform-style: preserve-3d;
+
     &.active{
+      -webkit-transform: translateZ(200px) rotateY(-45deg);
       & .articles {
-        opacity: 1;
         background-color: red;
       }
     }
@@ -59,18 +70,18 @@ body {
     }
 
     & .articles {
-      -webkit-transition: opacity 0.2s ease-in-out;
-      opacity: 0.6;
-      &:hover {
-        opacity: 0.8;
-      }
-
       height: 100%;
       width: 100%;
-
+      box-sizing: border-box;
+      padding: 5px; 
       & article {
         margin-top: 5px;
         position: relative;
+
+        outline: solid white 5px;
+
+        &.active {
+        }
  
         & header {
        
@@ -96,6 +107,7 @@ body {
           overflow: scroll;
           color: black;
           display: none; 
+
           & img.large {
             display: none;
           }

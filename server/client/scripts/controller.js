@@ -66,8 +66,19 @@ var BaseController = function() {
     xhr.send();
   };
 
+  var activeElement;
+
+  var getActiveCategory = function() {
+    return $("section.category.active");
+  };
+
+  var getActiveArticle = function() {
+    return $("artcile.active");
+  };
+
   var activate = function(element) {
-    var data = $(element).data();
+    activeElement = $(element);
+    var data = activeElement.data();
     
     if(data.article) {
       if (window.history.pushState) {
@@ -98,7 +109,7 @@ var BaseController = function() {
         window.history.pushState(undefined, "", "/reader/" + data.category + "/" + data.article );
       }
 
-      changeRoot();
+      gotoRoot();
     }
   };
 
@@ -113,6 +124,8 @@ var BaseController = function() {
     onCategoryChaged: onCategoryChanged,
     onArticleChanged: onArticleChanged,
 
-    activate: activate
+    activate: activate,
+    getActiveArticle: getActiveArticle,
+    getActiveCategory: getActiveCategory
   };
 };

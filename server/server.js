@@ -8,6 +8,7 @@ var app = express.createServer();
 var conf = { 
   name: "guardian",
   description: "The Guardian News Reader",
+  version: "0.0.0.1",
   baseDir: __dirname + "/templates/",
   clientDir: __dirname + "/client/",
   categories: ["technology", "business", "politics", "lifeandstyle", "music", "culture"]

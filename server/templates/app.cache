@@ -1,5 +1,8 @@
 CACHE MANIFEST
 
+# Version {{version}}
+# Timestamp {{now}}
+
 # CSS
 {{#files}}
 {{#css}}

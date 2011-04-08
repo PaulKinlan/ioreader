@@ -28,11 +28,17 @@ var Controller = function(configuration) {
     // currently only gets the the files in the root
     var getFiles = function (directory, type) {
       return function(fileCallback) {
-        fs.readdir(directory, function(err,files) {
+        fs.readdir(configuration.clientDir + directory, function(err, files) {
+          if(!!files == false) {
+            files = [];
+          }
           var output = [];
           var file;
+          
           for(var i = 0; file = files[i]; i++) {
-            output.push({name: "/" + type + "/" + file});
+            // ignore folders
+            if(file.indexOf(".") <= 0) continue;
+            output.push({name: directory + "/" + file});
           } 
 
           fileCallback(null, {type: type, files: output});
@@ -41,19 +47,33 @@ var Controller = function(configuration) {
     };
 
     var fileActions = [];
-    fileActions.push(getFiles(configuration.clientDir + "/css", "css"));
-    fileActions.push(getFiles(configuration.clientDir + "/scripts", "scripts"));
-    fileActions.push(getFiles(configuration.clientDir + "/images", "images"));
+    fileActions.push(getFiles("css", "css"));
+    fileActions.push(getFiles("css/desktop", "css"));
+    fileActions.push(getFiles("css/tv", "css"));
+    fileActions.push(getFiles("css/tablet", "css"));
+    fileActions.push(getFiles("css/phone", "css"));
+    fileActions.push(getFiles("scripts", "scripts"));
+    fileActions.push(getFiles("scripts/phone", "scripts"));
+    fileActions.push(getFiles("scripts/tv", "scripts"));
+    fileActions.push(getFiles("scripts/tablet", "scripts"));
+    fileActions.push(getFiles("scripts/desktop", "scripts"));
+    fileActions.push(getFiles("images", "images"));
 
     async.parallel(fileActions, function(err, result){
       var now = new Date();
-      var data = {files: {}, now: now};
+      var data = {files: {}, now: now, version: configuration.version};
       var folder;
 
       for(var i = 0; folder = result[i]; i++) {
-        data.files[folder.type] = folder.files;
+        if(!!data.files[folder.type] == false) data.files[folder.type] = [];
+        var files = folder.files;
+        var file;
+        // Join files of types together 
+        for(var f = 0; file = files[f]; f++) {
+          data.files[folder.type].push(file);
+        }
       }
-      
+
       loadTemplate(configuration.baseDir + "app.cache", function(template) {
         callback(m.to_html(template, data));  
       });

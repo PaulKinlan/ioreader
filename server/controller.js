@@ -1,6 +1,7 @@
 var proxies = require('./proxies');
 var m = require('mustache');
 var fs = require('fs');
+var async = require('async');
 var exceptions = require('./exceptions');
 
 var Controller = function(configuration) {
@@ -23,11 +24,35 @@ var Controller = function(configuration) {
    */
   this.renderAppCache = function(callback) {
     if(!!callback == false) throw new exceptions.NoCallbackException("No Callback");
-    var now = new Date();
-    var data = {file: [], now: now};
-    
-    fs.readDir(configuration.clientDir + "/css", function(err, files) { 
-      // Get a list of all the static files.
+
+    var getFiles = function(directory, type) {
+      return function(fileCallback) { fs.readDir(directory, 
+        function(err,files) {
+          var output = [];
+          var file;
+          for(var i; file = files[i]; i++) {
+            output.push({name: directory + "/" + file});
+          } 
+
+          fileCallback(null, {type: type, files: output});
+        };
+      };
+    };
+
+    var fileActions = [];
+    fileActions.push(getFiles(configuration.clientDir + "/css", "css"));
+    fileActions.push(getFiles(configuration.clientDir + "/scripts", "scripts"));
+    fileActions.push(getFiles(configuration.clientDir + "/images", "images"));
+
+    async.parallel(fileActions, function(err, result){
+      var now = new Date();
+      var data = {files: {}, now: now};
+      var folder;
+
+      for(var i = 0; folder = result[i]; i++) {
+        data.files[folder.type] = folder.files;
+      }
+      
       loadTemplate("app.cache",function(template) {
         callback(m.to_html(template, data));  
       });

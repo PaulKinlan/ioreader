@@ -24,6 +24,5 @@ CACHE MANIFEST
 {{/scripts}}
 {{/files}} 
 
-
 NETWORK:
 *

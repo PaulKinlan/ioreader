@@ -28,7 +28,7 @@ var Controller = function(configuration) {
       }
       else {
         loadTemplate(configuration.baseDir + "index." + format, function(template) {
-          callback(m.to_html(template, {"categories" : data}));
+          callback(m.to_html(template, {"categories" : data, "configuration": configuration}));
         });
       }
     }); 
@@ -48,7 +48,7 @@ var Controller = function(configuration) {
       }
       else {
         loadTemplate(configuration.baseDir + "category." + format, function(template) {
-          callback(m.to_html(template, {"categories": data})); 
+          callback(m.to_html(template, {"categories": data, "configuration": configuration})); 
         });
       }
     }); 
@@ -64,7 +64,7 @@ var Controller = function(configuration) {
       }
       else {
         loadTemplate(configuration.baseDir + "article." + format, function(template) {
-          callback(m.to_html(template, {"categories": data})); 
+          callback(m.to_html(template, {"categories": data, "configuration": configuration})); 
         });
       }
     }); 

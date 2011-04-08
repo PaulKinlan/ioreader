@@ -1,7 +1,7 @@
 /*
   A Basic data holder
 */
-var CategoryData = function(id, name) {
+exports.CategoryData = function(id, name) {
   this.id = id; 
   this.name = name;
   this.articles = [];
@@ -17,7 +17,7 @@ var CategoryData = function(id, name) {
 /*
   A data item in the category.
 */
-var CategoryItem = function(id, title, shortDescription, category) {
+exports.CategoryItem = function(id, title, shortDescription, category) {
   this.id = encodeURIComponent(id);
   this.title = title;
   this.shortDescription = shortDescription;

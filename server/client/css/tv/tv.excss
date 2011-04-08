@@ -1,17 +1,28 @@
 @var categoryHeight 50;
-@var itemHeight 130;
+@var itemHeight 150;
 @var itemWidth 200;
 @var shelfPadding 10;
 @var border 1px solid black;
 @var bigImageWidth 35%;
 
 @trait highlighted {
-  border: 2px solid red;
-  text-decoration: none;
+  -webkit-box-shadow: #6391DE 0px 0px 30px;
+  border-color: #9f9;
+}
+@trait animate {
+  -webkit-transition: all 0.5s ease-in-out;
+}
+
+body { 
+  color: white;
+  background: #111;
+  overflow: hidden; 
 }
 
 /* SECTION: Category picker! */
 body > header {
+  @mixin animate;
+  background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#222), to(#333));
   position: absolute;
   bottom: 0;
   left: 0;
@@ -27,12 +38,27 @@ body > header {
   & nav {
     display: block;
 
+    & ul {
+      position: relative;
+      margin: 0 auto;
+      text-align: center;
+    }
+
     & li.category {
-      float: left;
-      margin-left: 10px;
+      font-size: 20px;
+      font-family: sans-serif;
+      display: inline-block;
+      padding: 10px;
+      -webkit-border-radius: 8px;
+      border: 4px solid transparent;
 
       &.active {
         @mixin highlighted;
+      }
+
+      & a {
+        color: #ddd;
+        text-decoration: none;
       }
     }
   }
@@ -44,9 +70,8 @@ body > header {
   position: absolute;
   bottom: 70px; /*$categoryHeight + 2*$shelfPadding;*/
   height: $itemHeight;
+  width: 120%;
   overflow-y: hidden;
-  overflow-x: auto;
-  clear: both;
 
   & > h2 {
     display: none;
@@ -59,14 +84,29 @@ body > header {
     cursor: pointer;
     width: $itemWidth;
 
-    &.active {
+    &.active header {
       @mixin highlighted;
     }
 
     & header {
+      @mixin animate;
       width: $itemWidth;
       margin-right: 10px;
       top: 0;
+      -webkit-border-radius: 8px;
+      border: 4px solid transparent;
+
+      & h1 {
+        display: none;
+      }
+
+      & img.thumbnail {
+        width: 100%;
+      }
+
+      & div.summary {
+        display: none;
+      }
     }
 
     /* Only show the active section */
@@ -81,18 +121,18 @@ body > header {
       position: fixed;
       top: 0;
       left: 0;
-      bottom: 200px;
+      bottom: 220px;
       right: 0;
       overflow: auto;
       padding: 20px;
 
       & h1 {
-        font-size: 30px;
+        font-size: 40px;
         font-weight: bold;
       }
 
       & div.summary {
-        font-size: 20px;
+        font-size: 26px;
         margin-bottom: 10px;
       }
 
@@ -109,6 +149,8 @@ body > header {
       & div.story {
         margin-left: $bigImageWidth;
         padding-left: 20px;
+        font-size: 21px;
+        color: #ddd;
 
         & p {
           margin-bottom: 10px;
@@ -124,5 +166,29 @@ section.category {
 
   &.active {
     display: block;
+  }
+}
+
+@trait slide {
+  -webkit-transform: translate(0, 250px); 
+}
+
+/* FULL SCREEN MODE */
+body.full > header { 
+  @mixin slide;
+}
+body.full article {
+  & header { 
+    @mixin slide;
+  }
+  & section { 
+    bottom: 0 !important;
+  }
+}
+/* Fix some stuff up */
+body.full section.category {
+  border: 0;
+  & article.active {
+    border: 0;
   }
 }

@@ -1,0 +1,26 @@
+CACHE MANIFEST
+
+# CSS
+{{#files}}
+  {{#css}}
+{{name}}
+  {{/css}}
+{{/files}} 
+
+# Images
+{{#files}}
+  {{#images}}
+{{name}}
+  {{/images}}
+{{/files}} 
+
+# Scripts
+{{#files}}
+  {{#scripts}}
+{{name}}
+  {{/scripts}}
+{{/files}} 
+
+
+NETWORK:
+*

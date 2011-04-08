@@ -17,6 +17,23 @@ var Controller = function(configuration) {
     });
   };
 
+
+  /*
+   * Generates the app cache.
+   */
+  this.renderAppCache = function(callback) {
+    if(!!callback == false) throw new exceptions.NoCallbackException("No Callback");
+    var now = new Date();
+    var data = {file: [], now: now};
+    
+    fs.readDir(configuration.clientDir + "/css", function(err, files) { 
+      // Get a list of all the static files.
+      loadTemplate("app.cache",function(template) {
+        callback(m.to_html(template, data));  
+      });
+    });
+  };
+
   /*
     Fetches and renders the categories for a given format.
   */ 

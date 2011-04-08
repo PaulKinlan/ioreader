@@ -8,7 +8,8 @@ var app = express.createServer();
 var conf = { 
   name: "guardian",
   description: "The Guardian News Reader",
-  baseDir: "server/templates/",
+  baseDir: __dirname + "/templates/",
+  clientDir: __dirname + "/client/",
   categories: ["technology", "business", "politics", "lifeandstyle", "music", "culture"]
 };
 
@@ -22,7 +23,7 @@ app.configure(function() {
 });
 
 app.configure('test', function() {
-  app.use(express.static(__dirname + '/client/'));
+  app.use(express.static(conf.clientDir));
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
   conf.name = "test"; // force test mode.
   console.log("Running in Test");
@@ -32,7 +33,7 @@ app.configure('test', function() {
   Development mode runs all the code uncompressed
 */
 app.configure('development', function() {
-  app.use(express.static(__dirname + '/client/'));
+  app.use(express.static(conf.clientDir));
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
   console.log("Running in Development");
 });
@@ -42,7 +43,8 @@ app.configure('development', function() {
   is minified.  Exceptions are not shown either.
 */
 app.configure('production', function() {
-  app.use(express.static(__dirname + '/client-min/'));
+  conf.clientDir = __dirname + "/client-min";
+  app.use(express.static(cond.clientDir));
   console.log("Running in Production");
 });
 
@@ -72,6 +74,16 @@ app.get('/index.:format', function(req, res) {
       bustCache(res).send(output);
     });
   }
+});
+
+/*
+ *  The AppCache.
+ */
+app.get('/app.cache', function(req, res) {
+  controller.renderAppCache(function(output) {
+    res.header("Content-type: text/manifest\n\n");
+    res.send(output);
+  });  
 });
 
 app.get('/reader/:category.:format?', function(req, res) {

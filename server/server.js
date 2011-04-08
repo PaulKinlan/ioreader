@@ -80,6 +80,7 @@ app.get('/index.:format', function(req, res) {
  *  The AppCache.
  */
 app.get('/app.cache', function(req, res) {
+  var controller = new logic.Controller(conf);
   controller.renderAppCache(function(output) {
     res.header("Content-type: text/manifest\n\n");
     res.send(output);

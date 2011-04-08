@@ -25,17 +25,18 @@ var Controller = function(configuration) {
   this.renderAppCache = function(callback) {
     if(!!callback == false) throw new exceptions.NoCallbackException("No Callback");
 
-    var getFiles = function(directory, type) {
-      return function(fileCallback) { fs.readDir(directory, 
-        function(err,files) {
+    // currently only gets the the files in the root
+    var getFiles = function (directory, type) {
+      return function(fileCallback) {
+        fs.readdir(directory, function(err,files) {
           var output = [];
           var file;
-          for(var i; file = files[i]; i++) {
-            output.push({name: directory + "/" + file});
+          for(var i = 0; file = files[i]; i++) {
+            output.push({name: "/" + type + "/" + file});
           } 
 
           fileCallback(null, {type: type, files: output});
-        };
+        });
       };
     };
 
@@ -53,7 +54,7 @@ var Controller = function(configuration) {
         data.files[folder.type] = folder.files;
       }
       
-      loadTemplate("app.cache",function(template) {
+      loadTemplate(configuration.baseDir + "app.cache", function(template) {
         callback(m.to_html(template, data));  
       });
     });

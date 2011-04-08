@@ -2,23 +2,23 @@ CACHE MANIFEST
 
 # CSS
 {{#files}}
-  {{#css}}
+{{#css}}
 {{name}}
-  {{/css}}
+{{/css}}
 {{/files}} 
 
 # Images
 {{#files}}
-  {{#images}}
+{{#images}}
 {{name}}
-  {{/images}}
+{{/images}}
 {{/files}} 
 
 # Scripts
 {{#files}}
-  {{#scripts}}
+{{#scripts}}
 {{name}}
-  {{/scripts}}
+{{/scripts}}
 {{/files}} 
 
 

@@ -3,10 +3,9 @@
 if [ "$1" == "development" ] || [ "$1" == "production" ] || [ "$1" == "test" ]
 then
   echo "Compiling Desktop"
-  cat ./server/client/css/desktop/*.excss > ./server/client-min/css/desktop.excss
-  cat ./server/client/scripts/desktop/*.js > ./server/client-min/scripts/desktop.js
-  
   # Compile the CSS
+  cat ./server/client/css/base.less ./server/client/css/desktop/*.less > /tmp/io-reader.desktop.less 
+  lessc /tmp/io-reader.desktop.less > ./server/client-min/css/desktop.css
 
   # Compress the JS
 

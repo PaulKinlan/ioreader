@@ -13,6 +13,7 @@ Install node.
 npm install express
 npm install mustache
 npm install async
+npm install less
 
 * Running the app *
 

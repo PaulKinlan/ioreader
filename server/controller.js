@@ -75,7 +75,7 @@ var Controller = function(configuration) {
       }
 
       loadTemplate(configuration.baseDir + "app.cache", function(template) {
-        callback(m.to_html(template, data));  
+        callback(m.to_html(template, {"categories" : data, "configuration": configuration}));
       });
     });
   };

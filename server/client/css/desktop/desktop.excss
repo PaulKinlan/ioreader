@@ -106,6 +106,7 @@ background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#191C1
 
           & section {
             -webkit-transform: rotate3d(0,1,0, 0deg);
+            width: 150%;
             padding: 5px;
             & h1 {
               font-size: 2em;
@@ -142,13 +143,10 @@ background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#191C1
           top: 0px;
           width: 100%;
          
-  
           & img.thumbnail {
             display: none;
           }
         }
-        
-
       }
     }
   }

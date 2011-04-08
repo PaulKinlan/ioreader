@@ -1,3 +1,5 @@
+var exceptions = require('../exceptions');
+
 exports.Proxy = function() {
 };
 
@@ -21,7 +23,7 @@ exports.Proxy.prototype.fetchArticle = function(id, category) {
 
 var proxyFactory = new (function() {
   this.create = function(configuration) {
-    if(!!configuration == false) throw new Exception("Unable to create proxy. No configuration specified");
+    if(!!configuration == false) throw new exceptions.Exception("Unable to create proxy. No configuration specified");
     var module = require("./" + configuration.name)
     return new  module.proxy(configuration);
   };

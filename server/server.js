@@ -3,6 +3,7 @@ var app = express.createServer();
 var m = require('mustache');
 var fs = require('fs');
 var proxies = require('./proxies');
+var exception = require('./exceptions');
 
 var conf = { 
   name: "guardian",
@@ -12,21 +13,6 @@ var conf = {
 };
 
 var cache = {};
-
-var Exception = function() {
-
-};
-
-var NoCallbackException = function() {
-
-};
-
-NoCallbackException.prototype = new Exception();
-NoCallbackException.prototype.constructor = Exception.constructor;
-
-var RequiredException = function() {};
-RequiredException.prototype = new Exception();
-RequiredException.prototype.constructor = Exception.constructor;
 
 /*
   A Basic data holder
@@ -64,7 +50,7 @@ var Controller = function(configuration) {
     Loads the template from the file system.
   */ 
   var loadTemplate = function(file, callback) {
-    if(!!callback == false) throw new NoCallbackException("No callback");
+    if(!!callback == false) throw new exceptions.NoCallbackException("No callback");
     fs.readFile(file,'utf8', function(err, data) {
       if(err) throw err;
       callback(data);
@@ -75,7 +61,7 @@ var Controller = function(configuration) {
     Fetches and renders the categories for a given format.
   */ 
   this.fetchCategories = function(format, callback) {
-    if(!!callback == false) throw new NoCallbackException("No callback");
+    if(!!callback == false) throw new exceptions.NoCallbackException("No callback");
     proxy.fetchCategories(function(data) {
       if(format == "json") {
         callback(JSON.stringify(data));
@@ -92,8 +78,8 @@ var Controller = function(configuration) {
     For a given category fetch and render the list of articles.
   */
   this.fetchCategory = function(id, format, callback) {
-    if(!!id == false) throw new Exception("Category id not specified");
-    if(!!callback == false) throw new NoCallbackException("No callback");
+    if(!!id == false) throw new exceptions.Exception("Category id not specified");
+    if(!!callback == false) throw new exceptions.NoCallbackException("No callback");
     
     proxy.fetchCategory(id, function(data) {
       // Render the data. 
@@ -109,8 +95,8 @@ var Controller = function(configuration) {
   };
 
   this.fetchArticle = function(id, category, format, callback) {
-    if(!!id == false) throw new Exception("Article id not specified");
-    if(!!callback == false) throw new NoCallbackException("No callback");
+    if(!!id == false) throw new exceptions.Exception("Article id not specified");
+    if(!!callback == false) throw new exceptions.NoCallbackException("No callback");
     proxy.fetchArticle(id, category, function(data) {
       // Render the data. 
       if(format == "json") {
@@ -158,7 +144,7 @@ app.configure(function() {
 
 app.configure('test', function() {
   app.use(express.static(__dirname + '/client/'));
-  //app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+  app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
   conf.name = "test"; // force test mode.
   console.log("Running in Test");
 });
@@ -168,7 +154,7 @@ app.configure('test', function() {
 */
 app.configure('development', function() {
   app.use(express.static(__dirname + '/client/'));
-  //app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+  app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
   console.log("Running in Development");
 });
 

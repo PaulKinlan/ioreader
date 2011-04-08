@@ -47,6 +47,7 @@ var Controller = function(configuration) {
     };
 
     var fileActions = [];
+    fileActions.push(getFiles("lib", "scripts"));
     fileActions.push(getFiles("css", "css"));
     fileActions.push(getFiles("css/desktop", "css"));
     fileActions.push(getFiles("css/tv", "css"));

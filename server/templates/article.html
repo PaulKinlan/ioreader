@@ -6,13 +6,13 @@
     <script src="/scripts/index.js"></script>
     <script src="/scripts/controller.js"></script>
     <script src="/scripts/uis.js"></script>
-    <title>{{#category}}{{name}} &mdash; {{description}}{{/category}}</title>
+    <title>{{#configuration}}{{name}} &mdash; {{description}}{{/configuration}}</title>
     <link rel="stylesheet" href="/css/reset.css" />
   </head>
   <body>
     <header>
-      <h1>{{name}}</h1>
-      <p>{{description}}</p>
+      <h1>{{#configuration}}{{name}}{{/configuration}}</h1>
+      <p>{{#configuration}}{{description}}{{/configuration}}</p>
       <ul>
       {{#categories}}
       <li class="category {{state}}"><a href="/reader/{{id}}">{{name}}</a></li>

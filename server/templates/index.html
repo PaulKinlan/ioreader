@@ -7,14 +7,14 @@
     <script src="/scripts/controller.js"></script>
     <script src="/scripts/uis.js"></script>
     <link rel="stylesheet" href="/css/reset.css" />
-    <title>{{#category}}{{name}} &mdash; {{description}}{{/category}}</title>
+    <title>{{#configuration}}{{name}} &mdash; {{description}}{{/configuration}}</title>
     <meta name="viewport" content="width=device-width, target-densitydpi=160dpi,
       minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
   </head>
   <body>
     <header>
-      <h1>{{name}}</h1>
-      <p>{{description}}</p>
+      <h1>{{#configuration}}{{name}}{{/configuration}}</h1>
+      <p>{{#configuration}}{{description}}{{/configuration}}</p>
       <nav>
         <ul>
         {{#categories}}

@@ -3,15 +3,14 @@ body {
   -webkit-perspective: 800;
   background-color: #b63535;
   color: white;
-  background: #191C1B;
+  background: #1E5799;
   /* old browsers */
 
-  background: -moz-linear-gradient(top, #191c1b 0%, #363a39 50%, #0a0e0a 51%, #0a0809 100%);
+  background: -moz-linear-gradient(top, #1e5799 0%, #2989d8 50%, #207cca 51%, #7db9e8 100%);
   /* firefox */
 
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #191c1b), color-stop(50%, #363a39), color-stop(51%, #0a0e0a), color-stop(100%, #0a0809));
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #1e5799), color-stop(50%, #2989d8), color-stop(51%, #207cca), color-stop(100%, #7db9e8));
   /* webkit */
-
 }
 body > header {
   z-index: 1000;
@@ -50,7 +49,7 @@ body ul li.active {
 .categories .category.active .articles {
   background-color: red;
 }
-.categories .category h2 {
+.categories .category > h2 {
   padding: 5px;
   font-size: 1.6em;
   margin-left: 5px;
@@ -70,7 +69,11 @@ body ul li.active {
   position: relative;
 }
 .categories .category .articles article header h1 {
-  font-size: 1.4em;
+  font-size: 1.6em;
+  position: absolute;
+  padding: 5px;
+  box-sizing: border-box;
+  width: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   color: white;
 }
@@ -90,6 +93,7 @@ body ul li.active {
 }
 .categories .category .articles article.active section {
   -webkit-transform: rotate3d(0, 1, 0, 0deg);
+  opacity: 1;
   width: 150%;
   padding: 5px;
 }
@@ -102,6 +106,7 @@ body ul li.active {
 }
 .categories .category .articles article.active section .large {
   display: block;
+  width: 100%;
 }
 .categories .category .articles article.active section .story {
   margin-top: 5px;
@@ -110,6 +115,7 @@ body ul li.active {
   margin-bottom: 5px;
 }
 .categories .category .articles article section {
+  opacity: 0;
   -webkit-backface-visibility: hidden;
   -webkit-transition: -webkit-transform 0.2s ease-in-out;
   -webkit-transform-origin: top left;

@@ -13,15 +13,19 @@ body {
 
   > header {
     z-index: 1000;
-    left: 0;
+    margin-left: 20px;
+    left: 0px;
     top: 0;
+    padding: 10px;
     bottom: 0;
     width: @headerWidth;
     color: white;
     background-color: @bg;
     border-right: solid 1px @bgdark;
     box-shadow: 0px 0px 10px @bgdark;
-    
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+ 
     h1 {
     }
   
@@ -114,13 +118,16 @@ body {
             opacity: 1;
             width: 150%;
             padding: 5px;
+
             h1 {
               font-size: 2em;
+              margin-bottom: 5px;
             }
 
             .summary {
               font-style: italic;
               color: #777;
+              margin-bottom: 5px;
             }
   
             .large {

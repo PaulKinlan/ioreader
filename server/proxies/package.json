@@ -1,0 +1,10 @@
+{
+  "name": "proxies",
+  "main": "proxies"
+  "author": "Paul Kinlan",
+  "contributors": [
+    {"name": "Mike Mahemoff"},
+    {"name": "Eric Bidelman"},
+    {"name": "Boris Smus"}
+  ]
+}

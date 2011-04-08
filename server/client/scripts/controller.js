@@ -73,7 +73,7 @@ var BaseController = function() {
   };
 
   var getActiveArticle = function() {
-    return $("article.active");
+    return $("artle.active");
   };
 
   var activate = function(element) {

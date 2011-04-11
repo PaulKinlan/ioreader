@@ -44,6 +44,7 @@ var BaseController = function() {
 
   var changeArticle = function(category, article) {
 
+    $("html").attr("class", "articleState");
     $(".category").removeClass("active");
     $("article").removeClass("active");
     $("li[data-category='"+ category +"']").addClass("active");
@@ -54,6 +55,7 @@ var BaseController = function() {
   };
 
   var fetchArticle = function(category, article, callback) { 
+    return;
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function() {
       if(xhr.readyState == 4 && xhr.status == 200) {
@@ -78,9 +80,11 @@ var BaseController = function() {
 
   var activate = function(element) {
     activeElement = $(element);
+    console.log("activating", activeElement);
     var data = activeElement.data();
     
     if(data.article) {
+      console.log("activating article", activeElement, data);
       if (window.history.pushState) {
         window.history.pushState(undefined, "", "/reader/" + data.category + "/" + data.article );
       }

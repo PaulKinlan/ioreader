@@ -1,2 +1,3 @@
 *.swp
 */*.swp
+*server/client-min/*

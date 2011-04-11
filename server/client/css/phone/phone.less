@@ -16,6 +16,10 @@
 a,a:visited { text-decoration: none; color: white; }
 .category { .linearGradient(pink,yellow); width: 100%; }
 
+
+/* QUICKFIX */
+a { color: red !important; }
+
 /******************/
 /* PAGE STRUCTURE */
 /******************/*
@@ -44,7 +48,7 @@ nav, html[data-resource=menu] { display: none; } /* not supported in this UI */
   img.thumbnail { width: 4em; height: 3em; position: absolute; top: 0.4em; left: 1em; }
 
   article {
-    padding: 1.5em 1em 1em;
+    padding: 1.5em 0 1em;
     width: 100%; 
     border-bottom: 2px solid black;
     min-height: 1.5em;
@@ -63,12 +67,10 @@ nav, html[data-resource=menu] { display: none; } /* not supported in this UI */
 
 }
 
-[data-resource=category] .category { cursor: move; }
-
 
 /******************/
 /* STORY STATE */
 /******************/*
-
-[data-resource=story] article.active .story { background: #ddd; margin: 2em 0; }
-[data-resourece=story] article.active h3 { font-weight: bold; }
+.story { display: none; }
+.articleState article.active { color: yellow !important; }
+.articleState article.active .story { display: block; }

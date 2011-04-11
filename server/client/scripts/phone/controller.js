@@ -1,46 +1,86 @@
 var PhoneController = function() {
 
+  $("article").eq(3).addClass("active");
+  console.log("ART", $("article").eq(3));
+
   var controller = this;
+
+  var $categories = $(".categories"),
+      $category = $(".category", $categories),
+      categoryIndex = $(".category.active").prev().length,
+      pageY = window.pageYOffset,
+      minMarginY = -10+$(window).height()-$(document).height();
+
+  function animateToCurrentCategory(callback) {
+    $(".categories").
+      touch(null)
+      .animate({marginLeft: -categoryIndex*$(window).width()},function() {
+        if (callback) callback();
+        $(".categories").touch(touchOpts);
+      });
+  }
+
+  var touchOpts = {
+    swipeX: function(ev) {
+      categoryIndex = 
+        ev.dx < 0 ? Math.min(categoryIndex+1, $category.length-1)
+                  : Math.max(categoryIndex-1, 0);
+      animateToCurrentCategory(function() {
+        controller.activate($category.get(categoryIndex));
+      });
+      // $(".category").removeClass("active");
+      // $(".categories").eq(categoryIndex).addClass("active");
+    },
+    swipeY: function() { // do nothing; we only want move events
+    }, 
+    moveX: function(ev) {
+      $(".categories").css("marginLeft", ev.dx + parseInt($(".categories").css("marginLeft")));
+    },
+    moveY: function(ev) {
+      $("body").css("marginTop", inside(minMarginY,parseInt($("body").css("marginTop"))+ev.dy, 0));
+    },
+    click: function(ev) {
+      var $target = $(ev.target);
+          $header = $target.closest("header"), $article = $target.closest("article");
+      console.log("ARTICLE", $article);
+      // if ($header.length && $article.hasClass("active")) {
+
+      // TOGGLE NOT FULLY WORKING - SOME ARTICLES NO LONGER BEING ACTIVATED
+
+      if ($article.length) { 
+        if ($article.hasClass("active") && !$target.is(".story")) {
+          console.log("TOGGLE OFF", $target);
+          controller.activate($category.eq(categoryIndex)); // toggle active article off
+        } else {
+          controller.activate($article);
+          console.log("TOGGLE ON", $target, $article);
+        }
+      }
+      animateToCurrentCategory(); // revert any small movement
+    },
+    longHold: function(ev) {
+      animateToCurrentCategory();
+    }
+  };
 
   $(function() {
 
-    // window.scrollTo(0,1);
+    $(".categories")
+      .css({marginLeft: -categoryIndex*$(window).width()})
+      .touch(touchOpts);
 
-    var categoryIndex = $(".category.active").prev().length;
-    c=categoryIndex;
-    $(".categories").css({marginLeft: -categoryIndex*$(window).width()});
-    $(".categories").touch({
-      swipeX: function(ev) {
-        categoryIndex = 
-          ev.dx < 0 ? Math.min(categoryIndex+1, $(".category").length-1)
-                    : Math.max(categoryIndex-1, 0);
-        $(".categories").animate({marginLeft: -categoryIndex*$(window).width()});
-        log("swiped", ev.dx, categoryIndex);
-        $(".category").removeClass("active");
-        log("ci", categoryIndex);
-        $(".categories").eq(categoryIndex).addClass("active");
-        // controller.activate($(".categories").get(categoryIndex));
-      },
-      move: function(ev) {
-        log("moved", ev.dx);
-        $(".categories").css("marginLeft", ev.dx + parseInt($(".categories").css("marginLeft")));
-      },
-      small: function(ev) {
-        log("small");
-        $(".categories").animate({marginLeft: -categoryIndex*$(window).width()}, 10);
-      },
-      direction: "x"
+    window.addEventListener("articlechanged", function(e) {
+      // $(".story").hide();
     });
 
     $("article").css("background", "pink"); // quick hack to verify page loaded ok
 
-    $("[data-link-category=story]").click(function() {
-      $(".categories").stop().css({marginLeft: 0});
-      // setTimeout(function() { $(".categories").css({marginLeft: 0}); }, 1000);
-        // weird race condition - need timeout
-    });
 
   });
+
+  function inside(min, val, max) {
+    return Math.min(max,Math.max(val,min));
+  } 
 
 }
 

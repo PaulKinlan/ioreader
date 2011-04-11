@@ -1,0 +1,188 @@
+@bg: black;
+@navbar-height: 50px;
+@thumbnail-radius: 7px;
+
+.border-radius (@radius: 5px) {
+  -webkit-border-radius: @radius;
+  -moz-border-radius: @radius;
+  border-radius: @radius;
+}
+
+.box-sizing(@type: border-box) {
+  -webkit-box-sizing: @type;
+  -moz-box-sizing: @type;
+  box-sizing: @type;
+}
+
+.display-box {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -o-box;
+  display: box;
+}
+
+.boxcenter { /* vertical align center */
+  -webkit-box-align: center;
+  -moz-box-align: center;
+  -o-box-align: center;
+  box-align: center;
+}
+
+body {
+  font: 11pt normal 'Droid Sans', Arial;
+  background: -webkit-linear-gradient(top, white, #ddd);
+}
+
+body > header {
+   /*background: -webkit-linear-gradient(top, white, rgba(0, 50, 128, 0.7));*/
+  /*background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#1E5799), color-stop(50%,#2989D8), color-stop(51%,#207cca), color-stop(100%,#7db9e8));*/
+  background: -webkit-gradient(linear, 0% 48%, 0% 47%, from(#990000), to(#9d2e2c));
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.5);
+  width: 100%;
+  min-height: @navbar-height;
+  font-family: 'Lato', 'Droid Sans';
+  .box-sizing;
+  .display-box;
+
+  h1 {
+    display: none;
+  }
+
+  p {
+    font-size: 18pt;
+    font-weight: bold;
+    color: white;
+    text-shadow: 1px 1px 1px black;
+    padding: 0 10px;
+    .display-box;
+    .boxcenter;
+  }
+
+  ul {
+    border-left: 1px solid rgba(0,0,0,0.3);
+    border-right: 1px solid rgba(255,255,255,0.3);
+    .display-box;
+    .boxcenter;
+
+    .category {
+      border-left: 1px solid rgba(255,255,255,0.2);
+      border-right: 1px solid rgba(0,0,0,0.2);
+      line-height: @navbar-height;
+
+      &.active {
+        /*background: -webkit-gradient(radial, 50% bottom, 10, 50% bottom, 75, from(red), to(darkred));*/
+        background: -webkit-gradient(radial, 50% 100%, 10, 50% 50%, 90, from(red), to(transparent));
+        text-shadow: 0 2px 0 rgba(0,0,0,0.8);
+      }
+
+      a {
+        color: white;
+        /*text-transform: uppercase;
+        font-weight: bold;*/
+        text-decoration: none;
+        padding: 0 20px;
+        display: block;
+      }
+    }
+  }
+
+  nav {
+    .display-box;
+  }
+}
+
+.categories {
+
+  .category {
+    padding: 1em;
+  }
+
+}
+
+article {
+  color: #222;
+  display: inline-block;
+  -webkit-transition: -webkit-transform 0.4s ease-in-out;
+
+  > header {
+    position: relative;
+
+    img.thumbnail {
+      .border-radius(7px);
+      min-height: 276px;
+      max-height: 276px;
+      min-width: 460px;
+    }
+
+    h1 {
+      position: absolute;
+      color: white;
+      font-size: 14pt;
+      font-family: 'Lato', 'Droid Sans';
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      width: 100%;
+      padding: 5px 7px;
+      /*background: -webkit-linear-gradient(top, rgba(255,255,255,0.4), transparent);*/
+      background: rgba(255, 255, 255, 0.3);
+      box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.5) inset;
+      .box-sizing;
+      .border-radius(7px);
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+      text-shadow: 1px 1px 1px black;
+    }
+    .summary {
+      font-size: 10pt;
+      position: absolute;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      overflow: hidden;
+      padding: 5px 7px;
+      color: white;
+      width: 100%;
+      height: 55px;
+      .border-radius(7px);
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+      .box-sizing;
+    }
+  }
+
+   > section {
+    display: none;
+  }
+}
+
+article.active {
+  /*-webkit-transform: rotate3d(0,1,0,180deg);*/
+
+  > header {
+    display: none;
+  }
+
+  > section {
+    /*-webkit-transform: rotate3d(0,1,0,-180deg);*/
+    display: block;
+
+    h1 {
+      position: relative;
+      box-shadow: none;
+      padding: 0;
+      margin-bottom: 0.5em;
+    }
+    .summary {
+      
+    }
+    img.thumbnail {
+      display: none;
+    }
+    img.large {
+      
+    }
+    .story {
+      text-shadow: 0 1px 1px rgba(255,255,255,0.8);
+    }
+  }
+}

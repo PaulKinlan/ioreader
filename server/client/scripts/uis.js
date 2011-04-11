@@ -16,6 +16,10 @@ formfactor.detect([
   {
     "formfactor": "tv",
     "resources": ["/scripts/tv/controller.js", "/lib/excss.js", "/css/tv/tv.excss"]
+  },
+  {
+    "formfactor": "tablet",
+    "resources": ["/scripts/tablet/controller.js", "/lib/less.js", "/css/tablet/tablet.less"]
   }
 
 ]);

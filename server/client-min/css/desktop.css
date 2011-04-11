@@ -14,14 +14,18 @@ body {
 }
 body > header {
   z-index: 1000;
-  left: 0;
+  margin-left: 20px;
+  left: 0px;
   top: 0;
+  padding: 10px;
   bottom: 0;
   width: 150px;
   color: white;
   background-color: #b63535;
   border-right: solid 1px #861c1c;
   box-shadow: 0px 0px 10px #861c1c;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
 body ul li.active {
   background-color: #861c1c;
@@ -99,10 +103,12 @@ body ul li.active {
 }
 .categories .category .articles article.active section h1 {
   font-size: 2em;
+  margin-bottom: 5px;
 }
 .categories .category .articles article.active section .summary {
   font-style: italic;
   color: #777;
+  margin-bottom: 5px;
 }
 .categories .category .articles article.active section .large {
   display: block;

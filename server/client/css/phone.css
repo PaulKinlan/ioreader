@@ -1,0 +1,99 @@
+/**********/
+/* MACROS */
+/**********/
+/********************/
+/* GENERAL ELEMENTS */
+/********************/
+a, a:visited {
+  text-decoration: none;
+  color: white;
+}
+.category {
+  background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, pink), color-stop(100%, yellow));
+  background-image: -moz-linear-gradient(center bottom, pink 0, yellow 100%);
+  background-image: -o-linear-gradient(center bottom, pink 0, yellow 100%);
+  background-image: linear-gradient(center bottom, pink 0, yellow 100%);
+  background-color: pink;
+  width: 100%;
+}
+/* QUICKFIX */
+a {
+  color: red !important;
+}
+/******************/
+/* PAGE STRUCTURE */
+/******************/*html {
+  background: black;
+}
+nav, html[data-resource=menu] {
+  display: none;
+}
+/* not supported in this UI */
+/***********************************/
+/* MAIN (CATEGORY AND STORY) STATE */
+/***********************************/
+.categories {
+  width: 100%;
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: start;
+  /* .summary { position: absolute; top: 1.8em; left: 6em; } */
+
+}
+.categories .category {
+  height: 100%;
+}
+.categories img.large {
+  display: none;
+}
+.categories h2 {
+  padding: 1em 2em;
+  background: red;
+}
+.categories article {
+  position: relative;
+  overflow: hidden;
+}
+.categories article h1 {
+  font-weight: bold;
+  position: absolute;
+  top: 0.4em;
+  left: 6em;
+}
+.categories .summary {
+  display: none;
+}
+.categories img.thumbnail {
+  width: 4em;
+  height: 3em;
+  position: absolute;
+  top: 0.4em;
+  left: 1em;
+}
+.categories article {
+  padding: 1.5em 0 1em;
+  width: 100%;
+  border-bottom: 2px solid black;
+  min-height: 1.5em;
+}
+.categories h3 {
+  display: inline;
+  padding: 0.5em;
+  height: 1.5em;
+  overflow: hidden;
+  cursor: pointer;
+  background: orange;
+  padding: 0.5em;
+  border-radius: 2em;
+}
+/******************/
+/* STORY STATE */
+/******************/*.story {
+  display: none;
+}
+.articleState article.active {
+  color: yellow !important;
+}
+.articleState article.active .story {
+  display: block;
+}

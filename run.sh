@@ -5,9 +5,25 @@ then
   echo "Compiling Desktop"
   # Compile the CSS
   cat ./server/client/css/base.less ./server/client/css/desktop/*.less > /tmp/io-reader.desktop.less 
-  lessc /tmp/io-reader.desktop.less > ./server/client-min/css/desktop.css
+  cat ./server/client/css/base.less ./server/client/css/phone/*.less > /tmp/io-reader.phone.less 
+  cat ./server/client/css/base.less ./server/client/css/table/*.less > /tmp/io-reader.tablet.less 
+  cat ./server/client/css/base.less ./server/client/css/tv/*.less > /tmp/io-reader.tv.less 
 
+  lessc /tmp/io-reader.desktop.less > ./server/client/css/desktop.css
+  lessc /tmp/io-reader.desktop.less > ./server/client-min/css/desktop.css
+  
+  lessc /tmp/io-reader.phone.less > ./server/client/css/phone.css
+  lessc /tmp/io-reader.phone.less > ./server/client-min/css/phone.css
+
+  lessc /tmp/io-reader.tablet.less > ./server/client/css/tablet.css
+  lessc /tmp/io-reader.tablet.less > ./server/client-min/css/tablet.css
+  
+  lessc /tmp/io-reader.tv.less > ./server/client/css/tv.css
+  lessc /tmp/io-reader.tv.less > ./server/client-min/css/tv.css
+  
+  
   # Compress the JS
+
 
   export NODE_ENV=$1
   node server/server.js

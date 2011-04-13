@@ -7,7 +7,7 @@ formfactor.register({
 formfactor.detect([
   {
     "formfactor": "desktop",
-    "resources": ["/scripts/desktop/controller.js", "/css/desktop/desktop.css"]
+    "resources": ["/scripts/desktop/controller.js", "/css/desktop.css"]
   },
   {
     "formfactor": "phone",

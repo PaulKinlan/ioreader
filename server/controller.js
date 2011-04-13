@@ -6,7 +6,12 @@ var exceptions = require('./exceptions');
 
 var Controller = function(configuration) {
   var proxy = proxies.ProxyFactory.create(configuration);  
-  
+  var globalTemplates = [
+    {type: "index", file: configuration.baseDir + "index.html"},
+    {type: "category", file: configuration.baseDir + "category.html"},
+    {type: "article", file: configuration.baseDir + "article.html"},
+  ];
+
   /*
     Loads the template from the file system.
   */ 
@@ -15,6 +20,31 @@ var Controller = function(configuration) {
     fs.readFile(file,'utf8', function(err, data) {
       if(err) throw err;
       callback(data);
+    });
+  };
+
+  /* 
+   * Asynchronously load a list of templates. { file: "test.tmpl", type: "index" }
+   * Loaded in the order of specification
+   */
+  var loadTemplates = function(templates, callback) {
+    if(!!callback == false) throw new exceptions.NoCallbackException("No callback");
+    
+    var getTemplate = function (template) {
+      return function(templateCallback) {
+        loadTemplate(template.file, function(data) {
+          templateCallback(null, { type: template.type, template: data })
+        }); 
+      };
+    };
+
+    var templateActions = templates.map(function(i) { return getTemplate(i); });
+    console.log(templateActions);
+    async.parallel(templateActions, function(err, result){
+      var output = {};
+      result.forEach(function(item) { output[item.type] = item.template; });
+    
+      callback(output); 
     });
   };
 
@@ -81,20 +111,25 @@ var Controller = function(configuration) {
     });
   };
 
+  var renderTemplate = function (data, format, callback) {
+    if(format == "json") {
+      callback(JSON.stringify(data));
+    }
+    else {
+      loadTemplates(globalTemplates, function(template) {
+        console.log(data);
+        callback(m.to_html(template.index, {"categories" : data, "configuration": configuration}, template));
+      });
+    }
+  };
+
   /*
     Fetches and renders the categories for a given format.
   */ 
   this.fetchCategories = function(format, callback) {
     if(!!callback == false) throw new exceptions.NoCallbackException("No callback");
     proxy.fetchCategories(function(data) {
-      if(format == "json") {
-        callback(JSON.stringify(data));
-      }
-      else {
-        loadTemplate(configuration.baseDir + "index." + format, function(template) {
-          callback(m.to_html(template, {"categories" : data, "configuration": configuration}));
-        });
-      }
+      renderTemplate(data, format, callback); 
     }); 
   };
 
@@ -106,15 +141,7 @@ var Controller = function(configuration) {
     if(!!callback == false) throw new exceptions.NoCallbackException("No callback");
     
     proxy.fetchCategory(id, function(data) {
-      // Render the data. 
-      if(format == "json") {
-        callback(JSON.stringify({categories: data}));
-      }
-      else {
-        loadTemplate(configuration.baseDir + "category." + format, function(template) {
-          callback(m.to_html(template, {"categories": data, "configuration": configuration})); 
-        });
-      }
+      renderTemplate(data, format, callback); 
     }); 
   };
 
@@ -122,15 +149,7 @@ var Controller = function(configuration) {
     if(!!id == false) throw new exceptions.Exception("Article id not specified");
     if(!!callback == false) throw new exceptions.NoCallbackException("No callback");
     proxy.fetchArticle(id, category, function(data) {
-      // Render the data. 
-      if(format == "json") {
-        callback(JSON.stringify({categories: data}));
-      }
-      else {
-        loadTemplate(configuration.baseDir + "article." + format, function(template) {
-          callback(m.to_html(template, {"categories": data, "configuration": configuration})); 
-        });
-      }
+      renderTemplate(data, format, callback); 
     }); 
   };
 };

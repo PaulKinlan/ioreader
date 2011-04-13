@@ -24,7 +24,6 @@ then
   
   # Compress the JS
 
-
   export NODE_ENV=$1
   node server/server.js
 else

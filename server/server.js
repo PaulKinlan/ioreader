@@ -27,7 +27,7 @@ app.configure(function() {
 app.configure('test', function() {
   app.use(express.static(conf.clientDir));
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
-  conf.name = "test"; // force test mode.
+  conf.id = "test"; // force test mode.
   console.log("Running in Test");
 });
 

@@ -53,7 +53,7 @@ body ul li.active {
   padding: 5px;
   font-size: 1.6em;
   margin-left: 5px;
-  background-color: red;
+  background-color: #cf0000;
   color: white;
   display: inline;
 }
@@ -121,11 +121,17 @@ body ul li.active {
   left: 50%;
 }
 .categories .category .articles article.active section h1 {
-  display: none;
+  position: absolute;
+  top: 5px;
+  right: 0;
+  max-width: 30%;
+  font-size: 2em;
+  background-color: #0073CF;
+  color: white;
 }
 .categories .category .articles article.active section .summary {
   position: absolute;
-  top: 120px;
+  top: 150px;
   z-index: 100;
   font-style: italic;
   color: black;

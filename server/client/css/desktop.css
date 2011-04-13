@@ -33,7 +33,7 @@ body ul li.active {
 .categories {
   height: 100%;
   -webkit-transform-origin: 0% 100%;
-  -webkit-transform-style: preserve- 3 d;
+  -webkit-transform-style: preserve-3d;
   -webkit-transform: translatex(100px) rotatey(45deg);
   display: -webkit-box;
   -webkit-box-orient: horizontal;
@@ -45,7 +45,7 @@ body ul li.active {
   width: 400px;
   height: 800px;
   -webkit-transition: -webkit-transform 0.2s ease-in-out;
-  -webkit-transform-style: preserve- 3 d;
+  -webkit-transform-style: preserve-3d;
 }
 .categories .category.active {
   -webkit-transform: translatez(200px) rotatey(-45deg);

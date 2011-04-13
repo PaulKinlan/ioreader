@@ -111,12 +111,14 @@ var Controller = function(configuration) {
   };
 
   var renderTemplate = function (data, format, callback) {
+    var d = {"categories" : data, "configuration": configuration};
+    
     if(format == "json") {
-      callback(JSON.stringify(data));
+      callback(JSON.stringify(d));
     }
     else {
       loadTemplates(globalTemplates, function(template) {
-        callback(m.to_html(template.index, {"categories" : data, "configuration": configuration}, template));
+        callback(m.to_html(template.index, d, template));
       });
     }
   };

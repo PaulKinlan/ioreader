@@ -117,7 +117,6 @@ app.get('/reader/:category/:article.:format?', function(req, res) {
   }
   else {
     controller.fetchArticle(article, category, format, function(output) { 
-      console.log(output);
       cache[req.url] = output;
       bustCache(res).send(output);
     });

@@ -88,11 +88,18 @@ body {
             position:absolute;
             padding: 5px;
             box-sizing: border-box;
-            width: 100%;
-            background-color: rgba(0,0,0,0.5);
+            background-color: #0073CF;
             color: white;
-          } 
-        
+            bottom: 0;
+            font-family: 'Allerta Stencil', Arial, serif; 
+            max-width: 80%;
+            right: 0; 
+            a {
+              color: white;
+              text-decoration: none;
+            }
+          }
+      
           img.thumbnail {
             width: 100%;
           }
@@ -102,11 +109,21 @@ body {
           }
 
           .summary {
-            bottom: 0;
+            top: 0;
+            position: absolute;
             font-size: 1.0em;
             background-color: rgba(0,0,0,0.5);
+            opacity: 0;
+          }
+
+          &:hover .summary {
+            opacity: 1;
           }
         } 
+
+        footer {
+         display:none;
+        }
 
         &.active {
           outline: solid red 5px;

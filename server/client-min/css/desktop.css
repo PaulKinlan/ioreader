@@ -77,9 +77,16 @@ body ul li.active {
   position: absolute;
   padding: 5px;
   box-sizing: border-box;
-  width: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: #0073CF;
   color: white;
+  bottom: 0;
+  font-family: 'Allerta Stencil', Arial, serif;
+  max-width: 80%;
+  right: 0;
+}
+.categories .category .articles article header h1 a {
+  color: white;
+  text-decoration: none;
 }
 .categories .category .articles article header img.thumbnail {
   width: 100%;
@@ -88,9 +95,17 @@ body ul li.active {
   display: none;
 }
 .categories .category .articles article header .summary {
-  bottom: 0;
+  top: 0;
+  position: absolute;
   font-size: 1.0em;
   background-color: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+}
+.categories .category .articles article header:hover .summary {
+  opacity: 1;
+}
+.categories .category .articles article footer {
+  display: none;
 }
 .categories .category .articles article.active {
   outline: solid red 5px;

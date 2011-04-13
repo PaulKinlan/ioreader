@@ -31,7 +31,7 @@
       {{#articles}}
         <article id="{{id}}" data-article="{{id}}" data-category="{{categoryId}}">
           <header>
-            <h1>{{title}}</h1>
+            <h1><a href="/reader/{{id}}">{{title}}</a></h1>
             <p><time pubdate time="{{puddate}}"></time></p> 
             <img class="thumbnail" src="{{thumbnail}}" />
             <div class="summary">{{{shortDescription}}}</div>
@@ -45,6 +45,7 @@
             <div class="story"></div>
           </section>
           <footer>
+          <a href="{{url}}">Link</a>
           </footer>
         </article>
       {{/articles}}

@@ -24,7 +24,7 @@ exports.Proxy.prototype.fetchArticle = function(id, category) {
 var proxyFactory = new (function() {
   this.create = function(configuration) {
     if(!!configuration == false) throw new exceptions.Exception("Unable to create proxy. No configuration specified");
-    var module = require("./" + configuration.name)
+    var module = require("./" + configuration.id)
     return new  module.proxy(configuration);
   };
 })();

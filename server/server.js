@@ -6,8 +6,9 @@ var logic = require('./controller');
 var app = express.createServer();
 
 var conf = { 
-  name: "guardian",
-  description: "The Guardian News Reader",
+  id: "guardian",
+  name: "The Guardian News Reader",
+  description: "All the latest from around the world",
   version: "0.0.0.1",
   baseDir: __dirname + "/templates/",
   clientDir: __dirname + "/client/",

@@ -7,7 +7,7 @@ formfactor.register({
 formfactor.detect([
   {
     "formfactor": "desktop",
-    "resources": ["/scripts/desktop/controller.js", "/css/desktop.css", {href: "http://fonts.googleapis.com/css?family=Allerta+Stencil:400", rel:"stylesheet", tag:"link", type: "text/css", urlKind: "href"}]
+    "resources": ["/scripts/desktop/controller.js", "/css/desktop.css", {href: "http://fonts.googleapis.com/css?family=Allerta+Stencil:400|Droid+Sans", rel:"stylesheet", tag:"link", type: "text/css", urlKind: "href"}]
   },
   {
     "formfactor": "phone",

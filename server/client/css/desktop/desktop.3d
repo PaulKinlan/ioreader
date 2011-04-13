@@ -1,4 +1,8 @@
+@headerWidth: 150px;
+
 body {
+  overflow: hidden;
+  -webkit-perspective: 800;
   background-color: @bg;
   color: white;
   background: #1E5799; /* old browsers */
@@ -12,6 +16,7 @@ body {
     top: 0;
     padding: 10px;
     bottom: 0;
+    width: @headerWidth;
     color: white;
     background-color: @bg;
     border-right: solid 1px @bgdark;
@@ -36,8 +41,14 @@ body {
 }
 
 .categories { 
+  height: 100%;
+  -webkit-transform-origin: 0% 100%;
+  -webkit-transform-style: preserve-3d;
+  -webkit-transform: translateX(100px) rotateY(45deg);
+
   display: -webkit-box;
   -webkit-box-orient: horizontal;
+  margin-left: @headerWidth;
 
   .category {
     margin-top: 10px;
@@ -45,8 +56,10 @@ body {
     width: 400px;
     height: 800px;
     -webkit-transition: -webkit-transform 0.2s ease-in-out;
+    -webkit-transform-style: preserve-3d;
 
     &.active{
+      -webkit-transform: translateZ(200px) rotateY(-45deg);
       .articles {
         background-color: red;
       }
@@ -62,16 +75,17 @@ body {
     }
 
     .articles {
+      height: 100%;
+      width: 100%;
       box-sizing: border-box;
       padding: 5px; 
 
       article {
         margin-top: 5px;
         outline: solid white 5px;
-
+        position: relative;
  
         header {
-          position: relative;
           h1 {
             font-size: 1.6em;
             position:absolute;
@@ -82,7 +96,6 @@ body {
             bottom: 0;
             font-family: 'Allerta Stencil', Arial, serif; 
             max-width: 80%;
-            margin-bottom: 5px;
             right: 0; 
             a {
               color: white;
@@ -99,16 +112,11 @@ body {
           }
 
           .summary {
-            -webkit-transition: opacity 0.3s ease-in-out;
             top: 0;
             position: absolute;
-            padding: 5px;
             font-size: 1.0em;
-            width: 100%;
-            box-sizing: border-box;
             background-color: rgba(0,0,0,0.5);
             opacity: 0;
-            font-family: 'Droid Sans';
           }
 
           &:hover .summary {
@@ -121,15 +129,14 @@ body {
         }
 
         &.active {
-          z-index: 1000;
-          
+          outline: solid red 5px;
+
           section {
-            top: 0;
-            bottom: 0;
-            right: 0;
+            -webkit-transform: rotate3d(0,1,0, 0deg);
             opacity: 1;
+            width: 150%;
             padding: 5px;
-            left: 50%;
+
             h1 {
               display: none;
             }
@@ -164,17 +171,19 @@ body {
         }
 
         section {
-          z-index:1000;
           opacity: 0;
+          -webkit-backface-visibility: hidden;
           -webkit-transition: -webkit-transform 0.2s ease-in-out;
           -webkit-transform-origin: top left;
+          -webkit-transform: rotate3d(0,1,0, 180deg);
+          position: absolute;
           background-color: white;
-          overflow: auto;
+          overflow: scroll;
           color: black;
+          left: 105%;
           top: 0px;
-          position:fixed;
-          left: 100%;
- 
+          width: 100%;
+         
           img.thumbnail {
             display: none;
           }

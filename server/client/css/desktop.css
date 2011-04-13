@@ -117,13 +117,18 @@ body ul li.active {
   padding: 5px;
 }
 .categories .category .articles article.active section h1 {
-  font-size: 2em;
-  margin-bottom: 5px;
+  display: none;
 }
 .categories .category .articles article.active section .summary {
+  position: absolute;
+  top: 120px;
+  z-index: 100;
   font-style: italic;
-  color: #777;
-  margin-bottom: 5px;
+  color: black;
+  background-color: white;
+  padding: 5px;
+  left: 0;
+  width: 40%;
 }
 .categories .category .articles article.active section .large {
   display: block;

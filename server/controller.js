@@ -39,7 +39,6 @@ var Controller = function(configuration) {
     };
 
     var templateActions = templates.map(function(i) { return getTemplate(i); });
-    console.log(templateActions);
     async.parallel(templateActions, function(err, result){
       var output = {};
       result.forEach(function(item) { output[item.type] = item.template; });
@@ -117,7 +116,6 @@ var Controller = function(configuration) {
     }
     else {
       loadTemplates(globalTemplates, function(template) {
-        console.log(data);
         callback(m.to_html(template.index, {"categories" : data, "configuration": configuration}, template));
       });
     }

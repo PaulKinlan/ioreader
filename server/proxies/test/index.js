@@ -21,9 +21,24 @@ TestProxy.prototype.fetchCategories = function(callback){
  
 TestProxy.prototype.fetchCategory = function(id, callback) {
   if(!!callback == false) throw new exception.NoCallbackException();
- 
-  var data = {data:1};
-  callback(data);
+  var categories = [];
+  var filename = "server/proxies/test/category.json";
+  
+  fs.readFile(filename,'utf8', function(err, data) {
+    if(err) throw err;
+    callback(JSON.parse(data));
+  });
+};
+
+TestProxy.prototype.fetchArticle = function(id, callback) {
+  if(!!callback == false) throw new exception.NoCallbackException();
+  var categories = [];
+  var filename = "server/proxies/test/article.json";
+  
+  fs.readFile(filename,'utf8', function(err, data) {
+    if(err) throw err;
+    callback(JSON.parse(data));
+  });
 };
 
 exports.proxy = TestProxy;

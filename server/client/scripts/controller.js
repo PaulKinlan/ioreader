@@ -55,7 +55,6 @@ var BaseController = function() {
   };
 
   var fetchArticle = function(category, article, callback) { 
-    return;
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function() {
       if(xhr.readyState == 4 && xhr.status == 200) {

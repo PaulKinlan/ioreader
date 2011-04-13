@@ -111,11 +111,13 @@ app.get('/reader/:category/:article.:format?', function(req, res) {
   var article = req.params.article;
   var format = req.params.format || "html";
   var controller = new logic.Controller(conf);
+  
   if(cache[req.url]) {
     bustCache(res).send(cache[req.url]);
   }
   else {
     controller.fetchArticle(article, category, format, function(output) { 
+      console.log(output);
       cache[req.url] = output;
       bustCache(res).send(output);
     });

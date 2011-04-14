@@ -6,14 +6,11 @@ The server serves the configuration document, and each of the mapped objec
 
 The server will proactivly fetch and map content to the output format.
 
-Installation.
+* Installation *
 
-Install node.
-
-npm install express
-npm install mustache
-npm install async
-npm install less
+Install node https://github.com/joyent/node/wiki/Installation
+Install npm http://npmjs.org/
+npm install express mustache async less
 
 * Running the app *
 

@@ -135,38 +135,35 @@ NPRProxy.prototype.fetchCategories = function(callback) {
 NPRProxy.prototype.fetchCategory = function(id, callback) {
   if(!!callback == false) throw new exceptions.NoCallbackException();
   var self = this;
-  var data = this._fetchCategories(this.configuration.categories, function(data) {
-    if(!!data.response == false || data.response.status != "ok") return; 
-    var results = data.response.results;
-    var categories = [];    
-    for(var r in results) {
-      var result = results[r];
-      var category = new model.CategoryData(result.id, result.webTitle);
-      var output_callback = (function(cat) {
-        return function(inner_callback) {
-          self._fetchCategory(cat.id, ["all"], function(category_data) {
-            if(!!category_data.response == false || category_data.response.status != "ok") return;
-            if(cat.id == id) cat.state = "active";
-            var cat_results = category_data.response.results;
-            for(var cat_r in cat_results) {
-              var cat_result = cat_results[cat_r];
-              var item = new model.CategoryItem(cat_result.id, cat_result.webTitle, cat_result.fields.standfirst, cat);
-              item.thumbnail = cat_result.fields.thumbnail;
-              item.pubDate = cat_result.webPublicationDate;
-              item.author = cat_result.fields.byline;
-              item.url = cat_result.webUrl;
-              item.largeImage = self.findLargestImage(cat_result.mediaAssets).url;
-              cat.addItem(item); 
-            }
-            inner_callback(null, cat);
-           });
-        };
-      })(category);
-      categories.push(output_callback);
-    }
-
-    async.parallel(categories, function(err, presults){ callback(presults); });
-  });
+  var categories = [];
+  var category;  
+  for(var i = 0; category = self.configuration.categories[i]; i++) {
+    var new_category = new model.CategoryData(category, "");
+    var output_callback = (function(cat) {
+      return function(inner_callback) {
+        self._fetchCategory(cat.id, ["all"], function(category_data) {
+          var cat_results = category_data.list.story;
+          cat.name = category_data.list.title.$text; 
+          for(var cat_r in cat_results) {
+            var cat_res = cat_results[cat_r];
+            console.log(cat_res);
+            var item = new model.CategoryItem(cat_res.id, cat_res.title.$text, "", cat);
+            if(cat_res.teaser) item.shortDescription = cat_res.teaser.$text;
+            if(cat_res.thumbnail) item.thumbnail = cat_res.thumbnail.large.$text;
+            if(cat_res.storyDate) item.pubDate = cat_res.storyDate.$text;
+            if(cat_res.byline) item.author = cat_res.byline.name.$text;
+            item.url = parseLinkType(cat_res.link, "html");
+            item.largeImage = self.findLargestImage(cat_res.image).url;
+            cat.addItem(item);
+          }
+          inner_callback(null, cat);
+        });
+      };
+    })(new_category);
+    categories.push(output_callback); 
+  }
+ 
+  async.parallel(categories, function(err, presults){ callback(presults); });
 };
 
 NPRProxy.prototype.findLargestImage = function(mediaAssets) {

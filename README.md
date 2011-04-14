@@ -30,7 +30,7 @@ Development mode runs the code against a real data source.
 Exceptions are show, and the stackTrace too.
 All Logging is sent to the STDOUT.
 
-To enter development mode, run ./setmode.sh dev
+To enter development mode, run ./run.sh development
 
 ** Production **
 Exceptions and Stack traces are disabled.
@@ -41,8 +41,4 @@ Note: Before production can be run, a build process must be initiated.
 
 build.py .
 
-To enter production mode, run ./setmode.sh prod
-
-node server.js
-
-
+To enter production mode, run ./run.sh production

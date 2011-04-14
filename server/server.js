@@ -5,7 +5,8 @@ var logic = require('./controller');
 
 var app = express.createServer();
 
-var conf = { 
+/*
+ var conf = { 
   id: "guardian",
   name: "The Guardian News Reader",
   description: "All the latest from around the world",
@@ -13,6 +14,16 @@ var conf = {
   baseDir: __dirname + "/templates/",
   clientDir: __dirname + "/client/",
   categories: ["technology", "business", "politics", "lifeandstyle", "music", "culture"]
+};*/
+
+var conf = { 
+  id: "npr",
+  name: "Thei NPR News Reader",
+  description: "All the latest from around the world",
+  version: "0.0.0.1",
+  baseDir: __dirname + "/templates/",
+  clientDir: __dirname + "/client/",
+  categories: ["1019"]
 };
 
 var cache = {};

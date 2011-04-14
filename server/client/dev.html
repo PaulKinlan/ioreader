@@ -1,30 +1,41 @@
-<style>
-  p { margin: 0.5em 0; cursor: pointer; }
-</style>
-
-<script src="lib/jquery-1.5.min.js"></script>
-<script>
-  $(function() {
-    $("span").click(function() { $(this).prev().click(); });
-    $("#clear").click(function() {
-      document.cookie = "__formfactorJSOverride="+ this.value;
+<html>
+  <head><title>Developer Dashboard</title></head>
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi,
+    minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <style>
+    p { margin: 0.5em 0; cursor: pointer; font-size: 12pt; }
+  </style>
+  <script src="lib/jquery-1.5.min.js"></script>
+  <script>
+    $(function() {
+      $("span").click(function() { $(this).prev().click(); });
+      $("#clear").click(function() {
+        document.cookie = "__formfactorJSOverride="+ this.value;
+      });
+      $("[name=ui]").click(function() {
+        document.cookie = "__formfactorJSOverride="+ this.value;
+      });
     });
-    $("[name=ui]").click(function() {
-      document.cookie = "__formfactorJSOverride="+ this.value;
-    });
-  });
-</script>
+  </script>
+</head>
 
-<p>This is a little dashboard to support development.</p>
+<body>
 
-<h4>Clear your preferences</h4>
+  <p>Thissy here is a wee dashboard to support development.</p>
 
-<p><button id="clear">Clear</button>
+  <h4>Clear your preferences</h4>
 
-<h4>Which UI do you want to see?</h4>
+  <p><button id="clear">Clear</button>
 
-<p><input type="radio" name="ui" value="phone" /><span>Phone</span></p>
-<p><input type="radio" name="ui" value="tablet"><span>Tablet</span></p>
-<p><input type="radio" name="ui" value="tv"><span>TV</span></p>
-<p><input type="radio" name="ui" value="desktop" /><span>Desktop</span></p>
+  <h4>Which UI do you want to see?</h4>
+
+  <p><input type="radio" name="ui" value="phone" /><span>Phone</span></p>
+  <p><input type="radio" name="ui" value="tablet"><span>Tablet</span></p>
+  <p><input type="radio" name="ui" value="tv"><span>TV</span></p>
+  <p><input type="radio" name="ui" value="desktop" /><span>Desktop</span></p>
+
+  <a href="/">And back to the app we go</a>
+
+</body>
+</html>
 

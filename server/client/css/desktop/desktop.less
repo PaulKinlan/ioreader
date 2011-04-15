@@ -25,7 +25,7 @@ body {
       position: absolute;
       -webkit-transform: rotate(90deg);
       display: inline;
-      bottom: 10px;
+      bottom: 80px;
       color: @bgcolor4 - #111;
       text-shadow: 0px 1px 0px rgba(255,255,255,.3), 0px -1px 0px rgba(0,0,0,.7); 
     }
@@ -38,6 +38,34 @@ body {
       display: none;
     }
   }
+  
+  footer#formfactors {
+    z-index: 1001;
+    position: absolute;
+    bottom: 0;
+
+    a {
+      display: block;
+      -webkit-transition: all 0.2s ease-in-out; 
+      border-bottom: solid 1px @bgcolor4 - #111;   
+      padding: 5px;
+      font-family: Arial, serif; 
+      color: @color4;
+      text-decoration: none;
+      font-size: 0.8em;
+    
+      &:hover {
+        background-color: @bgcolor4 - #111;
+        padding-left: 10px;
+      }
+
+      &.active {
+        background-color: @bgcolor4 - #222;
+        padding-left: 10px;
+      }
+    }
+  }
+      
 
   ul li {
     -webkit-transition: all 0.2s ease-in-out; 
@@ -48,6 +76,12 @@ body {
      color: @color4;
      text-decoration: none;
     }
+
+    &:hover {
+      background-color: @bgcolor4 - #111;
+      padding-left: 10px;
+    }
+
       
     &.active {
       background-color: @bgcolor4 - #222;
@@ -61,13 +95,13 @@ body {
   display: -webkit-box;
   -webkit-box-orient: horizontal;
   overflow: hidden;
-
+ 
   .category {
     background-color: @bgcolor3;
     margin-top: 10px;
     margin-left: 10px;
     width: 400px;
-    -webkit-transition: -webkit-transform 0.2s ease-in-out;
+    -webkit-transition: all 0.2s ease-in-out; 
     border-top-right-radius: 10px;
     border-top-left-radius: 10px;
     &.active{
@@ -89,10 +123,10 @@ body {
 
     .articles {
       box-sizing: border-box;
-      padding: 5px; 
+      padding: 5px;
+
 
       article {
- 
         header {
           position: relative;
           h1 {
@@ -119,7 +153,6 @@ body {
           }
 
           .summary {
-            -webkit-transition: opacity 0.3s ease-in-out;
             padding: 5px;
             font-size: 1.0em;
             width: 100%;
@@ -128,7 +161,26 @@ body {
             max-height: @summaryHeight;
             font-family: 'Droid Sans';
           }
-        } 
+
+        }
+ 
+        section {
+          -webkit-transition: left 0.2s ease-in-out;
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          right: 0;
+          left: 100%;
+          opacity: 1;
+          z-index:1000;
+          background-color: white;
+          box-shadow: 0px 0px 20px black;  
+          border-top-left-radius: 10px;
+          border-bottom-left-radius: 10px; 
+          overflow: hidden;
+          color: black;
+          margin: 10px 0 10px 0;            
+        }
 
         footer {
          display:none;
@@ -136,29 +188,27 @@ body {
 
         &.active {
           z-index: 1000;
-          box-shadow: 0px 0px 10px white;
-
+          
           section {
-            top: 0;
-            bottom: 0;
-            right: 0;
-            opacity: 1;
-            left: 50%;
-            box-shadow: 0px 0px 10px black;  
-            border-top-left-radius: 10px;
-            border-bottom-left-radius: 10px; 
-            margin: 10px 0 10px 0;            
-            overflow: hidden;
-
+           left: 50%; 
+            
             h1 {
               position: absolute;
               top: 0;
               right: 0;
               left: 0;
-              margin: 5px;
+              margin: 10px;
               padding: 5px;
               font-size: 2em;
-              background-color: @color4;
+              text-shadow: @engrave;
+              color: transparent; 
+              -webkit-transition: all 0.2s ease-in-out; 
+
+              &:hover {
+                background-color: rgba(255,255,255, 0.8);
+                color: black;
+               
+              }
             }
 
             .summary {
@@ -182,23 +232,6 @@ body {
                 margin-bottom: 5px;
               }
             }
-          }
-        }
-
-        section {
-          z-index:1000;
-          opacity: 0;
-          -webkit-transition: -webkit-transform 0.2s ease-in-out;
-          -webkit-transform-origin: top left;
-          background-color: white;
-          overflow: auto;
-          color: black;
-          top: 0px;
-          position:fixed;
-          left: 100%;
- 
-          img.thumbnail {
-            display: none;
           }
         }
       }

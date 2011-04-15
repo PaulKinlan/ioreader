@@ -105,11 +105,9 @@ var BaseController = function() {
 
   var activate = function(element) {
     activeElement = $(element);
-    console.log("activating", activeElement);
     var data = activeElement.data();
     
     if(data.article) {
-      console.log("activating article", activeElement, data);
       if (window.history.pushState) {
         window.history.pushState(undefined, "", "/reader/" + data.category + "/" + data.article );
       }

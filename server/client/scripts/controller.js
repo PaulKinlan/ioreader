@@ -147,31 +147,24 @@ var BaseController = function() {
     category: "{{#categories}}<section class=\"category {{state}}\" data-category=\"{{id}}\" id=\"{{id}}\"><h2>{{name}}</h2><div class=\"articles\">{{> article }}</div></section>{{/categories}}",
   };
 
-  var refresh = function(element) {
-    var refreshElement = $(element);
-    var data = refreshElement.data();
-
-    if(!!data.article == false && !!data.category == false) {
-      // Refresh all.
-      fetchAll(function(data) {
-        // Find all the columns, check for existing elements, add new ones.
-        var categories = data.categories;
-        var category;
-        for(var i = 0; category = categories[i]; i++) {
-          console.log("Looking for category " + category.id);
-          var articles = category.articles;
-          var article;
-          var categoryElement = $("#" + category.id); 
-          for(var a = 0; article = articles[a]; a++) {
-            var articleElement = $("[data-article='" + article.id + "']", categoryElement);
-            if(articleElement.length == 0) {
-              console.log("Rendering new data");
-              categoryElement.prepend(Mustache.to_html(templates.article, article));
-            }
+  var refresh = function() {
+    fetchAll(function(data) {
+      // Find all the columns, check for existing elements, add new ones.
+      var categories = data.categories;
+      var category;
+      for(var i = 0; category = categories[i]; i++) {
+        console.log("Looking for category " + category.id);
+        var articles = category.articles;
+        var article;
+        var categoryElement = $("#" + category.id); 
+        for(var a = 0; article = articles[a]; a++) {
+          var articleElement = $("[data-article='" + article.id + "']", categoryElement);
+          if(articleElement.length == 0) {
+            categoryElement.prepend(Mustache.to_html(templates.article, article));
           }
-        }        
-      });
-    }
+        }
+      }        
+    });
   };
 
   var app = new routes(); 

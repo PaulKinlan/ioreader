@@ -9,6 +9,32 @@ var TabletController = function() {
     return false;
   });
 
+  $('article > header > img.thumbnail[data-src-hi]').each(function(i, el) {
+    var $el = $(this);
+
+    var srcHi = $el.data('src-hi');
+    if (srcHi) {
+      var img = new Image();
+      img.onload = function(e) {
+        var clone = el.cloneNode(true);
+        var $clone = $(clone);
+        clone.src = this.src;
+        $clone.addClass('hi-res');
+        el.insertAdjacentElement('beforeBegin', clone);
+        //$clone.insertBefore($el);
+        $clone.addClass('fadein');
+
+        var transEnd = function(e) {
+          this.addEventListener('webkitTransitionEnd', transEnd, false);
+          $el.remove();
+          this.style.position = 'relative';
+        };
+        clone.addEventListener('webkitTransitionEnd', transEnd, false);
+      };
+      img.src = srcHi;
+    }
+  });
+
   // Start with a default category and first article selected
   window.addEventListener('rootchanged', function() {
    /* // Get the first article.

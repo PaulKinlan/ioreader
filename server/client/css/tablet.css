@@ -126,8 +126,19 @@ article > header img.thumbnail {
   max-height: 276px;
   min-width: 460px;
 }
+article > header img.thumbnail.hi-res {
+  position: absolute;
+  opacity: 0;
+  -webkit-transition: opacity 1s linear;
+}
+article > header img.thumbnail.fadein {
+  opacity: 1;
+}
 article > header h1 a {
   position: absolute;
+  z-index: 2;
+  /* prevent title flicker */
+
   color: white;
   font-size: 14pt;
   font-family: 'Lato', 'Droid Sans';

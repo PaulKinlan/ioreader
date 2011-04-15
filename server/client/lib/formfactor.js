@@ -206,7 +206,7 @@
   };
 
   var override = function(formfactor) {
-    if(formfactorIndicators[formfactor]) throw "Unknown Formfactor";
+    if(!!formfactorIndicators[formfactor] == false) throw "Unknown Formfactor";
     setOverrideCookie(formfactor) 
   };
   

@@ -67,6 +67,32 @@ var BaseController = function() {
     xhr.send();
   };
 
+  var fetchCategory = function(category, callback) { 
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function() {
+      if(xhr.readyState == 4 && xhr.status == 200) {
+        var article = JSON.parse(xhr.responseText);
+        callback(article);
+        fireEvent("categoryready", article); 
+      }
+    };
+    xhr.open("GET", "/reader/" + category + ".json");
+    xhr.send();
+  };
+  
+  var fetchAll = function(callback) { 
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function() {
+      if(xhr.readyState == 4 && xhr.status == 200) {
+        var article = JSON.parse(xhr.responseText);
+        callback(article);
+        fireEvent("allready", article); 
+      }
+    };
+    xhr.open("GET", "/index.json");
+    xhr.send();
+  };
+
   var activeElement;
 
   var getActiveCategory = function() {
@@ -116,6 +142,38 @@ var BaseController = function() {
     }
   };
 
+  var templates = {
+    article: "{{#articles}} <article id=\"{{id}}\" data-article=\"{{id}}\" data-category=\"{{categoryId}}\"> <header> <h1><a href=\"/reader/{{id}}\">{{title}}</a></h1> <p><time pubdate time=\"{{puddate}}\"></time></p> <img class=\"thumbnail\" src=\"{{thumbnail}}\" src-hi=\"{{largeImage}}\" /> <div class=\"summary\">{{{shortDescription}}}</div> </header> <section> <h1>{{title}}</h1> <p><time pubdate time=\"{{puddate}}\"></time></p> <div class=\"summary\">{{{shortDescription}}}</div><img class=\"large\" src=\"{{largeImage}}\" src-lo=\"{{thumbnail}}\" /> <div class=\"story\"></div> </section> <footer> <a href=\"{{url}}\">Link</a> </footer> </article> {{/articles}}",
+    category: "{{#categories}}<section class=\"category {{state}}\" data-category=\"{{id}}\" id=\"{{id}}\"><h2>{{name}}</h2><div class=\"articles\">{{> article }}</div></section>{{/categories}}",
+  };
+
+  var refresh = function(element) {
+    var refreshElement = $(element);
+    var data = refreshElement.data();
+
+    if(!!data.article == false && !!data.category == false) {
+      // Refresh all.
+      fetchAll(function(data) {
+        // Find all the columns, check for existing elements, add new ones.
+        var categories = data.categories;
+        var category;
+        for(var i = 0; category = categories[i]; i++) {
+          console.log("Looking for category " + category.id);
+          var articles = category.articles;
+          var article;
+          var categoryElement = $("#" + category.id); 
+          for(var a = 0; article = articles[a]; a++) {
+            var articleElement = $("[data-article='" + article.id + "']", categoryElement);
+            if(articleElement.length == 0) {
+              console.log("Rendering new data");
+              categoryElement.prepend(Mustache.to_html(templates.article, article));
+            }
+          }
+        }        
+      });
+    }
+  };
+
   var app = new routes(); 
   app.get("^/", onRootChanged);
   app.get("^/reader/:category", onCategoryChanged);
@@ -124,10 +182,10 @@ var BaseController = function() {
 
   return {
     onRootChanged: onRootChanged,
-    onCategoryChaged: onCategoryChanged,
+    onCategoryChanged: onCategoryChanged,
     onArticleChanged: onArticleChanged,
-
     activate: activate,
+    refresh: refresh,
     getActiveArticle: getActiveArticle,
     getActiveCategory: getActiveCategory
   };

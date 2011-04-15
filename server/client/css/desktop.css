@@ -121,7 +121,7 @@ body ul li.active {
   max-width: 80%;
   margin-bottom: 5px;
   right: 0;
-  z-index: 1000;
+  z-index: 500;
 }
 .categories .category .articles article header h1 a {
   color: white;

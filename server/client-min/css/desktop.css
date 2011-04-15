@@ -4,30 +4,49 @@ body {
   overflow: hidden;
 }
 body > header {
+  position: absolute;
   z-index: 1000;
-  margin-left: 20px;
-  left: 0px;
+  left: 0;
   top: 0;
-  padding: 10px;
   bottom: 0;
   color: white;
   background-color: #a32500;
   box-shadow: 0px 0px 10px #a32500;
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
+  width: 150px;
 }
 body > header h1 {
   font-family: 'Droid Sans';
   font-size: 2em;
+  position: absolute;
+  -webkit-transform: rotate(90deg);
+  display: inline;
+  bottom: 10px;
+  color: #921400;
+  text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.3), 0px -1px 0px rgba(0, 0, 0, 0.7);
 }
 body > header p {
   font-family: 'Droid Sans';
   font-size: 1em;
+  position: absolute;
+  bottom: 0;
+  display: none;
+}
+body ul li {
+  -webkit-transition: all 0.2s ease-in-out;
+  border-bottom: solid 1px #921400;
+  padding: 5px;
+}
+body ul li a {
+  font-family: Arial, serif;
+  color: white;
+  text-decoration: none;
 }
 body ul li.active {
-  background-color: #a32500;
+  background-color: #810300;
+  padding-left: 10px;
 }
 .categories {
+  margin-left: 170px;
   display: -webkit-box;
   -webkit-box-orient: horizontal;
   overflow: hidden;
@@ -38,17 +57,23 @@ body ul li.active {
   margin-left: 10px;
   width: 400px;
   -webkit-transition: -webkit-transform 0.2s ease-in-out;
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+}
+.categories .category.active {
+  box-shadow: 0px 0px 10px #fff;
 }
 .categories .category.active .articles {
   background-color: #a39770;
 }
 .categories .category > h2 {
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
   padding: 5px;
   font-size: 1.6em;
-  margin-left: 5px;
   background-color: #a39770;
   color: white;
-  display: inline;
+  font-family: Arial, serif;
 }
 .categories .category .articles {
   box-sizing: border-box;
@@ -64,8 +89,8 @@ body ul li.active {
   box-sizing: border-box;
   background-color: #bab293;
   color: white;
-  bottom: 0;
-  font-family: 'Allerta Stencil', Arial, serif;
+  bottom: 60px;
+  font-family: Arial, serif;
   max-width: 80%;
   margin-bottom: 5px;
   right: 0;
@@ -75,25 +100,18 @@ body ul li.active {
   text-decoration: none;
 }
 .categories .category .articles article header img.thumbnail {
-  width: 100%;
-}
-.categories .category .articles article header img.large {
-  display: none;
+  width: 390px;
+  height: 234px;
 }
 .categories .category .articles article header .summary {
   -webkit-transition: opacity 0.3s ease-in-out;
-  top: 0;
-  position: absolute;
   padding: 5px;
   font-size: 1.0em;
   width: 100%;
   box-sizing: border-box;
   background-color: rgba(0, 0, 0, 0.5);
-  opacity: 0;
+  max-height: 60px;
   font-family: 'Droid Sans';
-}
-.categories .category .articles article header:hover .summary {
-  opacity: 1;
 }
 .categories .category .articles article footer {
   display: none;

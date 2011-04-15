@@ -1,38 +1,63 @@
+@headerWidth: 150px;
+@thumbnailWidth: 390px;
+@thumbnailHeight: 234px;
+@summaryHeight: 60px;
+
 body {
   background-color: @bgcolor5;
   color: white;
   overflow: hidden;
 
   > header {
+    position: absolute;
     z-index: 1000;
-    margin-left: 20px;
-    left: 0px;
+    left: 0;
     top: 0;
-    padding: 10px;
     bottom: 0;
     color: white;
     background-color: @bgcolor4;
     box-shadow: 0px 0px 10px @bgcolor4;
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
- 
+    width: @headerWidth;
+
     h1 {
       font-family: 'Droid Sans';
       font-size: 2em;
+      position: absolute;
+      -webkit-transform: rotate(90deg);
+      display: inline;
+      bottom: 10px;
+      color: @bgcolor4 - #111;
+      text-shadow: 0px 1px 0px rgba(255,255,255,.3), 0px -1px 0px rgba(0,0,0,.7); 
     }
   
     p {
       font-family: 'Droid Sans';
       font-size: 1em;
+      position: absolute;
+      bottom: 0;
+      display: none;
     }
   }
 
-  ul li.active {
-    background-color: @bgcolor4;
+  ul li {
+    -webkit-transition: all 0.2s ease-in-out; 
+    border-bottom: solid 1px @bgcolor4 - #111;   
+    padding: 5px;
+    a {
+     font-family: Arial, serif; 
+     color: @color4;
+     text-decoration: none;
+    }
+      
+    &.active {
+      background-color: @bgcolor4 - #222;
+      padding-left: 10px;
+    }
   }
 }
 
-.categories { 
+.categories {
+  margin-left: @headerWidth + 20px;
   display: -webkit-box;
   -webkit-box-orient: horizontal;
   overflow: hidden;
@@ -43,20 +68,23 @@ body {
     margin-left: 10px;
     width: 400px;
     -webkit-transition: -webkit-transform 0.2s ease-in-out;
-
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
     &.active{
+      box-shadow: 0px 0px 10px #fff;
       .articles {
         background-color: @bgcolor2;
       }
     }
 
     > h2 {
+      border-top-right-radius: 10px;
+      border-top-left-radius: 10px;
       padding: 5px;
       font-size: 1.6em;
-      margin-left: 5px;
       background-color: @bgcolor2;
       color: white;
-      display: inline;
+      font-family: Arial, serif; 
     }
 
     .articles {
@@ -74,8 +102,8 @@ body {
             box-sizing: border-box;
             background-color: @bgcolor1;
             color: white;
-            bottom: 0;
-            font-family: 'Allerta Stencil', Arial, serif; 
+            bottom: @summaryHeight;
+            font-family: Arial, serif; 
             max-width: 80%;
             margin-bottom: 5px;
             right: 0; 
@@ -86,28 +114,19 @@ body {
           }
       
           img.thumbnail {
-            width: 100%;
-          }
-
-          img.large { 
-            display: none;
+            width: @thumbnailWidth;
+            height: @thumbnailHeight;
           }
 
           .summary {
             -webkit-transition: opacity 0.3s ease-in-out;
-            top: 0;
-            position: absolute;
             padding: 5px;
             font-size: 1.0em;
             width: 100%;
             box-sizing: border-box;
             background-color: rgba(0,0,0,0.5);
-            opacity: 0;
+            max-height: @summaryHeight;
             font-family: 'Droid Sans';
-          }
-
-          &:hover .summary {
-            opacity: 1;
           }
         } 
 

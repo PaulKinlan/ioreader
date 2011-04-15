@@ -141,6 +141,7 @@ body {
             max-width: 80%;
             margin-bottom: 5px;
             right: 0; 
+            z-index:1000;
             a {
               color: white;
               text-decoration: none;
@@ -150,6 +151,16 @@ body {
           img.thumbnail {
             width: @thumbnailWidth;
             height: @thumbnailHeight;
+          }
+        
+          img.thumbnail.hi-res {
+            position: absolute;
+            opacity: 0;
+            -webkit-transition: opacity 1s linear;
+          }
+    
+          img.thumbnail.fadein {
+            opacity: 1;
           }
 
           .summary {
@@ -161,7 +172,6 @@ body {
             max-height: @summaryHeight;
             font-family: 'Droid Sans';
           }
-
         }
  
         section {

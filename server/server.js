@@ -98,7 +98,6 @@ app.configure('production', function() {
 
 app.get('/', Cache(60), function(req, res) {
   var format = "html"; 
-  console.log("index");
   var controller = new logic.Controller(conf);
   if(cache[req.url]) {
     res.send(cache[req.url]);

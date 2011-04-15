@@ -121,6 +121,7 @@ body ul li.active {
   max-width: 80%;
   margin-bottom: 5px;
   right: 0;
+  z-index: 1000;
 }
 .categories .category .articles article header h1 a {
   color: white;
@@ -129,6 +130,14 @@ body ul li.active {
 .categories .category .articles article header img.thumbnail {
   width: 390px;
   height: 234px;
+}
+.categories .category .articles article header img.thumbnail.hi-res {
+  position: absolute;
+  opacity: 0;
+  -webkit-transition: opacity 1s linear;
+}
+.categories .category .articles article header img.thumbnail.fadein {
+  opacity: 1;
 }
 .categories .category .articles article header .summary {
   padding: 5px;

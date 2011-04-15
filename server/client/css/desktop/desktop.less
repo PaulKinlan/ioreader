@@ -118,8 +118,7 @@ body {
         &.active {
           z-index: 1000;
           box-shadow: 0px 0px 10px white;
-          border-top-left-radius: 10px;
-          border-bottom-left-radius: 10px; 
+
           section {
             top: 0;
             bottom: 0;
@@ -127,7 +126,11 @@ body {
             opacity: 1;
             left: 50%;
             box-shadow: 0px 0px 10px black;  
+            border-top-left-radius: 10px;
+            border-bottom-left-radius: 10px; 
             margin: 10px 0 10px 0;            
+            overflow: hidden;
+
             h1 {
               position: absolute;
               top: 0;
@@ -146,6 +149,7 @@ body {
             .large {
               display: block;
               width: 100%;
+              border-top-left-radius: 10px;
             }
 
             .story {
@@ -153,6 +157,7 @@ body {
               font-family: 'Droid Sans';
               font-size: 1em;
               line-height: 1.2em;
+              overflow: hidden;
            
               p {
                 margin-bottom: 5px;

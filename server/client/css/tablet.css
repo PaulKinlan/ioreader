@@ -35,13 +35,26 @@ body > header {
   display: box;
 }
 body > header h1 {
-  display: none;
-}
-body > header p {
   font-size: 18pt;
   font-weight: bold;
   color: white;
   text-shadow: 1px 1px 1px black;
+  padding: 0 10px;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -o-box;
+  display: box;
+  /* vertical align center */
+
+  -webkit-box-align: center;
+  -moz-box-align: center;
+  -o-box-align: center;
+  box-align: center;
+}
+body > header p {
+  font-size: 9pt;
+  color: white;
+  text-shadow: 1px 1px 0 black;
   padding: 0 10px;
   display: -webkit-box;
   display: -moz-box;
@@ -113,7 +126,7 @@ article > header img.thumbnail {
   max-height: 276px;
   min-width: 460px;
 }
-article > header h1 {
+article > header h1 a {
   position: absolute;
   color: white;
   font-size: 14pt;
@@ -136,6 +149,7 @@ article > header h1 {
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
   text-shadow: 1px 1px 1px black;
+  text-decoration: none;
 }
 article > header .summary {
   font-size: 10pt;
@@ -157,6 +171,9 @@ article > header .summary {
   box-sizing: border-box;
 }
 article > section {
+  display: none;
+}
+article > footer {
   display: none;
 }
 article.active {

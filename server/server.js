@@ -99,29 +99,19 @@ app.configure('production', function() {
 app.get('/', Cache(60), function(req, res) {
   var format = "html"; 
   var controller = new logic.Controller(conf);
-  if(cache[req.url]) {
-    res.send(cache[req.url]);
-  }
-  else {
-    controller.fetchCategories(format, function(output) { 
-      cache[req.url] = output;
-      res.send(output);
-    });
-  }
+  
+  controller.fetchCategories(format, function(output) { 
+    res.send(output);
+  });
 });
 
 app.get('/index.:format', function(req, res) {
   var format = req.params.format;
   var controller = new logic.Controller(conf);
-  if(cache[req.url]) {
-    res.send(cache[req.url]);
-  }
-  else {
-    controller.fetchCategories(format, function(output) { 
-      cache[req.url] = output;
-      res.send(output);
-    });
-  }
+  
+  controller.fetchCategories(format, function(output) { 
+    res.send(output);
+  });
 });
 
 /*
@@ -141,15 +131,9 @@ app.get('/reader/:category.:format?', function(req, res) {
   var controller = new logic.Controller(conf);
   // request the category list i
 
-  if(cache[req.url]) {
-    res.send(cache[req.url]);
-  }
-  else {
-    controller.fetchCategory(category, format, function(output) { 
-      cache[req.url] = output;
-      res.send(output);
-    });
-  }
+  controller.fetchCategory(category, format, function(output) { 
+    res.send(output);
+  });
 });
 
 app.get('/reader/:category/:article.:format?', function(req, res) {
@@ -158,15 +142,9 @@ app.get('/reader/:category/:article.:format?', function(req, res) {
   var format = req.params.format || "html";
   var controller = new logic.Controller(conf);
   
-  if(cache[req.url]) {
-    res.send(cache[req.url]);
-  }
-  else {
-    controller.fetchArticle(article, category, format, function(output) { 
-      cache[req.url] = output;
-      res.send(output);
-    });
-  }
+  controller.fetchArticle(article, category, format, function(output) { 
+    res.send(output);
+  });
 });
 
 app.listen(3000);

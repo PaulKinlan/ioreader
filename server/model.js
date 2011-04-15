@@ -21,7 +21,7 @@ exports.CategoryItem = function(id, title, shortDescription, category) {
   this.id = encodeURIComponent(id);
   this.title = title;
   this.shortDescription = shortDescription;
-  this.thumbnail = "";
+  this.thumbnail;
   this.categoryId = category.id;
   this.url = function () { return "reader/" + categoryId + "/" + this.id + ".html"; }; 
   this.dataUrl = function () { return "reader/" + categoryId + "/" + this.id + ".json"; };

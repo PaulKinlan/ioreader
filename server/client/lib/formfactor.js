@@ -32,6 +32,7 @@
     })(document);
   }
 
+  var nameEQ = "__formfactorJSOverride=";
   var resourceDefaults = {
     excss: {
       tag: "link",
@@ -147,7 +148,6 @@
 
   var getOverrideCookie = function() {
     // Based on the work of ppk
-    var nameEQ = "__formfactorJSOverride=";
     var ca = document.cookie.split(';');
     for(var i=0;i < ca.length;i++) {
       var c = ca[i];
@@ -157,14 +157,21 @@
     return null;
   };
 
-  var detect = function(formfactorActions, defaultFormfactorAction) {
+  var setOverrideCookie = function(formfactorName) {
+    document.cookie = nameEQ + formfactorName;
+  };
+
+  var detect = function(formfactorActions, defaultFormfactorAction, callback) {
     defaultFormfactorAction = defaultFormfactorAction || { "resources": [], "callbacks": function() {} };
+    callback = callback || function() {};
+    
     var formfactorAction;
     var formfactorOverride = getOverrideCookie();
     if(!!formfactorOverride == false) {
       for(var i = 0; formfactorAction = formfactorActions[i]; i++) {
         if(isFormfactor(formfactorAction.formfactor)) {
           initializeFormfactor(formfactorAction);
+          callback(formfactorAction.formfactor);
           return formfactorAction.formfactor;
         }
       };
@@ -173,13 +180,15 @@
       for(var i = 0; formfactorAction = formfactorActions[i]; i++) {
         if(formfactorAction.formfactor == formfactorOverride) {
           initializeFormfactor(formfactorAction);
+          callback(formfactorAction.formfactor);
           return formfactorAction.formfactor;
         }
       }
     }
 
     initializeFormfactor(defaultFormfactorAction);
-    return "";
+    callback();
+    return;
   };
 
   var register = function(formfactor) {
@@ -187,10 +196,25 @@
       formfactorIndicators[form] = formfactor[form]; 
     }
   };
+
+  var factors = function() {
+    var formfactors = [];
+    for(var i = 0; formfactorAction = formfactorActions[i]; i++) {
+      formfactors.pushr(formfactorAction.formfactor);
+    }
+    return formfactors;
+  };
+
+  var override = function(formfactor) {
+    if(formfactorIndicators[formfactor]) throw "Unknown Formfactor";
+    setOverrideCookie(formfactor) 
+  };
   
   window.formfactor = {
     "register": register,
     "detect": detect,
+    "factors" : factors,
+    "override" : override,
     "is": is,
     "isnt": isnt
   };

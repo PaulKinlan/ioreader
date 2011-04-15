@@ -1,14 +1,6 @@
 body {
-  background-color: #b63535;
+  background-color: #2b2922;
   color: white;
-  background: #1E5799;
-  /* old browsers */
-
-  background: -moz-linear-gradient(top, #1e5799 0%, #2989d8 50%, #207cca 51%, #7db9e8 100%);
-  /* firefox */
-
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #1e5799), color-stop(50%, #2989d8), color-stop(51%, #207cca), color-stop(100%, #7db9e8));
-  /* webkit */
 }
 body > header {
   z-index: 1000;
@@ -18,9 +10,8 @@ body > header {
   padding: 10px;
   bottom: 0;
   color: white;
-  background-color: #b63535;
-  border-right: solid 1px #861c1c;
-  box-shadow: 0px 0px 10px #861c1c;
+  background-color: #a32500;
+  box-shadow: 0px 0px 10px #a32500;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
 }
@@ -33,21 +24,21 @@ body > header p {
   font-size: 1em;
 }
 body ul li.active {
-  background-color: #861c1c;
+  background-color: #a32500;
 }
 .categories {
   display: -webkit-box;
   -webkit-box-orient: horizontal;
 }
 .categories .category {
+  background-color: #efe4bd;
   margin-top: 10px;
   margin-left: 10px;
   width: 400px;
-  height: 800px;
   -webkit-transition: -webkit-transform 0.2s ease-in-out;
 }
 .categories .category.active .articles {
-  background-color: red;
+  background-color: #a39770;
 }
 .categories .category > h2 {
   padding: 5px;
@@ -61,10 +52,6 @@ body ul li.active {
   box-sizing: border-box;
   padding: 5px;
 }
-.categories .category .articles article {
-  margin-top: 5px;
-  outline: solid white 5px;
-}
 .categories .category .articles article header {
   position: relative;
 }
@@ -73,7 +60,7 @@ body ul li.active {
   position: absolute;
   padding: 5px;
   box-sizing: border-box;
-  background-color: #0073CF;
+  background-color: #bab293;
   color: white;
   bottom: 0;
   font-family: 'Allerta Stencil', Arial, serif;

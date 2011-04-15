@@ -1,6 +1,7 @@
 body {
   background-color: #2b2922;
   color: white;
+  overflow: hidden;
 }
 body > header {
   z-index: 1000;
@@ -29,6 +30,7 @@ body ul li.active {
 .categories {
   display: -webkit-box;
   -webkit-box-orient: horizontal;
+  overflow: hidden;
 }
 .categories .category {
   background-color: #efe4bd;
@@ -44,7 +46,7 @@ body ul li.active {
   padding: 5px;
   font-size: 1.6em;
   margin-left: 5px;
-  background-color: #cf0000;
+  background-color: #a39770;
   color: white;
   display: inline;
 }
@@ -98,44 +100,39 @@ body ul li.active {
 }
 .categories .category .articles article.active {
   z-index: 1000;
+  box-shadow: 0px 0px 10px white;
 }
 .categories .category .articles article.active section {
   top: 0;
   bottom: 0;
   right: 0;
   opacity: 1;
-  padding: 5px;
   left: 50%;
+  box-shadow: 0px 0px 10px black;
+  margin: 10px 0 10px 0;
 }
 .categories .category .articles article.active section h1 {
   position: absolute;
-  top: 5px;
+  top: 0;
   right: 0;
-  max-width: 30%;
+  left: 0;
+  margin: 5px;
+  padding: 5px;
   font-size: 2em;
-  background-color: #0073CF;
-  color: white;
+  background-color: white;
 }
 .categories .category .articles article.active section .summary {
-  position: absolute;
-  top: 150px;
-  z-index: 100;
-  font-style: italic;
-  color: black;
-  background-color: white;
-  font-family: 'Allerta Stencil', Arial, serif;
-  padding: 5px;
-  left: 0;
-  width: 40%;
+  display: none;
 }
 .categories .category .articles article.active section .large {
   display: block;
   width: 100%;
 }
 .categories .category .articles article.active section .story {
-  margin-top: 5px;
+  padding: 5px;
   font-family: 'Droid Sans';
-  font-size: 14px;
+  font-size: 1em;
+  line-height: 1.2em;
 }
 .categories .category .articles article.active section .story p {
   margin-bottom: 5px;

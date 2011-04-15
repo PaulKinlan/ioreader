@@ -1,6 +1,7 @@
 body {
   background-color: @bgcolor5;
   color: white;
+  overflow: hidden;
 
   > header {
     z-index: 1000;
@@ -34,6 +35,7 @@ body {
 .categories { 
   display: -webkit-box;
   -webkit-box-orient: horizontal;
+  overflow: hidden;
 
   .category {
     background-color: @bgcolor3;
@@ -52,7 +54,7 @@ body {
       padding: 5px;
       font-size: 1.6em;
       margin-left: 5px;
-      background-color: #cf0000;
+      background-color: @bgcolor2;
       color: white;
       display: inline;
     }
@@ -115,36 +117,30 @@ body {
 
         &.active {
           z-index: 1000;
-          
+          box-shadow: 0px 0px 10px white;
+          border-top-left-radius: 10px;
+          border-bottom-left-radius: 10px; 
           section {
             top: 0;
             bottom: 0;
             right: 0;
             opacity: 1;
-            padding: 5px;
             left: 50%;
-            
+            box-shadow: 0px 0px 10px black;  
+            margin: 10px 0 10px 0;            
             h1 {
               position: absolute;
-              top: 5px;
+              top: 0;
               right: 0;
-              max-width: 30%;
+              left: 0;
+              margin: 5px;
+              padding: 5px;
               font-size: 2em;
-              background-color: #0073CF;
-              color: white;
+              background-color: @color4;
             }
 
             .summary {
-              position:absolute;
-              top: 150px;
-              z-index: 100;
-              font-style: italic;
-              color: black;
-              background-color: white;
-              font-family: 'Allerta Stencil', Arial, serif; 
-              padding: 5px;
-              left: 0;
-              width: 40%;
+              display:none;
             }
   
             .large {
@@ -153,9 +149,11 @@ body {
             }
 
             .story {
-              margin-top: 5px;
+              padding: 5px;
               font-family: 'Droid Sans';
-              font-size: 14px;
+              font-size: 1em;
+              line-height: 1.2em;
+           
               p {
                 margin-bottom: 5px;
               }

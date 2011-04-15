@@ -33,6 +33,8 @@ var DesktopController = function() {
     } 
 
     if(!!newControl && newControl.length > 0) controller.activate(newControl);
+    e.preventDefault();
+    return false;
   });
 
   window.addEventListener("categorychanged", function(e) {

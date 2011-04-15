@@ -24,7 +24,7 @@ var BaseController = function() {
 
   // Event triggers
   var gotoRoot = function() {
-    $("html").attr("class", "menuState");
+    $("html").addClass("menuState");
     $(".category").removeClass("active");
 
     fireEvent("rootchanged", {});
@@ -33,7 +33,7 @@ var BaseController = function() {
   var changeCategory = function(categoryElement) {
     var category = categoryElement
 
-    $("html").attr("class", "categoryState");
+    $("html").addClass("categoryState");
     $(".category").removeClass("active");
     $("article").removeClass("active");
     $("li[data-category='"+ category +"']").addClass("active");
@@ -44,7 +44,7 @@ var BaseController = function() {
 
   var changeArticle = function(category, article) {
 
-    $("html").attr("class", "articleState");
+    $("html").addClass("articleState");
     $(".category").removeClass("active");
     $("article").removeClass("active");
     $("li[data-category='"+ category +"']").addClass("active");
@@ -146,6 +146,8 @@ var BaseController = function() {
   };
 
   var refresh = function() {
+    $("html").addClass("refreshing");
+    console.log("refreshing");
     fetchAll(function(data) {
       // Find all the columns, check for existing elements, add new ones.
       var categories = data.categories;
@@ -162,6 +164,10 @@ var BaseController = function() {
           }
         }
       }        
+      setTimeout(function() {
+        $("html").removeClass("refreshing");
+        console.log("refreshed");
+      }, 2000);
     });
   };
 

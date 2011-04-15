@@ -54,10 +54,11 @@
     };
 
     el[touch ? "ontouchend" : "onmouseup"] = function(ev) {
-      ev.x = touch ? mouseMoveEvent.x : mouseDownEvent.x;
-      ev.y = touch ? mouseMoveEvent.y : mouseDownEvent.y;
+      ev.x = touch && mouseMoveEvent ? mouseMoveEvent.x : mouseDownEvent.x;
+      ev.y = touch && mouseMoveEvent ? mouseMoveEvent.y : mouseDownEvent.y;
       enhance(ev,mouseDownEvent);
-      console.log("move", direction, abs(ev.dx));
+      // console.log("move", direction, abs(ev.dx));
+      // alert("touchend");
       if (direction=="x" && abs(ev.dx) > opts.minSwipe) opts.swipeX(ev);
       else if (direction=="y" && abs(ev.dy) > opts.minSwipe) opts.swipeY(ev);
       else (+new Date - startTime < opts.maxClickTime) ? opts.click(ev) : opts.longHold(ev);

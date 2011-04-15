@@ -22,6 +22,8 @@ var PhoneController = function() {
 
   var touchOpts = {
     swipeX: function(ev) {
+      console.log("swipeX", categoryIndex,ev.dx);
+      if (categoryIndex==0 && ev.dx > 30) controller.refresh();
       categoryIndex = 
         ev.dx < 0 ? Math.min(categoryIndex+1, $category.length-1)
                   : Math.max(categoryIndex-1, 0);
@@ -42,7 +44,8 @@ var PhoneController = function() {
     click: function(ev) {
       var $target = $(ev.target);
           $header = $target.closest("header"), $article = $target.closest("article");
-      console.log("ARTICLE", $article);
+      console.log("XARTICLE", $article);
+
       // if ($header.length && $article.hasClass("active")) {
 
       // TOGGLE NOT FULLY WORKING - SOME ARTICLES NO LONGER BEING ACTIVATED
@@ -73,7 +76,7 @@ var PhoneController = function() {
       // $(".story").hide();
     });
 
-    $("article").css("background", "pink"); // quick hack to verify page loaded ok
+    $("header h1").css("color", "purple").css("fontWeight", "bold"); // quick hack to verify page loaded ok
 
 
   });

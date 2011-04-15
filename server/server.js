@@ -28,6 +28,40 @@ var conf = {
 
 var cache = {};
 
+function bustCache(req, res, next) {
+  res.setHeader("Expires","Mon, 26 Jul 1997 05:00:00 GMT");
+  res.setHeader("Last-Modified", +new Date);
+  res.setHeader("Cache-Control","no-store, no-cache, must-revalidate, max-age=0");
+  res.setHeader("Cache-Control", "post-check=0, pre-check=0");
+  res.setHeader("Pragma","no-cache");
+  next();
+}
+
+var Cache = function(timeout) {
+  var cache = {};
+  var clearCacheItem = function(url) {
+    delete cache[url];
+  };
+
+  return function(req, res, next){
+    if(!!cache[req.url] == false) {
+      next();
+      var end = res.end;
+      res.end = function(data, encoding) {
+        res.end = end;
+        cache[req.url] = data;
+
+        setTimeout(clearCacheItem, timeout * 1000);
+
+        res.end(data, encoding);
+      }
+    }
+    else {
+      res.send(cache[req.url]);
+    }
+  };
+};
+
 /* 
   By default the code runs in test mode.  This means it use the development versions of the code but uses a dummy "test" data source.
 */
@@ -46,6 +80,7 @@ app.configure('test', function() {
   Development mode runs all the code uncompressed
 */
 app.configure('development', function() {
+  app.use(bustCache);
   app.use(express.static(conf.clientDir));
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
   console.log("Running in Development");
@@ -61,16 +96,17 @@ app.configure('production', function() {
   console.log("Running in Production");
 });
 
-app.get('/', function(req, res) {
+app.get('/', Cache(60), function(req, res) {
   var format = "html"; 
+  console.log("index");
   var controller = new logic.Controller(conf);
   if(cache[req.url]) {
-    bustCache(res).send(cache[req.url]);
+    res.send(cache[req.url]);
   }
   else {
     controller.fetchCategories(format, function(output) { 
       cache[req.url] = output;
-      bustCache(res).send(output);
+      res.send(output);
     });
   }
 });
@@ -79,12 +115,12 @@ app.get('/index.:format', function(req, res) {
   var format = req.params.format;
   var controller = new logic.Controller(conf);
   if(cache[req.url]) {
-    bustCache(res).send(cache[req.url]);
+    res.send(cache[req.url]);
   }
   else {
     controller.fetchCategories(format, function(output) { 
       cache[req.url] = output;
-      bustCache(res).send(output);
+      res.send(output);
     });
   }
 });
@@ -107,12 +143,12 @@ app.get('/reader/:category.:format?', function(req, res) {
   // request the category list i
 
   if(cache[req.url]) {
-    bustCache(res).send(cache[req.url]);
+    res.send(cache[req.url]);
   }
   else {
     controller.fetchCategory(category, format, function(output) { 
       cache[req.url] = output;
-      bustCache(res).send(output);
+      res.send(output);
     });
   }
 });
@@ -124,24 +160,15 @@ app.get('/reader/:category/:article.:format?', function(req, res) {
   var controller = new logic.Controller(conf);
   
   if(cache[req.url]) {
-    bustCache(res).send(cache[req.url]);
+    res.send(cache[req.url]);
   }
   else {
     controller.fetchArticle(article, category, format, function(output) { 
       cache[req.url] = output;
-      bustCache(res).send(output);
+      res.send(output);
     });
   }
 });
-
-function bustCache(res) {
-  res.header("Expires","Mon, 26 Jul 1997 05:00:00 GMT");
-  res.header("Last-Modified", +new Date);
-  res.header("Cache-Control","no-store, no-cache, must-revalidate, max-age=0");
-  res.header("Cache-Control", "post-check=0, pre-check=0");
-  res.header("Pragma","no-cache");
-  return res;
-}
 
 app.listen(3000);
 

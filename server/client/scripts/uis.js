@@ -1,6 +1,15 @@
 formfactor.register({
-  "desktop": [
-    "screen"
+  'desktop': [
+    'screen'
+  ],
+  'phone': [
+    'screen' // TODO(mm): use real media query.
+  ],
+  'tv': [
+    'screen' // TODO(smus): use real media query.
+  ],
+  'tablet': [
+    'screen' // TODO(ericbidelman): use real media query.
   ]
 });
 
@@ -15,7 +24,7 @@ var factor = formfactor.detect([
   },
   {
     "formfactor": "tv",
-    "resources": ["/scripts/tv/controller.js", "/lib/excss.js", "/css/tv/tv.excss"]
+    "resources": ["/scripts/tv/controller.js", "/css/tv/tv.less"]
   },
   {
     "formfactor": "tablet",

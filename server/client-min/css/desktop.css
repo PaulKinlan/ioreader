@@ -40,7 +40,7 @@ body > header {
   width: 150px;
 }
 body > header h1 {
-  font-family: 'Droid Sans';
+  font-family: 'Lato';
   font-size: 2em;
   position: absolute;
   -webkit-transform: rotate(90deg);
@@ -125,7 +125,7 @@ body ul li.active {
   font-size: 1.6em;
   background-color: #a39770;
   color: white;
-  font-family: Arial, serif;
+  font-family: 'Lato', Arial, serif;
 }
 .categories .category .articles {
   box-sizing: border-box;
@@ -142,7 +142,7 @@ body ul li.active {
   background-color: #bab293;
   color: white;
   bottom: 60px;
-  font-family: Arial, serif;
+  font-family: 'Lato', Arial, serif;
   max-width: 80%;
   margin-bottom: 5px;
   right: 0;

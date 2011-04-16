@@ -1,6 +1,15 @@
 formfactor.register({
-  "desktop": [
-    "screen"
+  'desktop': [
+    'screen'
+  ],
+  'phone': [
+    'screen' // TODO(mm): use real media query.
+  ],
+  'tv': [
+    'screen' // TODO(smus): use real media query.
+  ],
+  'tablet': [
+    'screen' // TODO(ericbidelman): use real media query.
   ]
 });
 

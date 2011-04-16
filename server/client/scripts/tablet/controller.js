@@ -38,7 +38,7 @@ var TabletController = function() {
   });
 
   // Start with a default category and first article selected
-  window.addEventListener('rootchanged', function() {
+  window.addEventListener('rootchanged', function(e) {
    /* // Get the first article.
     var article = $('article');
     var request = {
@@ -48,14 +48,15 @@ var TabletController = function() {
       }
     };
     Controller.onArticleChanged(request);*/
+console.log(e)
   });
 
-  window.addEventListener('articlechanged', function() {
+  window.addEventListener('articlechanged', function(e) {
 
   });
 
   window.addEventListener("articleready", function(e) {
-
+    
   });
 
   window.addEventListener("categorychanged", function(e) {

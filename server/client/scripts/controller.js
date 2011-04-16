@@ -116,12 +116,17 @@ var BaseController = function() {
         var categories = result.categories;
         var category;
         for(var i = 0; category = categories[i]; i++) {
-          if(category.articles.length >0) {
-            $(".story", element).html(category.articles[0].body);
-            break;
+          var articles = category.articles;
+          var article;
+          if(articles.length >0) {
+            for(var a = 0; article = articles[a]; a++) {
+              if(article.state == "active") {
+                $(".story", element).html(article.body);
+                return; 
+              }
+            }
           }
         } 
-
       });
     }
     else if(data.category) {

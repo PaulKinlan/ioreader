@@ -38,24 +38,27 @@ function bustCache(req, res, next) {
 var Cache = function(timeout) {
   var cache = {};
   var clearCacheItem = function(url) {
+    console.log("Removing " + url + "_from cache. ");
     delete cache[url];
+    console.log(cache.length);
   };
 
   return function(req, res, next){
-    if(!!cache[req.url] == false) {
+    var url = req.url;
+    if(!!cache[url] == false) {
       next();
       var end = res.end;
       res.end = function(data, encoding) {
         res.end = end;
-        cache[req.url] = data;
+        cache[url] = data;
 
-        setTimeout(clearCacheItem, timeout * 1000);
+        setTimeout(function() { clearCacheItem(url); }, timeout * 1000);
 
         res.end(data, encoding);
       }
     }
     else {
-      res.send(cache[req.url]);
+      res.send(cache[url]);
     }
   };
 };
@@ -103,7 +106,7 @@ app.get('/', Cache(60), function(req, res) {
   });
 });
 
-app.get('/index.:format', function(req, res) {
+app.get('/index.:format', Cache(60), function(req, res) {
   var format = req.params.format;
   var controller = new logic.Controller(conf);
   
@@ -123,7 +126,7 @@ app.get('/app.cache', function(req, res) {
   });  
 });
 
-app.get('/reader/:category.:format?', function(req, res) {
+app.get('/reader/:category.:format?', Cache(60), function(req, res) {
   var category = req.params.category;
   var format = req.params.format || "html";
   var controller = new logic.Controller(conf);
@@ -134,7 +137,7 @@ app.get('/reader/:category.:format?', function(req, res) {
   });
 });
 
-app.get('/reader/:category/:article.:format?', function(req, res) {
+app.get('/reader/:category/:article.:format?', Cache(60), function(req, res) {
   var category = req.params.category;
   var article = req.params.article;
   var format = req.params.format || "html";

@@ -24,7 +24,7 @@ var factor = formfactor.detect([
   },
   {
     "formfactor": "tv",
-    "resources": ["/scripts/tv/controller.js", "/lib/excss.js", "/css/tv/tv.excss"]
+    "resources": ["/scripts/tv/controller.js", "/css/tv/tv.less"]
   },
   {
     "formfactor": "tablet",

@@ -1,0 +1,244 @@
+@categoryHeight: 50;
+@itemHeight: 150;
+@itemWidth: 200;
+@shelfPadding: 10;
+@border: 1px solid black;
+@bigImageWidth: 40%;
+
+@colorActiveGlow: #6391DE;
+@colorActiveBorder: #9f9;
+@colorLink: #9f9;
+@color: #eee;
+
+@bg: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#000), to(#222));
+@bgItems: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#222), to(#666));
+@bgCategories: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#666), to(maroon));
+
+@fontSizeFooter: 20px;
+@fontSizeArticle: 20px;
+@fontSizeTitle: 40px;
+@fontSizeSubTitle: 20px;
+
+.highlighted (@color: @colorActiveGlow) {
+  -webkit-box-shadow: @color 0px 0px 30px;
+  border-color: @colorActiveBorder;
+}
+
+.animate (@duration: 0.25s) {
+  -webkit-transition: all @duration ease-in-out;
+}
+
+body {
+  color: #eee;
+  background-image: @bg;
+  font-family: 'Droid Sans', sans-serif;
+  overflow: hidden;
+}
+
+a {
+  color: @colorLink;
+}
+
+/* SECTION: Category picker! */
+body > header {
+  .animate;
+  background-image: @bgCategories;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: $categoryHeight;
+  width: 100%;
+  border-top: @border;
+  padding: @shelfPadding 0;
+
+  > * {
+    display: none;
+  }
+
+  nav {
+    display: block;
+
+    ul {
+      position: relative;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    li.category {
+      .animate;
+      font-size: @fontSizeFooter;
+      font-family: sans-serif;
+      display: inline-block;
+      padding: 10px;
+      -webkit-border-radius: 8px;
+      border: 4px solid transparent;
+
+      &.active {
+        .highlighted;
+      }
+
+      a {
+        color: #ddd;
+        text-decoration: none;
+      }
+    }
+  }
+}
+
+/* SECTION: Item picker! */
+.categories .category {
+  .animate;
+  background-image: @bgItems;
+  border-top: @border;
+  position: absolute;
+  bottom: 69px; /*$categoryHeight + 2*@shelfPadding;*/
+  height: @itemHeight;
+  width: 120%;
+  overflow-y: hidden;
+
+  > h2 {
+    display: none;
+  }
+
+  article {
+    float: left;
+    margin: @shelfPadding 0 @shelfPadding @shelfPadding;
+    height: @itemHeight;
+    cursor: pointer;
+    width: @itemWidth;
+
+    &.active header {
+      .highlighted;
+    }
+
+    header {
+      .animate;
+      width: @itemWidth;
+      margin-right: 10px;
+      top: 0;
+      -webkit-border-radius: 8px;
+      border: 4px solid transparent;
+
+      h1 {
+        position: absolute;
+        top: 30px;
+        margin-left: 0px;
+        width: 170px;
+        background: rgba(50,0,0,0.7);
+        padding: 5px;
+
+        a {
+          color: @color;
+          text-decoration: none; 
+        }
+      }
+
+      img.thumbnail {
+        width: 100%;
+      }
+
+      div.summary {
+        display: none;
+      }
+    }
+
+    footer { display: none; }
+
+    /* Only show the active section */
+    section {
+      cursor: default;
+      display: none;
+    }
+
+    /* SECTION: Large view! */
+    &.active section {
+      display: block;
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 220px;
+      right: 0;
+      overflow: auto;
+      padding: 20px;
+
+      h1 {
+        font-size: @fontSizeTitle;
+        font-weight: bold;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        padding-bottom: 10px;
+        padding-right: 20px;
+      }
+
+      div.summary {
+        font-size: @fontSizeSubTitle;
+        font-style: italic;
+        margin-bottom: 20px;
+      }
+
+      img.thumbnail {
+        display: none;
+      }
+
+      /* Show the large image */
+      img.large {
+        width: @bigImageWidth;
+        min-width: @bigImageWidth;
+        min-height: @bigImageWidth * 0.5;
+        float: left;
+      }
+
+      div.story {
+        margin-left: @bigImageWidth;
+        padding-left: 20px;
+        font-size: @fontSizeArticle;
+        line-height: @fontSizeArticle + 3;
+        color: #ddd;
+
+        p {
+          margin-bottom: 10px;
+        }
+      }
+    }
+
+    /* Position the link to the full story on the bottom left under the image */
+    &.active footer {
+      font-size: @fontSizeSubTitle;
+      display: block;
+      position: fixed;
+      top: 50%;
+      left: 0;
+      padding: 0 20px 10px 20px;
+      background: #500;
+      -webkit-transform-origin: 0 0;
+      -webkit-transform: rotate(-90deg);
+    }
+  }
+}
+
+/* Only show the active category */
+section.category {
+  display: none;
+
+  &.active {
+    display: block;
+  }
+}
+
+.slide (@distance: 250px) {
+  -webkit-transform: translate(0, @distance); 
+}
+
+/* FULL SCREEN MODE */
+body.full > header { 
+  .slide;
+}
+body.full {
+  header { 
+    .slide;
+  }
+  section { 
+    bottom: -200 !important;
+  }
+}

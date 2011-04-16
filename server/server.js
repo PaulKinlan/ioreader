@@ -40,7 +40,6 @@ var Cache = function(timeout) {
   var clearCacheItem = function(url) {
     console.log("Removing " + url + "_from cache. ");
     delete cache[url];
-    console.log(cache.length);
   };
 
   return function(req, res, next){
@@ -97,7 +96,7 @@ app.configure('production', function() {
   console.log("Running in Production");
 });
 
-app.get('/', Cache(60), function(req, res) {
+app.get('/', Cache(6), function(req, res) {
   var format = "html"; 
   var controller = new logic.Controller(conf);
   
@@ -106,7 +105,7 @@ app.get('/', Cache(60), function(req, res) {
   });
 });
 
-app.get('/index.:format', Cache(60), function(req, res) {
+app.get('/index.:format', Cache(6), function(req, res) {
   var format = req.params.format;
   var controller = new logic.Controller(conf);
   
@@ -126,7 +125,7 @@ app.get('/app.cache', function(req, res) {
   });  
 });
 
-app.get('/reader/:category.:format?', Cache(60), function(req, res) {
+app.get('/reader/:category.:format?', Cache(6), function(req, res) {
   var category = req.params.category;
   var format = req.params.format || "html";
   var controller = new logic.Controller(conf);
@@ -137,7 +136,7 @@ app.get('/reader/:category.:format?', Cache(60), function(req, res) {
   });
 });
 
-app.get('/reader/:category/:article.:format?', Cache(60), function(req, res) {
+app.get('/reader/:category/:article.:format?', Cache(6), function(req, res) {
   var category = req.params.category;
   var article = req.params.article;
   var format = req.params.format || "html";

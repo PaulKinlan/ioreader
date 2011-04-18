@@ -24,6 +24,7 @@ exports.CategoryItem = function(id, title, shortDescription, category) {
   this.thumbnail;
   this.categoryId = category.id;
   this.state = "";
+  this.imageState = "";
   this.url = function () { return "reader/" + categoryId + "/" + this.id + ".html"; }; 
   this.dataUrl = function () { return "reader/" + categoryId + "/" + this.id + ".json"; };
 };

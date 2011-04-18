@@ -1,7 +1,7 @@
 @headerWidth: 150px;
-@thumbnailWidth: 390px;
-@thumbnailHeight: 234px;
 @summaryHeight: 60px;
+
+@columnWidth: 400px;
 
 body {
   background-color: @bgcolor5;
@@ -65,7 +65,6 @@ body {
       }
     }
   }
-      
 
   ul li {
     -webkit-transition: all 0.2s ease-in-out; 
@@ -81,7 +80,6 @@ body {
       background-color: @bgcolor4 - #111;
       padding-left: 10px;
     }
-
       
     &.active {
       background-color: @bgcolor4 - #222;
@@ -92,15 +90,15 @@ body {
 
 .categories {
   margin-left: @headerWidth + 20px;
-  display: -webkit-box;
-  -webkit-box-orient: horizontal;
+  .display-box; 
+  .box-orient(horizontal);
   overflow: hidden;
  
   .category {
     background-color: @bgcolor3;
     margin-top: 10px;
     margin-left: 10px;
-    width: 400px;
+    width: @columnWidth;
     -webkit-transition: all 0.2s ease-in-out; 
     border-top-right-radius: 10px;
     border-top-left-radius: 10px;
@@ -125,32 +123,67 @@ body {
       box-sizing: border-box;
       padding: 5px;
 
-
       article {
-        header {
+        &.nothumbnail {
+          header {
+            position: relative;
+            h1 {
+              font-size: 1.6em;
+              position:absolute;
+              padding: 5px;
+              box-sizing: border-box;
+              background-color: rgba(0,0,0,0.8);
+              color: white;
+              font-family: 'Lato', Arial, serif; 
+              right: 0; 
+              left: 0;
+              top: 0; 
+              z-index: 500;
+              a {
+                color: white;
+                text-decoration: none;
+              }
+           }
+
+           img.thumbnail {
+             display: none;
+           }
+        
+           .summary {
+              position: absolute;
+              padding: 5px;
+              font-size: 1.0em;
+              width: 100%;
+              box-sizing: border-box;
+              background-color: rgba(0,0,0,0.5);
+              font-family: 'Droid Sans';
+              bottom: 0;
+           }
+         }  
+       }
+ 
+       header {
           position: relative;
           h1 {
             font-size: 1.6em;
             position:absolute;
             padding: 5px;
             box-sizing: border-box;
-            background-color: @bgcolor1;
+            background-color: rgba(0,0,0,0.8);
             color: white;
-            bottom: @summaryHeight;
             font-family: 'Lato', Arial, serif; 
-            max-width: 80%;
-            margin-bottom: 5px;
             right: 0; 
+            left: 0;
+            bottom: 0; 
             z-index: 500;
             a {
               color: white;
               text-decoration: none;
             }
           }
-      
+
           img.thumbnail {
-            width: @thumbnailWidth;
-            height: @thumbnailHeight;
+            width: 100%;
           }
         
           img.thumbnail.hi-res {
@@ -164,6 +197,7 @@ body {
           }
 
           .summary {
+            display: none;
             padding: 5px;
             font-size: 1.0em;
             width: 100%;

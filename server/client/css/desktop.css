@@ -100,7 +100,15 @@ body ul li.active {
 .categories {
   margin-left: 170px;
   display: -webkit-box;
+  display: -moz-box;
+  display: -o-box;
+  display: -ms-box;
+  display: box;
   -webkit-box-orient: horizontal;
+  -mox-box-orient: horizontal;
+  -o-box-orient: horizontal;
+  -ms-box-orient: horizontal;
+  box-orient: orient;
   overflow: hidden;
 }
 .categories .category {
@@ -131,6 +139,39 @@ body ul li.active {
   box-sizing: border-box;
   padding: 5px;
 }
+.categories .category .articles article.nothumbnail header {
+  position: relative;
+}
+.categories .category .articles article.nothumbnail header h1 {
+  font-size: 1.6em;
+  position: absolute;
+  padding: 5px;
+  box-sizing: border-box;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  font-family: 'Lato', Arial, serif;
+  right: 0;
+  left: 0;
+  top: 0;
+  z-index: 500;
+}
+.categories .category .articles article.nothumbnail header h1 a {
+  color: white;
+  text-decoration: none;
+}
+.categories .category .articles article.nothumbnail header img.thumbnail {
+  display: none;
+}
+.categories .category .articles article.nothumbnail header .summary {
+  position: absolute;
+  padding: 5px;
+  font-size: 1.0em;
+  width: 100%;
+  box-sizing: border-box;
+  background-color: rgba(0, 0, 0, 0.5);
+  font-family: 'Droid Sans';
+  bottom: 0;
+}
 .categories .category .articles article header {
   position: relative;
 }
@@ -139,13 +180,12 @@ body ul li.active {
   position: absolute;
   padding: 5px;
   box-sizing: border-box;
-  background-color: #bab293;
+  background-color: rgba(0, 0, 0, 0.8);
   color: white;
-  bottom: 60px;
   font-family: 'Lato', Arial, serif;
-  max-width: 80%;
-  margin-bottom: 5px;
   right: 0;
+  left: 0;
+  bottom: 0;
   z-index: 500;
 }
 .categories .category .articles article header h1 a {
@@ -153,8 +193,7 @@ body ul li.active {
   text-decoration: none;
 }
 .categories .category .articles article header img.thumbnail {
-  width: 390px;
-  height: 234px;
+  width: 100%;
 }
 .categories .category .articles article header img.thumbnail.hi-res {
   position: absolute;
@@ -165,6 +204,7 @@ body ul li.active {
   opacity: 1;
 }
 .categories .category .articles article header .summary {
+  display: none;
   padding: 5px;
   font-size: 1.0em;
   width: 100%;

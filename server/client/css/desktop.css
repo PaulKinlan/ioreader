@@ -140,19 +140,16 @@ body ul li.active {
   padding: 5px;
 }
 .categories .category .articles article.nothumbnail header {
-  position: relative;
+  position: static;
 }
 .categories .category .articles article.nothumbnail header h1 {
+  position: static;
   font-size: 1.6em;
-  position: absolute;
   padding: 5px;
   box-sizing: border-box;
   background-color: rgba(0, 0, 0, 0.8);
   color: white;
   font-family: 'Lato', Arial, serif;
-  right: 0;
-  left: 0;
-  top: 0;
   z-index: 500;
 }
 .categories .category .articles article.nothumbnail header h1 a {
@@ -163,14 +160,14 @@ body ul li.active {
   display: none;
 }
 .categories .category .articles article.nothumbnail header .summary {
-  position: absolute;
+  display: block;
+  position: static;
   padding: 5px;
   font-size: 1.0em;
   width: 100%;
   box-sizing: border-box;
   background-color: rgba(0, 0, 0, 0.5);
   font-family: 'Droid Sans';
-  bottom: 0;
 }
 .categories .category .articles article header {
   position: relative;

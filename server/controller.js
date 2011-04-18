@@ -111,7 +111,7 @@ var Controller = function(configuration) {
   };
 
   var renderTemplate = function (data, state, format, callback) {
-    var d = {"categories" : data, "configuration": configuration};
+    var d = {"categories" : data, "configuration": configuration, "state": state};
     
     if(format == "json") {
       callback(JSON.stringify(d));

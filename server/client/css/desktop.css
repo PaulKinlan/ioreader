@@ -177,6 +177,9 @@ body ul li.active {
   font-family: 'Droid Sans';
   max-height: none;
 }
+.categories .category .articles article.textonly section img.large {
+  display: none;
+}
 .categories .category .articles article header {
   position: relative;
 }

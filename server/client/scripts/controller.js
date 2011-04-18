@@ -120,7 +120,7 @@ var BaseController = function() {
           var article;
           if(articles.length >0) {
             for(var a = 0; article = articles[a]; a++) {
-              if(article.state == "active") {
+              if(article.articleState == "active") {
                 $(".story", element).html(article.body);
                 return; 
               }

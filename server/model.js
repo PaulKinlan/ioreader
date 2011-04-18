@@ -5,7 +5,7 @@ exports.CategoryData = function(id, name) {
   this.id = id; 
   this.name = name;
   this.articles = [];
-
+  this.categoryState = "";
   /*
    Adds an item in to the category
   */

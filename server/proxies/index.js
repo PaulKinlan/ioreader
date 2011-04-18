@@ -31,7 +31,7 @@ cachingProxy.prototype.fetchCategories = function(callback) {
 };
 
 cachingProxy.prototype.fetchCategory = function(id, callback) {
-  return this.proxy.fetchCategories(id, callback);
+  return this.proxy.fetchCategory(id, callback);
 };
 
 cachingProxy.prototype.fetchArticle = function(id, category, callback){

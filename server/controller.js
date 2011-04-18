@@ -110,7 +110,7 @@ var Controller = function(configuration) {
     });
   };
 
-  var renderTemplate = function (data, state,  format, callback) {
+  var renderTemplate = function (data, state, format, callback) {
     var d = {"categories" : data, "configuration": configuration};
     
     if(format == "json") {

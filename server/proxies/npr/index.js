@@ -17,7 +17,6 @@ var NPRProxy = function(configuration) {
     });
 
     res.on('end', function() {
-      console.log(data);
       callback(JSON.parse(data));
     });
   };
@@ -84,8 +83,6 @@ var NPRProxy = function(configuration) {
       port: 80,
       path: "/query?" + toQueryString(query)
     };
-    console.log("Article");
-    console.log(options);
      
     http.get(options, function(res) {fetchResults(res, callback);});  
   };
@@ -115,7 +112,6 @@ NPRProxy.prototype.fetchCategories = function(callback) {
           cat.name = category_data.list.title.$text; 
           for(var cat_r in cat_results) {
             var cat_res = cat_results[cat_r];
-            console.log(cat_res);
             var item = new model.CategoryItem(cat_res.id, cat_res.title.$text, "", cat);
             if(cat_res.teaser) item.shortDescription = cat_res.teaser.$text;
             if(cat_res.thumbnail) item.thumbnail = cat_res.thumbnail.large.$text;
@@ -184,7 +180,16 @@ NPRProxy.prototype.createItem = function(cat_res, cat) {
   if(cat_res.byline && cat_res.byline.name) item.author = cat_res.byline.name.$text;
   item.url = parseLinkType(cat_res.link, "html");
   item.largeImage = this.findLargestImage(cat_res.image).url;
-            
+ 
+  if(!!cat_res.thumbnail == false) item.imageState = "textonly"; 
+  if(cat_res.text) {
+    var para;
+    item.body = "";
+    for(var s = 0; para = cat_res.text.paragraph[s]; s++) {
+      if(para.$text) item.body += "<p>" + para.$text + "</p>" 
+    }
+  }
+
   return item;
 };
 

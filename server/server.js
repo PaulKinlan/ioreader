@@ -5,6 +5,7 @@ var logic = require('./controller');
 
 var app = express.createServer();
 
+/*
 var conf = { 
   id: "guardian",
   name: "The Guardian News Reader",
@@ -13,8 +14,7 @@ var conf = {
   baseDir: __dirname + "/templates/",
   clientDir: __dirname + "/client/",
   categories: ["technology", "business", "politics", "lifeandstyle", "music", "culture"]
-};
-/*
+};*/
 var conf = { 
   id: "npr",
   name: "The NPR News Reader",
@@ -24,7 +24,6 @@ var conf = {
   clientDir: __dirname + "/client/",
   categories: ["1019"]
 };
-*/
 
 function bustCache(req, res, next) {
   res.setHeader("Expires","Mon, 26 Jul 1997 05:00:00 GMT");

@@ -23,6 +23,16 @@
   -o-box-pack: center;
   box-pack: center;
 }
+.missing-image {
+  background: url('/images/sadface.png') center center no-repeat, #bbbbbb;
+  -webkit-border-radius: 7px;
+  -moz-border-radius: 7px;
+  border-radius: 7px;
+}
+.missing-image img.large {
+  min-height: 200px;
+  visibility: hidden;
+}
 body {
   color: #eee;
   background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#000000), to(#222222));

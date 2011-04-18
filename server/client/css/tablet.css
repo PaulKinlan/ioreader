@@ -23,6 +23,19 @@
   -o-box-pack: center;
   box-pack: center;
 }
+.missing-image {
+  background: url('/images/sadface.png') center center no-repeat, #bbbbbb;
+  -webkit-border-radius: 7px;
+  -moz-border-radius: 7px;
+  border-radius: 7px;
+  -webkit-border-radius: 7px;
+  -moz-border-radius: 7px;
+  border-radius: 7px;
+}
+.missing-image img.large {
+  min-height: 200px;
+  visibility: hidden;
+}
 /* REMOVE THESE MIXINS AND PUT IN base.less ***********************************/
 .display-box {
   display: -webkit-box;
@@ -49,6 +62,19 @@
   -o-box-pack: center;
   box-pack: center;
 }
+.missing-image {
+  background: url('/images/sadface.png') center center no-repeat, #bbbbbb;
+  -webkit-border-radius: 7px;
+  -moz-border-radius: 7px;
+  border-radius: 7px;
+  -webkit-border-radius: 7px;
+  -moz-border-radius: 7px;
+  border-radius: 7px;
+}
+.missing-image img.large {
+  min-height: 200px;
+  visibility: hidden;
+}
 /* ************************************************************************** */
 ::-webkit-scrollbar {
   display: none;
@@ -59,6 +85,7 @@
   /*background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#1E5799), color-stop(50%,#2989D8), color-stop(51%,#207cca), color-stop(100%,#7db9e8));*/
 
   background: -webkit-gradient(linear, 0% 48%, 0% 47%, from(#990000), to(#9d2e2c)), #eeeeee;
+  -webkit-box-shadow: 0 3px 5px rgba(0, 0, 0, 0.5);
   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.5);
   width: 100%;
   min-height: 50px;
@@ -84,7 +111,9 @@
 }
 body {
   font: 11pt normal 'Droid Sans', Arial;
-  background: -webkit-linear-gradient(top, white, #999999);
+  background: url('/images/slide_white.png');
+  /*, -webkit-linear-gradient(top, white, #999);*/
+
   overflow: hidden;
 }
 body > header {
@@ -93,6 +122,7 @@ body > header {
   /*background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#1E5799), color-stop(50%,#2989D8), color-stop(51%,#207cca), color-stop(100%,#7db9e8));*/
 
   background: -webkit-gradient(linear, 0% 48%, 0% 47%, from(#990000), to(#9d2e2c)), #eeeeee;
+  -webkit-box-shadow: 0 3px 5px rgba(0, 0, 0, 0.5);
   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.5);
   width: 100%;
   min-height: 50px;
@@ -147,6 +177,7 @@ body > header h1 {
   -o-box-align: center;
   -ms-box-align: center;
   box-align: center;
+  cursor: pointer;
 }
 body > header p {
   font-size: 9pt;
@@ -262,6 +293,7 @@ body > footer {
   /*background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#1E5799), color-stop(50%,#2989D8), color-stop(51%,#207cca), color-stop(100%,#7db9e8));*/
 
   background: -webkit-gradient(linear, 0% 48%, 0% 47%, from(#990000), to(#9d2e2c)), #eeeeee;
+  -webkit-box-shadow: 0 3px 5px rgba(0, 0, 0, 0.5);
   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.5);
   width: 100%;
   min-height: 50px;
@@ -285,6 +317,7 @@ body > footer {
   z-index: 100;
   position: absolute;
   min-height: 35px;
+  -webkit-box-shadow: 0 -3px 5px rgba(0, 0, 0, 0.5);
   box-shadow: 0 -3px 5px rgba(0, 0, 0, 0.5);
 }
 body > footer a {
@@ -321,6 +354,8 @@ body > footer a:not(:last-of-type) {
 }
 .categories {
   height: 100%;
+  /*breaks glovebox*/
+
   position: relative;
   overflow-y: auto;
   overflow-x: hidden;
@@ -339,59 +374,78 @@ body > footer a:not(:last-of-type) {
   display: none;
 }
 .articleState .categories .category.active {
-  width: 300px;
+  height: 100%;
   position: relative;
   overflow-y: auto;
-  /*height: 100%;
-      overflow-x: hidden;*/
+  /*overflow-x: hidden;*/
 
+  /*background: -webkit-linear-gradient(left, rgba(255, 255, 255, 0.5) 10%, #777, rgba(255, 255, 255, 0.5) 90%) no-repeat;*/
+
+  background: url('/images/bg-rep.png');
+  -webkit-box-shadow: 1px 0 5px rgba(0, 0, 0, 0.4);
+  box-shadow: 1px 0 5px rgba(0, 0, 0, 0.4);
+  padding: 1em;
+  width: 250px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
-.articleState .categories .category.active article:not(.active) {
+.articleState .categories .category.active .articles article {
   display: block;
 }
-.articleState .categories .category.active article:not(.active) img.thumbnail {
-  max-width: 100%;
-  min-height: inherit;
-  min-width: 300px;
+.articleState .categories .category.active .articles article:not(.active) header {
+  opacity: 0.5;
+  -webkit-transform: scale(0.9);
 }
-.articleState .categories .category.active article.active {
-  height: 100%;
-  width: 430px;
-  overflow-y: auto;
-  overflow-x: hidden;
-  position: fixed;
-  top: 50px;
-  padding-top: 1em;
-  -webkit-transform: translatex(312px);
+.articleState .categories .category.active .articles article header {
+  -webkit-transition: -webkit-transform 0.2s ease-in-out, opacity 0.4s;
+}
+.articleState .categories .category.active .articles article header h1 a {
+  bottom: 0;
+}
+.articleState .categories .category.active .articles article header .summary {
+  display: none;
+}
+.articleState .categories .category.active .articles article header img.thumbnail {
+  /*max-width: 100%;*/
+
+  min-height: 133px;
+  max-width: 100%;
 }
 article {
   color: #222;
   display: inline-block;
   margin-bottom: 10px;
 }
-article > header {
+article header {
   position: relative;
-}
-article > header img.thumbnail {
   -webkit-border-radius: 7px;
   -moz-border-radius: 7px;
   border-radius: 7px;
   -webkit-border-radius: 7px;
   -moz-border-radius: 7px;
   border-radius: 7px;
-  min-height: 276px;
-  max-height: 276px;
-  min-width: 460px;
 }
-article > header img.thumbnail.hi-res {
+article header img.thumbnail {
+  min-height: 176px;
+  max-height: 176px;
+  /*min-width: 260px;*/
+
+  width: 260px;
+  border-radius: inherit;
+}
+article header img.thumbnail.hi-res {
   position: absolute;
   opacity: 0;
   -webkit-transition: opacity 1s linear;
 }
-article > header img.thumbnail.fadein {
+article header img.thumbnail.fadein {
   opacity: 1;
 }
-article > header h1 a {
+article header h1 a {
   position: absolute;
   z-index: 2;
   /* prevent title flicker */
@@ -407,6 +461,7 @@ article > header h1 a {
   /*background: -webkit-linear-gradient(top, rgba(255,255,255,0.4), transparent);*/
 
   background: rgba(255, 255, 255, 0.3);
+  -webkit-box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.5) inset;
   box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.5) inset;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -425,7 +480,7 @@ article > header h1 a {
   text-shadow: 1px 1px 1px black;
   text-decoration: none;
 }
-article > header .summary {
+article header .summary {
   font-size: 10pt;
   position: absolute;
   bottom: 0;
@@ -435,12 +490,7 @@ article > header .summary {
   color: white;
   width: 100%;
   height: 55px;
-  -webkit-border-radius: 7px;
-  -moz-border-radius: 7px;
-  border-radius: 7px;
-  -webkit-border-radius: 7px;
-  -moz-border-radius: 7px;
-  border-radius: 7px;
+  border-radius: inherit;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
   -webkit-box-sizing: border-box;
@@ -450,37 +500,63 @@ article > header .summary {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
-article > section {
+article section {
   display: none;
 }
-article > footer {
+article footer {
   display: none;
 }
 article.active {
   /*-webkit-transform: rotate3d(0,1,0,180deg);*/
 
 }
-article.active > header {
-  display: none;
+article.active header {
+  -webkit-box-shadow: 0 2px 5px #777777, 0 -2px 5px #777777, 2px 0 10px #777777, -2px 0 5px #777777;
+  box-shadow: 0 2px 5px #777777, 0 -2px 5px #777777, 2px 0 10px #777777, -2px 0 5px #777777;
 }
-article.active > section {
+article.active section {
   /*-webkit-transform: rotate3d(0,1,0,-180deg);*/
 
   display: block;
+  position: fixed;
+  left: 270px;
+  top: 57px;
+  height: 100%;
+  width: 480px;
+  /* TODO: try to get this to extend based on media query */
+
+  overflow: auto;
 }
-article.active > section h1 {
-  position: relative;
-  box-shadow: none;
-  padding: 0;
-  margin-bottom: 0.5em;
+article.active section h1 {
+  font-size: 18pt;
 }
-article.active > section img.thumbnail {
-  display: none;
+article.active section .summary {
+  padding: 0.5em 0 1em 0;
 }
-article.active > section .story {
+article.active section h1, article.active section .summary {
+  /*text-shadow: 1px 1px 1px black;
+      color: white;*/
+
+  font-family: 'Lato', 'Droid Sans';
+}
+article.active section img.large {
+  /*max-width: 100%;*/
+
+  width: 100%;
+  -webkit-border-radius: 7px;
+  -moz-border-radius: 7px;
+  border-radius: 7px;
+  -webkit-border-radius: 7px;
+  -moz-border-radius: 7px;
+  border-radius: 7px;
+}
+article.active section .story {
   text-shadow: 0 1px 1px rgba(255, 255, 255, 0.8);
   text-align: justify;
 }
-article.active > section .story p {
+article.active section .story p {
   margin-bottom: 10px;
+}
+article.active section .story p:first-child {
+  margin-top: 1em;
 }

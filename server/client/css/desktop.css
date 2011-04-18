@@ -23,6 +23,16 @@
   -o-box-pack: center;
   box-pack: center;
 }
+.missing-image {
+  background: url('/images/sadface.png') center center no-repeat, #bbbbbb;
+  -webkit-border-radius: 7px;
+  -moz-border-radius: 7px;
+  border-radius: 7px;
+}
+.missing-image img.large {
+  min-height: 200px;
+  visibility: hidden;
+}
 body {
   background-color: #2b2922;
   color: white;
@@ -146,17 +156,17 @@ body ul li.active {
   height: 100%;
   overflow-y: scroll;
 }
-.categories .category .articles article.nothumbnail header {
+.categories .category .articles article.textonly header {
   position: static;
 }
-.categories .category .articles article.nothumbnail header h1 {
+.categories .category .articles article.textonly header h1 {
   position: static;
   background-color: black;
 }
-.categories .category .articles article.nothumbnail header img.thumbnail {
+.categories .category .articles article.textonly header img.thumbnail {
   display: none;
 }
-.categories .category .articles article.nothumbnail header .summary {
+.categories .category .articles article.textonly header .summary {
   display: block;
   position: static;
   padding: 5px;
@@ -261,6 +271,7 @@ body ul li.active {
   line-height: 1.2em;
   overflow-y: scroll;
   border-bottom-left-radius: 10px;
+  width: 100%;
 }
 .categories .category .articles article section .story p {
   margin-bottom: 5px;

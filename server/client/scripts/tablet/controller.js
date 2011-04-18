@@ -22,8 +22,6 @@ var TabletController = function() {
           el.src = srcLow;
         } else {
           $el.wrap('<div class="missing-image"/>');
-          //el.style.minHeight = '200px';
-          //el.style.visibility = 'hidden';
         }
       }
     });
@@ -51,7 +49,6 @@ var TabletController = function() {
         };
         img.src = srcHi;
       } else if (!$el.attr('src')) {
-        el.style.visibility = 'hidden';
         $el.parent('header').addClass('missing-image');
       }
     });

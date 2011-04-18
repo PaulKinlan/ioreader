@@ -28,7 +28,7 @@ var factor = formfactor.detect([
   },
   {
     "formfactor": "tablet",
-    "resources": ["/scripts/tablet/controller.js", "/lib/less.js", "/css/tablet/tablet.less"]
+    "resources": ["/scripts/tablet/touch-scroll.js", "/scripts/tablet/controller.js", "/lib/less.js", "/css/tablet/tablet.less"]
   }
 ]);
 

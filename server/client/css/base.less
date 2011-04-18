@@ -38,6 +38,20 @@
   display: box;
 }
 
+.box-orient (@orient: vertical) {
+  -webkit-box-orient: @orient;
+  -mox-box-orient: @orient;
+  -o-box-orient: @orient;
+  -ms-box-orient: @orient;
+  box-orient: @orient;
+}
+
+.border-image (@imagesrc, @size, @xmode, @ymode) {
+  -moz-border-image: @imagesrc, @size, @xmode, @ymode;
+  -webkit-border-image: @imagesrc, @size, @xmode, @ymode;
+  border-image: u@imagesrc, @size, @xmode, @ymode;
+}
+
 .box-v-center { /* vertical align center */
   -webkit-box-align: center;
   -moz-box-align: center;
@@ -54,6 +68,4 @@
   box-pack: center;
 }
 
-.missing-image {
-  background: url('/images/sadface.png') center center no-repeat, #ccc;
-}
+

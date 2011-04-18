@@ -8,7 +8,7 @@
   border-radius: @radius;
 }
 
-.box-sizing(@type: border-box) {
+.box-sizing (@type: border-box) {
   -webkit-box-sizing: @type;
   -moz-box-sizing: @type;
   box-sizing: @type;
@@ -37,6 +37,16 @@
   -o-box-pack: center;
   box-pack: center;
 }
+
+.missing-image {
+  background: url('/images/sadface.png') center center no-repeat, #bbb;
+  .border-radius(@thumbnail-radius);
+
+  img.large {
+    min-height: 200px;
+    visibility: hidden;
+  }
+}
 /* ************************************************************************** */
 
 
@@ -48,6 +58,7 @@
   /*background: -webkit-linear-gradient(top, white, rgba(0, 50, 128, 0.7));*/
   /*background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#1E5799), color-stop(50%,#2989D8), color-stop(51%,#207cca), color-stop(100%,#7db9e8));*/
   background: -webkit-gradient(linear, 0% 48%, 0% 47%, from(#990000), to(#9d2e2c)), #eee;
+  -webkit-box-shadow: 0 3px 5px rgba(0, 0, 0, 0.5);
   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.5);
   width: 100%;
   min-height: @navbar-height;
@@ -60,7 +71,7 @@
 
 body {
   font: 11pt normal 'Droid Sans', Arial;
-  background: -webkit-linear-gradient(top, white, #999);
+  background: url('/images/slide_white.png');/*, -webkit-linear-gradient(top, white, #999);*/
   overflow: hidden;
 
   > header {
@@ -75,6 +86,7 @@ body {
       padding: 0 10px;
       .display-box;
       .box-v-center;
+      cursor: pointer;
     }
 
     p {
@@ -128,6 +140,7 @@ body {
     .box-h-center;
     .navbar;
     min-height: 35px;
+    -webkit-box-shadow: 0 -3px 5px rgba(0, 0, 0, 0.5);
     box-shadow: 0 -3px 5px rgba(0, 0, 0, 0.5);
 
     a {
@@ -146,7 +159,7 @@ body {
 }
 
 .categories {
-  height: 100%;
+  height: 100%; /*breaks glovebox*/
   position: relative;
   overflow-y: auto;
   overflow-x: hidden;
@@ -160,7 +173,6 @@ body {
 
 
 .menuState {
-
 
 }
 
@@ -185,31 +197,49 @@ body {
     }
 
     .category.active {
-      width: 300px;
+      height: 100%;
       position: relative;
       overflow-y: auto;
-      /*height: 100%;
-      overflow-x: hidden;*/
+      /*overflow-x: hidden;*/
+      /*background: -webkit-linear-gradient(left, rgba(255, 255, 255, 0.5) 10%, #777, rgba(255, 255, 255, 0.5) 90%) no-repeat;*/
+      background: url('/images/bg-rep.png');
+      -webkit-box-shadow: 1px 0 5px rgba(0, 0, 0, 0.4);
+      box-shadow: 1px 0 5px rgba(0, 0, 0, 0.4);
+      padding: 1em;
+      width: 250px;
+      .box-sizing;
 
-      article:not(.active) {
-        display: block;
+      .articles {
 
-        img.thumbnail {
-          max-width: 100%;
-          min-height: inherit;
-          min-width: 300px;
+        article {
+          display: block;
+
+          &:not(.active) {
+            header {
+              opacity: 0.5;
+              -webkit-transform: scale(0.9);
+            }
+          }
+
+          header {
+            -webkit-transition: -webkit-transform 0.2s ease-in-out, opacity 0.4s;
+
+            h1 a {
+              bottom: 0;
+            }
+
+            .summary {
+              display: none;
+            }
+
+            img.thumbnail {
+              /*max-width: 100%;*/
+              min-height: 133px;
+              max-width: 100%;
+            }
+          }
         }
-      }
 
-      article.active {
-        height: 100%;
-        width: 430px;
-        overflow-y: auto;
-        overflow-x: hidden;
-        position: fixed;
-        top: 50px;
-        padding-top: 1em;
-        -webkit-transform: translateX(312px);
       }
     }
 
@@ -221,14 +251,16 @@ article {
   display: inline-block;
   margin-bottom: 10px;
 
-  > header {
+  header {
     position: relative;
+    .border-radius(@thumbnail-radius);
 
     img.thumbnail {
-      .border-radius(7px);
-      min-height: 276px;
-      max-height: 276px;
-      min-width: 460px;
+      min-height: 176px;
+      max-height: 176px;
+      /*min-width: 260px;*/
+      width: 260px;
+      border-radius: inherit;
     }
 
     img.thumbnail.hi-res {
@@ -236,7 +268,7 @@ article {
       opacity: 0;
       -webkit-transition: opacity 1s linear;
     }
-    
+
     img.thumbnail.fadein {
       opacity: 1;
     }
@@ -254,9 +286,10 @@ article {
       padding: 5px 7px;
       /*background: -webkit-linear-gradient(top, rgba(255,255,255,0.4), transparent);*/
       background: rgba(255, 255, 255, 0.3);
+      -webkit-box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.5) inset;
       box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.5) inset;
       .box-sizing;
-      .border-radius(7px);
+      .border-radius(@thumbnail-radius);
       border-bottom-left-radius: 0;
       border-bottom-right-radius: 0;
       text-shadow: 1px 1px 1px black;
@@ -272,18 +305,18 @@ article {
       color: white;
       width: 100%;
       height: 55px;
-      .border-radius(7px);
+      border-radius: inherit;
       border-top-left-radius: 0;
       border-top-right-radius: 0;
       .box-sizing;
     }
   }
 
-   > section {
+  section {
     display: none;
   }
   
-  > footer {
+  footer {
     display: none;
   }
 }
@@ -291,28 +324,40 @@ article {
 article.active {
   /*-webkit-transform: rotate3d(0,1,0,180deg);*/
 
-  > header {
-    display: none;
+  header {
+    -webkit-box-shadow: 0 2px 5px #777, 0 -2px 5px #777, 2px 0 10px #777, -2px 0 5px #777;
+    box-shadow: 0 2px 5px #777, 0 -2px 5px #777, 2px 0 10px #777, -2px 0 5px #777;
   }
 
-  > section {
+  section {
     /*-webkit-transform: rotate3d(0,1,0,-180deg);*/
     display: block;
+    position: fixed;
+    left: 270px;
+    top: 57px;
+    height: 100%;
+    width: 480px; /* TODO: try to get this to extend based on media query */
+    overflow: auto;
 
     h1 {
-      position: relative;
-      box-shadow: none;
-      padding: 0;
-      margin-bottom: 0.5em;
+      font-size: 18pt;
     }
+
     .summary {
-      
+      padding: 0.5em 0 1em 0;
     }
-    img.thumbnail {
-      display: none;
+
+    h1,
+    .summary {
+      /*text-shadow: 1px 1px 1px black;
+      color: white;*/
+      font-family: 'Lato', 'Droid Sans';
     }
+
     img.large {
-      
+      /*max-width: 100%;*/
+      width: 100%;
+      .border-radius(@thumbnail-radius);
     }
     .story {
       text-shadow: 0 1px 1px rgba(255,255,255,0.8);
@@ -320,6 +365,10 @@ article.active {
 
       p {
         margin-bottom: 10px;
+      }
+
+      p:first-child {
+        margin-top: 1em;
       }
     }
   }

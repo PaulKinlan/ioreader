@@ -151,8 +151,7 @@ body > header {
 }
 body > header h1 {
   font-size: 18pt;
-  font-weight: bold;
-  color: #921400;
+  color: #800000;
   text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.3), 0px -1px 0px rgba(0, 0, 0, 0.7);
   padding: 0 10px;
   display: -webkit-box;
@@ -410,6 +409,9 @@ body > footer a:not(:last-of-type) {
 
   min-height: 133px;
   max-width: 100%;
+}
+.articleState .categories .category.active .articles article header .summary {
+  display: none;
 }
 article {
   color: #222;

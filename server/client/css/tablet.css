@@ -71,9 +71,23 @@
   -moz-border-radius: 7px;
   border-radius: 7px;
 }
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
 .missing-image img.large {
   min-height: 200px;
   visibility: hidden;
+=======
+=======
+>>>>>>> Stashed changes
+.missing-image img {
+  visibility: hidden;
+}
+.missing-image img.large {
+  min-height: 200px;
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
 }
 /* ************************************************************************** */
 ::-webkit-scrollbar {

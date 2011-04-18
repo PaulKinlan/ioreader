@@ -213,8 +213,8 @@ body ul li.active {
   position: absolute;
   top: 0;
   bottom: 0;
-  right: 0;
-  left: 100%;
+  width: 50%;
+  left: 110%;
   opacity: 1;
   z-index: 1000;
   background-color: white;

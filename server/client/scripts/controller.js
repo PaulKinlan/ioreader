@@ -112,6 +112,8 @@ var BaseController = function() {
         window.history.pushState(undefined, "", "/reader/" + data.category + "/" + data.article );
       }
       changeArticle(data.category, data.article);
+      console.log("loading article");
+      $("html").addClass("loadingArticle");
       fetchArticle(data.category, data.article, function(result) {
         var categories = result.categories;
         var category;
@@ -121,7 +123,10 @@ var BaseController = function() {
             break;
           }
         } 
-
+        setTimeout(function() {
+          $("html").removeClass("loadingArticle");
+          console.log("article loaded");
+        }, 2000);
       });
     }
     else if(data.category) {

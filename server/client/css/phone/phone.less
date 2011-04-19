@@ -23,7 +23,7 @@ a { color: red !important; }
 /******************/
 /* PAGE STRUCTURE */
 /******************/*
-html { background: black; min-height: 100%; }
+body { background: black; min-height: 100%; }
 nav, html[data-resource=menu] { display: none; } /* not supported in this UI */
 
 /***********************************/
@@ -48,7 +48,7 @@ nav, html[data-resource=menu] { display: none; } /* not supported in this UI */
   img.thumbnail { float: left; width: 70px; height: 42px; margin-left: 20px; }
 
   article {
-    .linearGradient(#000,#222); color: white; 
+    .linearGradient(#000,#333); color: white; 
     padding: 1.5em 0 1em;
     width: 100%; 
     border-bottom: 1px solid #777;
@@ -80,7 +80,8 @@ nav, html[data-resource=menu] { display: none; } /* not supported in this UI */
   p { margin-top: 0.5em; }
 }
 
-/********************/
-/* REFRESHING STATE */
-/********************/
-.refreshing article { background: green; }
+/*****************************/
+/* REFRESHING/LOADING STATES */
+/*****************************/
+.refreshing article { color: #666; }
+.loadingArticle article.active { color: #666; }

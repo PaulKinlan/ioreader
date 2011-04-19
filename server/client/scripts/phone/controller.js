@@ -1,15 +1,13 @@
 var PhoneController = function() {
 
   $("article").eq(3).addClass("active");
-  console.log("ART", $("article").eq(3));
 
   var controller = this;
 
   var $categories = $(".categories"),
       $category = $(".category", $categories),
       categoryIndex = $(".category.active").prev().length,
-      pageY = window.pageYOffset,
-      minMarginY = -10+$(window).height()-$(document).height();
+      pageY = window.pageYOffset;
 
   function animateToCurrentCategory(callback) {
     $(".categories").
@@ -22,8 +20,7 @@ var PhoneController = function() {
 
   var touchOpts = {
     swipeX: function(ev) {
-      console.log("swipeX", categoryIndex,ev.dx);
-      if (categoryIndex==0 && ev.dx > 30) controller.refresh();
+      if (categoryIndex==0 && ev.dx > 50) controller.refresh();
       categoryIndex = 
         ev.dx < 0 ? Math.min(categoryIndex+1, $category.length-1)
                   : Math.max(categoryIndex-1, 0);
@@ -39,12 +36,17 @@ var PhoneController = function() {
       $(".categories").css("marginLeft", ev.dx + parseInt($(".categories").css("marginLeft")));
     },
     moveY: function(ev) {
+      //var minMarginY = -10+$(window).height()-$(document).height();
+      var bodyHeight=Math.max($("body").height(), $(window).height());
+      var minMarginY = $(window).height()-$("body").height();
+      console.log("minMa", minMarginY, "bh", $("body").height());
       $("body").css("marginTop", inside(minMarginY,parseInt($("body").css("marginTop"))+ev.dy, 0));
     },
     click: function(ev) {
       var $target = $(ev.target);
-          $header = $target.closest("header"), $article = $target.closest("article");
-      console.log("XARTICLE", $article);
+          $header = $target.closest("header"), $article = $target.closest("article"), $story = $target.closest(".story");
+      console.log("hD", $header, "XARTICLE", $article);
+      if ($story.length) return;
 
       // if ($header.length && $article.hasClass("active")) {
 

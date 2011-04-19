@@ -117,6 +117,7 @@ body {
   /*, -webkit-linear-gradient(top, white, #999);*/
 
   overflow: hidden;
+  height: 90%;
 }
 body > header {
   /*background: -webkit-linear-gradient(top, white, rgba(0, 50, 128, 0.7));*/
@@ -386,7 +387,7 @@ body > footer a:not(:last-of-type) {
   -webkit-box-shadow: 1px 0 5px rgba(0, 0, 0, 0.4);
   box-shadow: 1px 0 5px rgba(0, 0, 0, 0.4);
   padding: 1em;
-  width: 250px;
+  width: 200px;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
@@ -404,10 +405,17 @@ body > footer a:not(:last-of-type) {
 .articleState .categories .category.active .articles article header {
   -webkit-transition: -webkit-transform 0.2s ease-in-out, opacity 0.4s;
 }
+.articleState .categories .category.active .articles article header h1 a {
+  padding: 2px 5px;
+  color: black;
+  font-size: 10pt;
+  text-shadow: none;
+  background: rgba(255, 255, 255, 0.5);
+}
 .articleState .categories .category.active .articles article header img.thumbnail {
   /*max-width: 100%;*/
 
-  min-height: 133px;
+  min-height: 103px;
   max-width: 100%;
 }
 .articleState .categories .category.active .articles article header .summary {
@@ -517,10 +525,10 @@ article.active section {
 
   display: block;
   position: fixed;
-  left: 270px;
+  height: 85%;
+  left: 220px;
   top: 57px;
-  height: 100%;
-  width: 480px;
+  width: 530px;
   /* TODO: try to get this to extend based on media query */
 
   overflow: auto;
@@ -530,6 +538,7 @@ article.active section h1 {
 }
 article.active section .summary {
   padding: 0.5em 0 1em 0;
+  font-size: 110%;
 }
 article.active section h1, article.active section .summary {
   /*text-shadow: 1px 1px 1px black;
@@ -551,6 +560,7 @@ article.active section img.large {
 article.active section .story {
   text-shadow: 0 1px 1px rgba(255, 255, 255, 0.8);
   text-align: justify;
+  font-size: 10pt;
 }
 article.active section .story p {
   margin-bottom: 10px;

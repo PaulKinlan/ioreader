@@ -76,6 +76,7 @@ body {
   font: 11pt normal 'Droid Sans', Arial;
   background: url('/images/slide_white.png');/*, -webkit-linear-gradient(top, white, #999);*/
   overflow: hidden;
+  height: 90%;
 
   > header {
     .navbar;
@@ -208,7 +209,7 @@ body {
       -webkit-box-shadow: 1px 0 5px rgba(0, 0, 0, 0.4);
       box-shadow: 1px 0 5px rgba(0, 0, 0, 0.4);
       padding: 1em;
-      width: 250px;
+      width: 200px;
       .box-sizing;
 
       .articles {
@@ -225,10 +226,18 @@ body {
 
           header {
             -webkit-transition: -webkit-transform 0.2s ease-in-out, opacity 0.4s;
+            
+            h1 a {
+              padding: 2px 5px;
+              color: black;
+              font-size: 10pt;
+              text-shadow: none;
+              background: rgba(255,255,255,0.5);
+            }
 
             img.thumbnail {
               /*max-width: 100%;*/
-              min-height: 133px;
+              min-height: 103px;
               max-width: 100%;
             }
 
@@ -331,10 +340,11 @@ article.active {
     /*-webkit-transform: rotate3d(0,1,0,-180deg);*/
     display: block;
     position: fixed;
-    left: 270px;
+    height: 87%;
+    left: 220px;
     top: 57px;
-    height: 100%;
-    width: 480px; /* TODO: try to get this to extend based on media query */
+
+    width: 530px; /* TODO: try to get this to extend based on media query */
     overflow: auto;
 
     h1 {
@@ -343,6 +353,7 @@ article.active {
 
     .summary {
       padding: 0.5em 0 1em 0;
+      font-size: 110%;
     }
 
     h1,
@@ -360,6 +371,7 @@ article.active {
     .story {
       text-shadow: 0 1px 1px rgba(255,255,255,0.8);
       text-align: justify;
+      font-size: 10pt;
 
       p {
         margin-bottom: 10px;

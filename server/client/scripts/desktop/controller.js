@@ -41,27 +41,33 @@ var DesktopController = function() {
 
   window.addEventListener("keyup", function(e) {
     var newControl;
+    var currentCategory = controller.getActiveCategory();
+    var currentArticle = controller.getActiveArticle();
+    e.preventDefault();
     switch(e.keyCode) {
       case 37://left
-        newControl = controller.getActiveCategory().prev();
+        newControl = currentCategory.prev();
         if(newControl.length == 0) $("section.category").last();
+        $(".articles", currentCategory).scrollTop(0);
         break;
       case 38://up
-        newControl = controller.getActiveArticle().prev();
+        newControl = currentArticle.prev();
         if(newControl.length == 0) newControl = $("section.active article").last(); 
+        $(".articles", currentCategory).scrollTop(newControl[0].offsetTop);
         break;  
       case 39://right
-        newControl = controller.getActiveCategory().next();
+        newControl = currentCategory.next();
         if(newControl.length == 0) newControl = $("section.category").first();
+        $(".articles", currentCategory).scrollTop(0);
         break;
       case 40://down
-        newControl = controller.getActiveArticle().next();
+        newControl = currentArticle.next();
         if(newControl.length == 0) newControl = $("section.active article").first(); 
+        $(".articles", currentCategory).scrollTop(newControl[0].offsetTop);
         break;
     } 
-
+    
     if(!!newControl && newControl.length > 0) controller.activate(newControl);
-    e.preventDefault();
     return false;
   });
 

@@ -124,15 +124,12 @@ var BaseController = function() {
             for(var a = 0; article = articles[a]; a++) {
               if(article.articleState == "active") {
                 $(".story", element).html(article.body);
-                return; 
+                $("html").removeClass("loadingArticle");
+                return;
               }
             }
           }
-        } 
-        setTimeout(function() {
-          $("html").removeClass("loadingArticle");
-          console.log("article loaded");
-        }, 2000);
+        }
       });
     }
     else if(data.category) {
@@ -158,7 +155,6 @@ var BaseController = function() {
 
   var refresh = function() {
     $("html").addClass("refreshing");
-    console.log("refreshing");
     fetchAll(function(data) {
       // Find all the columns, check for existing elements, add new ones.
       var categories = data.categories;
@@ -175,10 +171,7 @@ var BaseController = function() {
           }
         }
       }
-      setTimeout(function() {
-        $("html").removeClass("refreshing");
-        console.log("refreshed");
-      }, 2000);
+      $("html").removeClass("refreshing");
     });
   };
 

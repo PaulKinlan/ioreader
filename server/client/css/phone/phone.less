@@ -19,8 +19,12 @@ a,a:visited { text-decoration: none; color: white; }
 /******************/
 /* PAGE STRUCTURE */
 /******************/*
-body { background: black; min-height: 100%; }
 html[data-resource=menu] { display: none; } /* not supported in this UI */
+body { 
+  background: black; min-height: 100%;
+  > header h1, > header p { display: none; }
+  overflow: hidden; /* no scrollbars, just for desktop prettiness */
+}
 
 /***********************************/
 /* MAIN (CATEGORY AND STORY) STATE */
@@ -33,18 +37,21 @@ html[data-resource=menu] { display: none; } /* not supported in this UI */
 
   li {
     background: red;
-    a {
-      margin-left: 1em;
-    }
+    padding: 0.2em 0;
+    a { margin: 1em; }
   }
 
 }
 
-nav ul > li { width: 100%; }
+nav ul {
+  position: absolute; top: 0; left: 0; width: 100%; height: 1.4em;
+  li { width: 100%; }
+}
 
 .categories {
 
-  .category { height: 100%; }
+  margin-top: 1.4em;
+
   img.large { display: none; }
   /* section.category > h2 { padding: 1em 2em; background: red; } */
   section.category > h2 { display: none; }
@@ -93,6 +100,7 @@ nav ul > li { width: 100%; }
   .story { display: block; padding: 0 1em 1em 0; text-align: justify; line-height: 1.3em; font-family: "Droid Sans"; font-weight: 400; }
 }
 .story { display: none; 
+  a,a:visited { color: #aaf; }
   p { margin-top: 0.5em; }
 }
 
@@ -100,4 +108,4 @@ nav ul > li { width: 100%; }
 /* REFRESHING/LOADING STATES */
 /*****************************/
 .refreshing article { color: #666; }
-.loadingArticle article.active { color: #666; }
+.loadingArticle article.active { color: #999; }

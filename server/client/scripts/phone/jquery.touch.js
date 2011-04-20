@@ -28,6 +28,8 @@
     };
 
     // TODO support only one of moveX or moveY. And also, just "move".
+    // NOTE beware touch handler may be registered while touch is taking place,
+    // could lead to bugs here
     el[touch ? "ontouchmove" : "onmousemove"] = function(ev) {
       if (!mouseDownEvent) return; // we're only interested in diffs
       if (!mouseMoveEvent) {
@@ -47,7 +49,6 @@
         mouseMoveEvent = enhance(ev,mouseMoveEvent);
       }
 
-      log("dir", direction, "md", ev);
       direction=="x" ? opts.moveX(ev) : opts.moveY(ev);
       return false;
 

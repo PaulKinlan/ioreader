@@ -5,30 +5,31 @@ var PhoneController = function() {
   var controller = this;
 
   var $categories = $(".categories"),
+      $nav = $("nav ul"),
       $scrollables = $categories.add($("nav ul"));
       $category = $(".category", $categories),
       categoryIndex = $(".categories .category.active").prev().length,
       pageY = window.pageYOffset;
 
   function animateToCurrentCategory(callback) {
-    $categories.touch(null)
+    unregisterTouch(); // ignore touch during animation
     $scrollables.animate({marginLeft: -categoryIndex*$(window).width()},function() {
       if (callback) callback();
-      $categories.touch(touchOpts);
+      registerTouch();
     });
   }
 
-  var touchOpts = {
+  var categoryTouchOpts = {
     swipeX: function(ev) {
-      if (categoryIndex==0 && ev.dx > 50) controller.refresh();
-      categoryIndex = 
+      if (categoryIndex==0 && ev.dx > 50) controller.refresh(); // funky pullback gesture
+      categoryIndex =
         ev.dx < 0 ? Math.min(categoryIndex+1, $category.length-1)
                   : Math.max(categoryIndex-1, 0);
       animateToCurrentCategory(function() {
+          // since an active article will now be hidden, causing layout chaos:
+        if ($("article.active").length) $("section.active").css("marginTop", 0);
         controller.activate($category.get(categoryIndex));
       });
-      // $(".category").removeClass("active");
-      // $(".categories").eq(categoryIndex).addClass("active");
     },
     swipeY: function() { // do nothing; we only want move events
     }, 
@@ -38,9 +39,12 @@ var PhoneController = function() {
     moveY: function(ev) {
       //var minMarginY = -10+$(window).height()-$(document).height();
       var bodyHeight=Math.max($("body").height(), $(window).height());
-      var minMarginY = $(window).height()-$("body").height();
-      console.log("minMa", minMarginY, "bh", $("body").height());
-      $("body").css("marginTop", inside(minMarginY,parseInt($("body").css("marginTop"))+ev.dy, 0));
+      // var minMarginY = $(window).height()-$("body").height();
+      var maxHeightAboveWindow = $("section.active").height() + $("nav ul").height() - $(window).height();
+      var newMarginTop = parseInt($("section.active").css("marginTop"))+ev.dy
+      console.log(maxHeightAboveWindow, newMarginTop);
+      $("section.active").css("marginTop", inside(-maxHeightAboveWindow, newMarginTop, 0));
+      console.log($("section.active").css("marginTop"));
     },
     click: function(ev) {
       var $target = $(ev.target);
@@ -64,22 +68,43 @@ var PhoneController = function() {
       animateToCurrentCategory(); // revert any small movement
     },
     longHold: function(ev) {
-      animateToCurrentCategory();
+      animateToCurrentCategory(); // ^^ ditto
     }
   };
+  var navTouchOpts = $.extend({}, categoryTouchOpts, {
+    moveY: function() { console.log("IGNORED"); },
+    click: function() {
+      controller.activate(this);
+      return false;
+    }
+  });
 
   $(function() {
-
     $scrollables.css({marginLeft: -categoryIndex*$(window).width()})
-    $categories.touch(touchOpts);
-
-    $("header h1").css("color", "purple").css("fontWeight", "bold"); // quick hack to verify page loaded ok
-
+    registerTouch();
+    $("nav a").click(function() {
+      var categoryID = $(this).parent().data("category");
+      console.log($("#"+categoryID, $(".categories")));
+      controller.activate($("#"+categoryID, $(".categories")));
+      console.log("DONE");
+      return false;
+    });
+    $("nav a,nav a:visited").css("color", "yellow").css("fontWeight", "bold"); // quick hack to verify page loaded ok
   });
+
+  function registerTouch() {
+    $categories.touch(categoryTouchOpts);
+    $nav.touch(navTouchOpts);
+  }
+
+  function unregisterTouch() {
+    $categories.touch(null);
+    $nav.touch(null);
+  }
 
   function inside(min, val, max) {
     return Math.min(max,Math.max(val,min));
-  } 
+  }
 
 }
 

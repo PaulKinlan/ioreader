@@ -9,11 +9,6 @@ a, a:visited {
   color: white;
 }
 .category {
-  background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, pink), color-stop(100%, yellow));
-  background-image: -moz-linear-gradient(center bottom, pink 0, yellow 100%);
-  background-image: -o-linear-gradient(center bottom, pink 0, yellow 100%);
-  background-image: linear-gradient(center bottom, pink 0, yellow 100%);
-  background-color: pink;
   width: 100%;
 }
 /* QUICKFIX */
@@ -22,8 +17,9 @@ a {
 }
 /******************/
 /* PAGE STRUCTURE */
-/******************/*html {
+/******************/*body {
   background: black;
+  min-height: 100%;
 }
 nav, html[data-resource=menu] {
   display: none;
@@ -37,7 +33,7 @@ nav, html[data-resource=menu] {
   display: -webkit-box;
   -webkit-box-orient: horizontal;
   -webkit-box-align: start;
-  /* .summary { position: absolute; top: 1.8em; left: 6em; } */
+  /* article h1 { font-weight: bold; position: absolute; top: 0.4em; left: 6em; } */
 
 }
 .categories .category {
@@ -46,7 +42,7 @@ nav, html[data-resource=menu] {
 .categories img.large {
   display: none;
 }
-.categories h2 {
+.categories section.category > h2 {
   padding: 1em 2em;
   background: red;
 }
@@ -54,27 +50,33 @@ nav, html[data-resource=menu] {
   position: relative;
   overflow: hidden;
 }
-.categories article h1 {
-  font-weight: bold;
-  position: absolute;
-  top: 0.4em;
-  left: 6em;
-}
-.categories .summary {
+.categories article header h1 a, .categories .summary {
   display: none;
 }
+.categories article section h1 {
+  font-weight: bold;
+  margin: 0 1em 1em 100px;
+}
 .categories img.thumbnail {
-  width: 4em;
-  height: 3em;
-  position: absolute;
-  top: 0.4em;
-  left: 1em;
+  float: left;
+  width: 70px;
+  height: 42px;
+  margin-left: 20px;
 }
 .categories article {
+  background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #000000), color-stop(100%, #333333));
+  background-image: -moz-linear-gradient(center bottom, #000000 0, #333333 100%);
+  background-image: -o-linear-gradient(center bottom, #000000 0, #333333 100%);
+  background-image: linear-gradient(center bottom, #000000 0, #333333 100%);
+  background-color: #000000;
+  color: white;
   padding: 1.5em 0 1em;
   width: 100%;
-  border-bottom: 2px solid black;
+  border-bottom: 1px solid #777;
   min-height: 1.5em;
+}
+.categories article footer {
+  display: none;
 }
 .categories h3 {
   display: inline;
@@ -88,12 +90,23 @@ nav, html[data-resource=menu] {
 }
 /******************/
 /* STORY STATE */
-/******************/*.story {
+/******************/*.articleState article.active .story {
+  clear: left;
+  display: block;
+  padding: 0.5em 1em 1em 20px;
+}
+.story {
   display: none;
 }
-.articleState article.active {
-  color: yellow !important;
+.story p {
+  margin-top: 0.5em;
 }
-.articleState article.active .story {
-  display: block;
+/*****************************/
+/* REFRESHING/LOADING STATES */
+/*****************************/
+.refreshing article {
+  color: #666;
+}
+.loadingArticle article.active {
+  color: #666;
 }

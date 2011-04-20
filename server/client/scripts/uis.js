@@ -20,15 +20,15 @@ var factor = formfactor.detect([
   },
   {
     "formfactor": "phone",
-    "resources": ["/scripts/phone/jquery.touch.js", "/scripts/phone/controller.js", "/lib/less.js", "/css/phone/phone.less"]
+    "resources": ["/scripts/phone/jquery.touch.js", "/scripts/phone/controller.js", "/css/phone.css"]
   },
   {
     "formfactor": "tv",
-    "resources": ["/scripts/tv/controller.js", "/css/tv/tv.less"]
+    "resources": ["/scripts/tv/controller.js", "/css/tv.css"]
   },
   {
     "formfactor": "tablet",
-    "resources": ["/lib/less.js", "/css/tablet/tablet.less", '/css/tablet/touchscroll.css', "/scripts/tablet/css-beziers.js", "/scripts/tablet/touchscroll.js", "/scripts/tablet/controller.js"]
+    "resources": ["/css/tablet.css", '/css/tablet/touchscroll.css', "/scripts/tablet/css-beziers.js", "/scripts/tablet/touchscroll.js", "/scripts/tablet/controller.js"]
   }
 ]);
 

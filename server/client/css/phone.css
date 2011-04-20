@@ -43,9 +43,13 @@ a, a:visited {
   text-decoration: none;
   color: white;
 }
+.categories,
+nav,
+nav ul,
 .category {
   width: 100%;
 }
+/* both occupy screen width and categories shifted using -ve marginLeft */
 /* QUICKFIX */
 a {
   color: red !important;
@@ -63,11 +67,17 @@ html[data-resource=menu] {
 /***********************************/
 /* MAIN (CATEGORY AND STORY) STATE */
 /***********************************/
-.categories {
-  width: 100%;
+.categories, nav ul {
   display: -webkit-box;
   -webkit-box-orient: horizontal;
   -webkit-box-align: start;
+}
+nav ul > li {
+  width: 100%;
+}
+.categories {
+  /* section.category > h2 { padding: 1em 2em; background: red; } */
+
   /* article h1 { font-weight: bold; position: absolute; top: 0.4em; left: 6em; } */
 
 }
@@ -78,8 +88,7 @@ html[data-resource=menu] {
   display: none;
 }
 .categories section.category > h2 {
-  padding: 1em 2em;
-  background: red;
+  display: none;
 }
 .categories article {
   position: relative;

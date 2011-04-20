@@ -80,7 +80,33 @@ app.configure('test', function() {
   Development mode runs all the code uncompressed
 */
 app.configure('development', function() {
-  app.use(bustCache);
+  app.get("/css/:file", function(req, res) {
+    // This makes massive assumptions.
+    var file = req.params.file;
+    var formfactor = file.replace(".css", "");
+    var fs = require('fs');
+    require.paths.push("./server/libs");
+    var less = require('less');
+    var paths = {
+      "desktop" : "desktop/desktop.less", 
+      "tablet" : "tablet/tablet.less", 
+      "tv" : "tv/tv.less", 
+      "phone" : "phone/phone.less",
+      "reset" : "reset.css"
+    }
+    // Fetch Base.less
+    fs.readFile(__dirname + "/client/css/base.less", function(err, baseData) {
+      // Fetch actual CSS
+      fs.readFile(__dirname + "/client/css/" + paths[formfactor], function(err, cssData) {
+        // Merge 
+        //res.send(baseData + "\n" + cssData);
+        less.render(baseData + "\n" + cssData, function(err, cssOutput) {
+          res.send(cssOutput);  
+        });
+      });
+    });
+  });
+
   app.use(express.static(conf.clientDir));
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
   console.log("Running in Development");
@@ -92,7 +118,7 @@ app.configure('development', function() {
 */
 app.configure('production', function() {
   conf.clientDir = __dirname + "/client-min";
-  app.use(express.static(cond.clientDir));
+  app.use(express.static(conf.clientDir));
   console.log("Running in Production");
 });
 

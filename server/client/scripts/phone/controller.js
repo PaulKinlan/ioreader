@@ -70,16 +70,10 @@ var PhoneController = function() {
 
   $(function() {
 
-    console.log("cat", $categories);
     $scrollables.css({marginLeft: -categoryIndex*$(window).width()})
     $categories.touch(touchOpts);
 
-    window.addEventListener("articlechanged", function(e) {
-      // $(".story").hide();
-    });
-
     $("header h1").css("color", "purple").css("fontWeight", "bold"); // quick hack to verify page loaded ok
-
 
   });
 

@@ -16,9 +16,6 @@
 a,a:visited { text-decoration: none; color: white; }
 .categories, nav, nav ul, .category { width: 100%; } /* both occupy screen width and categories shifted using -ve marginLeft */
 
-/* QUICKFIX */
-a { color: red !important; }
-
 /******************/
 /* PAGE STRUCTURE */
 /******************/*
@@ -33,6 +30,14 @@ html[data-resource=menu] { display: none; } /* not supported in this UI */
   display: -webkit-box;
   -webkit-box-orient: horizontal;
   -webkit-box-align: start; 
+
+  li {
+    background: red;
+    a {
+      margin-left: 1em;
+    }
+  }
+
 }
 
 nav ul > li { width: 100%; }
@@ -44,20 +49,26 @@ nav ul > li { width: 100%; }
   /* section.category > h2 { padding: 1em 2em; background: red; } */
   section.category > h2 { display: none; }
 
-  article { position: relative; overflow: hidden; }
+  article { height: 3em; overflow: hidden; }
   /* article h1 { font-weight: bold; position: absolute; top: 0.4em; left: 6em; } */
   article header h1 a, .summary { display: none; }
-  article section h1 { font-weight: bold; margin: 0 1em 1em 100px; }
-  img.thumbnail { float: left; width: 70px; height: 42px; margin-left: 20px; }
+  img.thumbnail { float: right; width: 5em; height: 3em; margin: 0 1em; }
 
   article {
     .linearGradient(#000,#333); color: white; 
-    padding: 1.5em 0 1em;
+    padding: 0.5em 0 1em 0; /* don't set; needs to stay 100% */
     width: 100%; 
     border-bottom: 1px solid #777;
     min-height: 1.5em;
 
     footer { display: none; }
+
+    &.textonly img { opacity: 0; }
+
+    section {
+      margin-left: 1em;
+      h1 { font-weight: bold; }
+    }
 
   }
 
@@ -76,9 +87,11 @@ nav ul > li { width: 100%; }
 
 
 /******************/
-/* STORY STATE */
+/* ARTICLE STATE */
 /******************/*
-.articleState article.active .story { clear: left; display: block; padding: 0.5em 1em 1em 20px; }
+.articleState article.active { overflow: visible; height: auto;
+  .story { display: block; padding: 0 1em 1em 0; text-align: justify; line-height: 1.3em; font-family: "Droid Sans"; font-weight: 400; }
+}
 .story { display: none; 
   p { margin-top: 0.5em; }
 }

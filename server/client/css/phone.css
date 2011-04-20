@@ -43,13 +43,13 @@ a, a:visited {
   text-decoration: none;
   color: white;
 }
+.categories,
+nav,
+nav ul,
 .category {
   width: 100%;
 }
-/* QUICKFIX */
-a {
-  color: red !important;
-}
+/* both occupy screen width and categories shifted using -ve marginLeft */
 /******************/
 /* PAGE STRUCTURE */
 /******************/*body {
@@ -63,11 +63,23 @@ html[data-resource=menu] {
 /***********************************/
 /* MAIN (CATEGORY AND STORY) STATE */
 /***********************************/
-.categories {
-  width: 100%;
+.categories, nav ul {
   display: -webkit-box;
   -webkit-box-orient: horizontal;
   -webkit-box-align: start;
+}
+.categories li, nav ul li {
+  background: red;
+}
+.categories li a, nav ul li a {
+  margin-left: 20px;
+}
+nav ul > li {
+  width: 100%;
+}
+.categories {
+  /* section.category > h2 { padding: 1em 2em; background: red; } */
+
   /* article h1 { font-weight: bold; position: absolute; top: 0.4em; left: 6em; } */
 
 }
@@ -78,8 +90,7 @@ html[data-resource=menu] {
   display: none;
 }
 .categories section.category > h2 {
-  padding: 1em 2em;
-  background: red;
+  display: none;
 }
 .categories article {
   position: relative;
@@ -93,7 +104,7 @@ html[data-resource=menu] {
   margin: 0 1em 1em 100px;
 }
 .categories img.thumbnail {
-  float: left;
+  float: right;
   width: 70px;
   height: 42px;
   margin-left: 20px;
@@ -112,6 +123,9 @@ html[data-resource=menu] {
 }
 .categories article footer {
   display: none;
+}
+.categories article.textonly img {
+  opacity: 0;
 }
 .categories h3 {
   display: inline;

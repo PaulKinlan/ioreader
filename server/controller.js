@@ -110,8 +110,8 @@ var Controller = function(configuration) {
     });
   };
 
-  var renderTemplate = function (data, format, callback) {
-    var d = {"categories" : data, "configuration": configuration};
+  var renderTemplate = function (data, state, format, callback) {
+    var d = {"categories" : data, "configuration": configuration, "state": state};
     
     if(format == "json") {
       callback(JSON.stringify(d));
@@ -129,7 +129,7 @@ var Controller = function(configuration) {
   this.fetchCategories = function(format, callback) {
     if(!!callback == false) throw new exceptions.NoCallbackException("No callback");
     proxy.fetchCategories(function(data) {
-      renderTemplate(data, format, callback); 
+      renderTemplate(data, "menu", format, callback); 
     }); 
   };
 
@@ -141,7 +141,7 @@ var Controller = function(configuration) {
     if(!!callback == false) throw new exceptions.NoCallbackException("No callback");
     
     proxy.fetchCategory(id, function(data) {
-      renderTemplate(data, format, callback); 
+      renderTemplate(data, "category", format, callback); 
     }); 
   };
 
@@ -149,7 +149,7 @@ var Controller = function(configuration) {
     if(!!id == false) throw new exceptions.Exception("Article id not specified");
     if(!!callback == false) throw new exceptions.NoCallbackException("No callback");
     proxy.fetchArticle(id, category, function(data) {
-      renderTemplate(data, format, callback); 
+      renderTemplate(data, "article", format, callback); 
     }); 
   };
 };

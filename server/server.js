@@ -5,7 +5,7 @@ var logic = require('./controller');
 
 var app = express.createServer();
 
- var conf = { 
+var conf = { 
   id: "guardian",
   name: "The Guardian News Reader",
   description: "All the latest from around the world",
@@ -14,7 +14,6 @@ var app = express.createServer();
   clientDir: __dirname + "/client/",
   categories: ["technology", "business", "politics", "lifeandstyle", "music", "culture"]
 };
-
 /*
 var conf = { 
   id: "npr",
@@ -24,9 +23,44 @@ var conf = {
   baseDir: __dirname + "/templates/",
   clientDir: __dirname + "/client/",
   categories: ["1019"]
-};*/
+};
+*/
 
-var cache = {};
+function bustCache(req, res, next) {
+  res.setHeader("Expires","Mon, 26 Jul 1997 05:00:00 GMT");
+  res.setHeader("Last-Modified", +new Date);
+  res.setHeader("Cache-Control","no-store, no-cache, must-revalidate, max-age=0");
+  res.setHeader("Cache-Control", "post-check=0, pre-check=0");
+  res.setHeader("Pragma","no-cache");
+  next();
+}
+
+var Cache = function(timeout) {
+  var cache = {};
+  var clearCacheItem = function(url) {
+    console.log("Removing " + url + "_from cache. ");
+    delete cache[url];
+  };
+
+  return function(req, res, next){
+    var url = req.url;
+    if(!!cache[url] == false) {
+      next();
+      var end = res.end;
+      res.end = function(data, encoding) {
+        res.end = end;
+        cache[url] = data;
+
+        setTimeout(function() { clearCacheItem(url); }, timeout * 1000);
+
+        res.end(data, encoding);
+      }
+    }
+    else {
+      res.send(cache[url]);
+    }
+  };
+};
 
 /* 
   By default the code runs in test mode.  This means it use the development versions of the code but uses a dummy "test" data source.
@@ -46,6 +80,7 @@ app.configure('test', function() {
   Development mode runs all the code uncompressed
 */
 app.configure('development', function() {
+  app.use(bustCache);
   app.use(express.static(conf.clientDir));
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
   console.log("Running in Development");
@@ -61,32 +96,22 @@ app.configure('production', function() {
   console.log("Running in Production");
 });
 
-app.get('/', function(req, res) {
+app.get('/', Cache(6), function(req, res) {
   var format = "html"; 
   var controller = new logic.Controller(conf);
-  if(cache[req.url]) {
-    bustCache(res).send(cache[req.url]);
-  }
-  else {
-    controller.fetchCategories(format, function(output) { 
-      cache[req.url] = output;
-      bustCache(res).send(output);
-    });
-  }
+  
+  controller.fetchCategories(format, function(output) { 
+    res.send(output);
+  });
 });
 
-app.get('/index.:format', function(req, res) {
+app.get('/index.:format', Cache(6), function(req, res) {
   var format = req.params.format;
   var controller = new logic.Controller(conf);
-  if(cache[req.url]) {
-    bustCache(res).send(cache[req.url]);
-  }
-  else {
-    controller.fetchCategories(format, function(output) { 
-      cache[req.url] = output;
-      bustCache(res).send(output);
-    });
-  }
+  
+  controller.fetchCategories(format, function(output) { 
+    res.send(output);
+  });
 });
 
 /*
@@ -100,48 +125,27 @@ app.get('/app.cache', function(req, res) {
   });  
 });
 
-app.get('/reader/:category.:format?', function(req, res) {
+app.get('/reader/:category.:format?', Cache(6), function(req, res) {
   var category = req.params.category;
   var format = req.params.format || "html";
   var controller = new logic.Controller(conf);
   // request the category list i
 
-  if(cache[req.url]) {
-    bustCache(res).send(cache[req.url]);
-  }
-  else {
-    controller.fetchCategory(category, format, function(output) { 
-      cache[req.url] = output;
-      bustCache(res).send(output);
-    });
-  }
+  controller.fetchCategory(category, format, function(output) { 
+    res.send(output);
+  });
 });
 
-app.get('/reader/:category/:article.:format?', function(req, res) {
+app.get('/reader/:category/:article.:format?', Cache(6), function(req, res) {
   var category = req.params.category;
   var article = req.params.article;
   var format = req.params.format || "html";
   var controller = new logic.Controller(conf);
   
-  if(cache[req.url]) {
-    bustCache(res).send(cache[req.url]);
-  }
-  else {
-    controller.fetchArticle(article, category, format, function(output) { 
-      cache[req.url] = output;
-      bustCache(res).send(output);
-    });
-  }
+  controller.fetchArticle(article, category, format, function(output) { 
+    res.send(output);
+  });
 });
-
-function bustCache(res) {
-  res.header("Expires","Mon, 26 Jul 1997 05:00:00 GMT");
-  res.header("Last-Modified", +new Date);
-  res.header("Cache-Control","no-store, no-cache, must-revalidate, max-age=0");
-  res.header("Cache-Control", "post-check=0, pre-check=0");
-  res.header("Pragma","no-cache");
-  return res;
-}
 
 app.listen(3000);
 

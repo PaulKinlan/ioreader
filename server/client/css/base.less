@@ -17,3 +17,63 @@
 @color5: white;
 
 @engrave: 0px 1px 0px rgba(255,255,255,.3), 0px -1px 0px rgba(0,0,0,.7);
+
+.border-radius (@radius: 5px) {
+  -webkit-border-radius: @radius;
+  -moz-border-radius: @radius;
+  border-radius: @radius;
+}
+
+.box-sizing(@type: border-box) {
+  -webkit-box-sizing: @type;
+  -moz-box-sizing: @type;
+  box-sizing: @type;
+}
+
+.display-box {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -o-box;
+  display: -ms-box;
+  display: box;
+}
+
+.box-orient (@orient: vertical) {
+  -webkit-box-orient: @orient;
+  -mox-box-orient: @orient;
+  -o-box-orient: @orient;
+  -ms-box-orient: @orient;
+  box-orient: @orient;
+}
+
+.border-image (@imagesrc, @size, @xmode, @ymode) {
+  -moz-border-image: @imagesrc, @size, @xmode, @ymode;
+  -webkit-border-image: @imagesrc, @size, @xmode, @ymode;
+  border-image: u@imagesrc, @size, @xmode, @ymode;
+}
+
+.box-v-center { /* vertical align center */
+  -webkit-box-align: center;
+  -moz-box-align: center;
+  -o-box-align: center;
+  -ms-box-align: center;
+  box-align: center;
+}
+
+.box-h-center { /* horizontal align center */
+  -webkit-box-pack: center;
+  -moz-box-pack: center;
+  -ms-box-pack: center;
+  -o-box-pack: center;
+  box-pack: center;
+}
+
+.missing-image {
+  background: url('/images/sadface.png') center center no-repeat, #bbb;
+  .border-radius(7px);
+
+  img.large {
+    min-height: 200px;
+    visibility: hidden;
+  }
+}

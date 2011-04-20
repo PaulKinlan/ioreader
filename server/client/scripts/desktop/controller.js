@@ -11,6 +11,34 @@ var DesktopController = function() {
     return false;
   });
 
+  window.addEventListener('load', function(e) {
+    // Switch out low-res thumbnails for hi-res with fade in effect.
+    $('article > header > img.thumbnail[data-src-hi]').each(function(i, el) {
+      var $el = $(this);
+
+      var srcHi = $el.data('src-hi');
+      if (srcHi) {
+        var img = new Image();
+        img.onload = function(e) {
+          var clone = el.cloneNode(true);
+          var $clone = $(clone);
+          clone.src = this.src;
+          $clone.addClass('hi-res');
+          el.insertAdjacentElement('beforeBegin', clone);
+          $clone.addClass('fadein');
+
+          var transEnd = function(e) {
+            this.addEventListener('webkitTransitionEnd', transEnd, false);
+            $el.remove();
+            this.style.position = 'static';
+          };
+          clone.addEventListener('webkitTransitionEnd', transEnd, false);
+        };
+        img.src = srcHi;
+      }
+    });
+  });
+
   window.addEventListener("keyup", function(e) {
     var newControl;
     switch(e.keyCode) {

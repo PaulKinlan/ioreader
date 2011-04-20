@@ -1,6 +1,15 @@
 formfactor.register({
-  "desktop": [
-    "screen"
+  'desktop': [
+    'screen'
+  ],
+  'phone': [
+    'screen' // TODO(mm): use real media query.
+  ],
+  'tv': [
+    'screen' // TODO(smus): use real media query.
+  ],
+  'tablet': [
+    'screen' // TODO(ericbidelman): use real media query.
   ]
 });
 
@@ -15,18 +24,18 @@ var factor = formfactor.detect([
   },
   {
     "formfactor": "tv",
-    "resources": ["/scripts/tv/controller.js", "/lib/excss.js", "/css/tv/tv.excss"]
+    "resources": ["/scripts/tv/controller.js", "/css/tv/tv.less"]
   },
   {
     "formfactor": "tablet",
-    "resources": ["/scripts/tablet/controller.js", "/lib/less.js", "/css/tablet/tablet.less"]
+    "resources": ["/lib/less.js", "/css/tablet/tablet.less", '/css/tablet/touchscroll.css', "/scripts/tablet/css-beziers.js", "/scripts/tablet/touchscroll.js", "/scripts/tablet/controller.js"]
   }
 ]);
 
 if(!!factor) {
   $(document).ready(function() {
     $("#formfactors a").live("click", function(e) {
-      formfactor.override($(this).data().formfactor);
+      formfactor.override($(this).data().formfactor, { path: "/" });
       window.location = window.location;
     });
   

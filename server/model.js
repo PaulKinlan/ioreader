@@ -5,7 +5,7 @@ exports.CategoryData = function(id, name) {
   this.id = id; 
   this.name = name;
   this.articles = [];
-
+  this.categoryState = "";
   /*
    Adds an item in to the category
   */
@@ -23,6 +23,8 @@ exports.CategoryItem = function(id, title, shortDescription, category) {
   this.shortDescription = shortDescription;
   this.thumbnail;
   this.categoryId = category.id;
+  this.articleState = "";
+  this.imageState = "imaged";
   this.url = function () { return "reader/" + categoryId + "/" + this.id + ".html"; }; 
   this.dataUrl = function () { return "reader/" + categoryId + "/" + this.id + ".json"; };
 };

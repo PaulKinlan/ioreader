@@ -1,4 +1,4 @@
-<html class="menuState">
+<html class="{{state}}State">
   <head>
     <script src="/lib/jquery-1.5.2.min.js"></script>
     <script src="/lib/formfactor.js"></script>
@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="/css/reset.css" />
     <link rel="apple-touch-icon" href="/images/icon.png"/> 
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <link rel="apple-touch-startup-image" href="/images/splash.png" />
     <title>{{#configuration}}{{name}} &mdash; {{description}}{{/configuration}}</title>
     <meta name="viewport" content="width=device-width, target-densitydpi=160dpi,
@@ -35,6 +35,5 @@
     <footer id="formfactors">
     </footer>
   </body>
-  <script src="/lib/excss.js"></script>
   <script src="/lib/less.js"></script>
 </html>

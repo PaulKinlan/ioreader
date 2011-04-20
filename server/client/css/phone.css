@@ -1,3 +1,38 @@
+.display-box {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -o-box;
+  display: -ms-box;
+  display: box;
+}
+.box-v-center {
+  /* vertical align center */
+
+  -webkit-box-align: center;
+  -moz-box-align: center;
+  -o-box-align: center;
+  -ms-box-align: center;
+  box-align: center;
+}
+.box-h-center {
+  /* horizontal align center */
+
+  -webkit-box-pack: center;
+  -moz-box-pack: center;
+  -ms-box-pack: center;
+  -o-box-pack: center;
+  box-pack: center;
+}
+.missing-image {
+  background: url('/images/sadface.png') center center no-repeat, #bbbbbb;
+  -webkit-border-radius: 7px;
+  -moz-border-radius: 7px;
+  border-radius: 7px;
+}
+.missing-image img.large {
+  min-height: 200px;
+  visibility: hidden;
+}
 /**********/
 /* MACROS */
 /**********/

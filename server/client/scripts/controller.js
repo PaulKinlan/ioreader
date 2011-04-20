@@ -118,9 +118,15 @@ var BaseController = function() {
         var categories = result.categories;
         var category;
         for(var i = 0; category = categories[i]; i++) {
-          if(category.articles.length >0) {
-            $(".story", element).html(category.articles[0].body);
-            break;
+          var articles = category.articles;
+          var article;
+          if(articles.length >0) {
+            for(var a = 0; article = articles[a]; a++) {
+              if(article.articleState == "active") {
+                $(".story", element).html(article.body);
+                return; 
+              }
+            }
           }
         } 
         setTimeout(function() {
@@ -147,7 +153,7 @@ var BaseController = function() {
 
   var templates = {
     article: "{{#articles}} <article id=\"{{id}}\" data-article=\"{{id}}\" data-category=\"{{categoryId}}\"> <header> <h1><a href=\"/reader/{{id}}\">{{title}}</a></h1> <p><time pubdate time=\"{{puddate}}\"></time></p> <img class=\"thumbnail\" src=\"{{thumbnail}}\" src-hi=\"{{largeImage}}\" /> <div class=\"summary\">{{{shortDescription}}}</div> </header> <section> <h1>{{title}}</h1> <p><time pubdate time=\"{{puddate}}\"></time></p> <div class=\"summary\">{{{shortDescription}}}</div><img class=\"large\" src=\"{{largeImage}}\" src-lo=\"{{thumbnail}}\" /> <div class=\"story\"></div> </section> <footer> <a href=\"{{url}}\">Link</a> </footer> </article> {{/articles}}",
-    category: "{{#categories}}<section class=\"category {{state}}\" data-category=\"{{id}}\" id=\"{{id}}\"><h2>{{name}}</h2><div class=\"articles\">{{> article }}</div></section>{{/categories}}",
+    category: "{{#categories}}<section class=\"category {{cateogoryState}}\" data-category=\"{{id}}\" id=\"{{id}}\"><h2>{{name}}</h2><div class=\"articles\">{{> article }}</div></section>{{/categories}}",
   };
 
   var refresh = function() {
@@ -168,7 +174,7 @@ var BaseController = function() {
             categoryElement.prepend(Mustache.to_html(templates.article, article));
           }
         }
-      }        
+      }
       setTimeout(function() {
         $("html").removeClass("refreshing");
         console.log("refreshed");

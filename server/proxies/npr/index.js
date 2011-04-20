@@ -74,15 +74,15 @@ var NPRProxy = function(configuration) {
       "format": "JSON",
       "show-fields": "all",
       "show-media": "all",
-      "page-size": "8",
-      "apiKey": api_key
+      "apiKey": api_key,
+      "id": id
     };
    
     var options = {
       host: domain,
       port: 80,
-      path: "/" + decodeURIComponent(id) + "?" + toQueryString(query)
-    }
+      path: "/query?" + toQueryString(query)
+    };
      
     http.get(options, function(res) {fetchResults(res, callback);});  
   };
@@ -112,7 +112,6 @@ NPRProxy.prototype.fetchCategories = function(callback) {
           cat.name = category_data.list.title.$text; 
           for(var cat_r in cat_results) {
             var cat_res = cat_results[cat_r];
-            console.log(cat_res);
             var item = new model.CategoryItem(cat_res.id, cat_res.title.$text, "", cat);
             if(cat_res.teaser) item.shortDescription = cat_res.teaser.$text;
             if(cat_res.thumbnail) item.thumbnail = cat_res.thumbnail.large.$text;
@@ -144,17 +143,9 @@ NPRProxy.prototype.fetchCategory = function(id, callback) {
         self._fetchCategory(cat.id, ["all"], function(category_data) {
           var cat_results = category_data.list.story;
           cat.name = category_data.list.title.$text; 
-          for(var cat_r in cat_results) {
-            var cat_res = cat_results[cat_r];
-            console.log(cat_res);
-            var item = new model.CategoryItem(cat_res.id, cat_res.title.$text, "", cat);
-            if(cat_res.teaser) item.shortDescription = cat_res.teaser.$text;
-            if(cat_res.thumbnail) item.thumbnail = cat_res.thumbnail.large.$text;
-            if(cat_res.storyDate) item.pubDate = cat_res.storyDate.$text;
-            if(cat_res.byline) item.author = cat_res.byline.name.$text;
-            item.url = parseLinkType(cat_res.link, "html");
-            item.largeImage = self.findLargestImage(cat_res.image).url;
-            cat.addItem(item);
+          
+          for(var r = 0; cat_res = cat_results[r]; r++) {
+            cat.addItem(self.createItem(cat_res, cat));
           }
           inner_callback(null, cat);
         });
@@ -181,49 +172,63 @@ NPRProxy.prototype.findLargestImage = function(mediaAssets) {
   return largest;
 };
 
+NPRProxy.prototype.createItem = function(cat_res, cat) {
+  var item = new model.CategoryItem(cat_res.id, cat_res.title.$text, "", cat);
+  if(cat_res.teaser) item.shortDescription = cat_res.teaser.$text;
+  if(cat_res.thumbnail) item.thumbnail = cat_res.thumbnail.large.$text;
+  if(cat_res.storyDate) item.pubDate = cat_res.storyDate.$text;
+  if(cat_res.byline && cat_res.byline.name) item.author = cat_res.byline.name.$text;
+  item.url = parseLinkType(cat_res.link, "html");
+  item.largeImage = this.findLargestImage(cat_res.image).url;
+ 
+  if(!!cat_res.thumbnail == false) item.imageState = "textonly"; 
+  if(cat_res.text) {
+    var para;
+    item.body = "";
+    for(var s = 0; para = cat_res.text.paragraph[s]; s++) {
+      if(para.$text) item.body += "<p>" + para.$text + "</p>" 
+    }
+  }
+
+  return item;
+};
+
 NPRProxy.prototype.fetchArticle = function(id, category, callback) {
   if(!!callback == false) throw new exceptions.NoCallbackException();
   var self = this;
-  this._fetchCategories(this.configuration.categories, function(data) {
-    if(!!data.response == false || data.response.status != "ok") return; 
-    var results = data.response.results;
-    var categories = [];
-    var fetching = false;
-     
-    for(var r in results) {
-      var result = results[r];
-      var newCat = new model.CategoryData(result.id, result.webTitle);
+  var categories = [];
+  var c;  
+  for(var i = 0; c = self.configuration.categories[i]; i++) {
+    var new_category = new model.CategoryData(c, "");
+    var output_callback = (function(cat) {
+      return function(inner_callback) {
+        self._fetchCategory(cat.id, ["all"], function(category_data) {
+          var cat_results = category_data.list.story;
+          var articleFound = false;
+          cat.name = category_data.list.title.$text; 
+          for(var r = 0; cat_res = cat_results[r]; r++) {
+            if(cat_res.id == id) articleFound = true;
+            cat.addItem(self.createItem(cat_res, cat));
+          }
 
-      // Get the basic article information to blend it into the results
-
-      var outer_function = (function(cat) { return function(inner_callback) {
-        if(cat.id == category) {
-          self._fetchArticle(id, cat.id, function(article_data) {
-            if(!!article_data.response == false || article_data.response.status != "ok") return;
-            var article_result = article_data.response.content;
-            var item = new model.CategoryItem(article_result.id, article_result.webTitle, article_result.fields.trailText, cat);
-            if(!!article_result.fields.body)
-              item.body = article_result.fields.body.replace(/\"/gim,'\\"').replace(/\n/gim,"").replace(/\r/gim,"");
-            item.thumbnail = article_result.fields.thumbnail;
-            item.largeImage = self.findLargestImage(article_result.mediaAssets).url;
-            item.pubDate = article_result.webPublicationDate;
-            item.author = article_result.fields.byline;
-            item.url = article_result.webUrl;
-            cat.addItem(item);
-      
+          if(c == cat.id && articleFound == false) {
+            // We should fetch the article if it is not found and do the callback then
+            self._fetchArticle(id, category, function(article_data) {
+              cat.addItem(self.createItem(article_data, cat));
+              inner_callback(null, cat);  
+            });
+          }
+          else {
             inner_callback(null, cat);
-          }); 
-        }
-        else {
-          inner_callback(null, cat);
-        }
-      }
-      })(newCat);
-      categories.push(outer_function);
-    }
-    // If there is no matching category, it will lock.
-    async.parallel(categories, function(err, presults){ callback(presults); });
-  }); 
+          }
+        });
+      };
+    })(new_category);
+    categories.push(output_callback); 
+  }
+
+  categories.push();
+  async.parallel(categories, function(err, presults){ callback(presults); });
 };
 
 exports.proxy = NPRProxy;

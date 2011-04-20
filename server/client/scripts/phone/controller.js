@@ -5,17 +5,17 @@ var PhoneController = function() {
   var controller = this;
 
   var $categories = $(".categories"),
+      $scrollables = $categories.add($("nav ul"));
       $category = $(".category", $categories),
-      categoryIndex = $(".category.active").prev().length,
+      categoryIndex = $(".categories .category.active").prev().length,
       pageY = window.pageYOffset;
 
   function animateToCurrentCategory(callback) {
-    $(".categories").
-      touch(null)
-      .animate({marginLeft: -categoryIndex*$(window).width()},function() {
-        if (callback) callback();
-        $(".categories").touch(touchOpts);
-      });
+    $categories.touch(null)
+    $scrollables.animate({marginLeft: -categoryIndex*$(window).width()},function() {
+      if (callback) callback();
+      $categories.touch(touchOpts);
+    });
   }
 
   var touchOpts = {
@@ -33,7 +33,7 @@ var PhoneController = function() {
     swipeY: function() { // do nothing; we only want move events
     }, 
     moveX: function(ev) {
-      $(".categories").css("marginLeft", ev.dx + parseInt($(".categories").css("marginLeft")));
+      $scrollables.css("marginLeft", ev.dx + parseInt($scrollables.css("marginLeft")));
     },
     moveY: function(ev) {
       //var minMarginY = -10+$(window).height()-$(document).height();
@@ -70,9 +70,9 @@ var PhoneController = function() {
 
   $(function() {
 
-    $(".categories")
-      .css({marginLeft: -categoryIndex*$(window).width()})
-      .touch(touchOpts);
+    console.log("cat", $categories);
+    $scrollables.css({marginLeft: -categoryIndex*$(window).width()})
+    $categories.touch(touchOpts);
 
     window.addEventListener("articlechanged", function(e) {
       // $(".story").hide();

@@ -21,10 +21,15 @@ var PhoneController = function() {
 
   var categoryTouchOpts = {
     swipeX: function(ev) {
-      if (categoryIndex==0 && ev.dx > 50) controller.refresh(); // funky pullback gesture
-      categoryIndex =
-        ev.dx < 0 ? Math.min(categoryIndex+1, $category.length-1)
-                  : Math.max(categoryIndex-1, 0);
+      // don't refresh story at the end if we pull to the end
+      if (categoryIndex==$category.length-1 && ev.dx < 0) return animateToCurrentCategory();
+      if (categoryIndex==0 && ev.dx > 0 ) {
+        if (ev.dx<=50) return animateToCurrentCategory();
+        else controller.refresh(); // funky pullback gesture
+      }
+      var increment = ev.dx < 0 ? 1 : -1;
+      console.log("CAT I", categoryIndex,increment);
+      categoryIndex = inside(0, categoryIndex+increment, $category.length-1);
       animateToCurrentCategory(function() {
           // since an active article will now be hidden, causing layout chaos:
         if ($("article.active").length) $("section.active").css("marginTop", 0);
@@ -51,11 +56,6 @@ var PhoneController = function() {
           $header = $target.closest("header"), $article = $target.closest("article"), $story = $target.closest(".story");
       console.log("hD", $header, "XARTICLE", $article);
       if ($story.length) return;
-
-      // if ($header.length && $article.hasClass("active")) {
-
-      // TOGGLE NOT FULLY WORKING - SOME ARTICLES NO LONGER BEING ACTIVATED
-
       if ($article.length) { 
         if ($article.hasClass("active") && !$target.is(".story")) {
           console.log("TOGGLE OFF", $target);

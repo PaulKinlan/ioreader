@@ -64,6 +64,15 @@ nav ul {
   li { width: 100%; }
 }
 
+@media screen and (orientation:landscape) {
+  article {
+    height: 1em !important;
+    overflow: hidden;
+    padding: 0;
+    img.thumbnail { display: none; }
+  }
+}
+
 .categories {
 
   margin-top: 1.4em;
@@ -77,7 +86,7 @@ nav ul {
   img.thumbnail { float: right; width: 5em; height: 3em; margin: 0 1em; }
 
   article {
-    height: 2em;
+    height: 3em;
     overflow: hidden; 
     white-space: no-wrap;
     .ellipsis();
@@ -93,6 +102,9 @@ nav ul {
 
     section {
       margin-left: 1em;
+      h1 {
+        padding-right: 5em; /* prevent leaking into image */
+      }
     }
 
   }
@@ -130,7 +142,7 @@ nav ul {
       text-align: justify;
       line-height: 1.3em;
       font-family: "Droid Sans"; font-weight: 400;
-        a,a:visited { color: #aaf; }
+        a,a:visited { color: white; }
         p { margin-top: 0.5em; }
     }
 

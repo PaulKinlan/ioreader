@@ -1,7 +1,7 @@
 {{#articles}}
 <article id="{{id}}" name="{{categoryId}}" data-article="{{id}}" data-category="{{categoryId}}" class="{{articleState}} {{imageState}}">
   <header>
-  <h1><a name="{{articleState}}" href="/reader/{{id}}#{{articleState}}">{{title}}</a></h1>
+  <h1><a name="{{articleState}}" href="/reader/{{categoryId}}/{{id}}#{{articleState}}">{{title}}</a></h1>
     <p><time pubdate time="{{puddate}}"></time></p> 
     <img class="thumbnail" src="{{thumbnail}}" data-src-hi="{{largeImage}}" />
     <div class="summary">{{{shortDescription}}}</div>

@@ -80,16 +80,24 @@ var PhoneController = function() {
   });
 
   $(function() {
+
     $scrollables.css({marginLeft: -categoryIndex*$(window).width()})
     registerTouch();
+
     $("nav a").click(function() {
       var categoryID = $(this).parent().data("category");
-      console.log($("#"+categoryID, $(".categories")));
-      controller.activate($("#"+categoryID, $(".categories")));
-      console.log("DONE");
+      controller.activate($("#"+categoryID, $(".categories")).animate({marginTop: 0}));
       return false;
     });
+
+    var articleHeight = $("article[class!=active]").outerHeight();
+    window.addEventListener("articlechanged", function(e) {
+      var $article = $("article.active");
+      $article.closest(".category").animate({marginTop: -$article.prevAll().length * articleHeight});
+    });
+
     $("nav a,nav a:visited").css("color", "yellow").css("fontWeight", "bold"); // quick hack to verify page loaded ok
+
   });
 
   function registerTouch() {

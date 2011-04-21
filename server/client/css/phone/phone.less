@@ -10,6 +10,15 @@
   background-color: @color1;
 }
 
+.ellipsis {
+  text-overflow: ellipsis;
+  -webkit-text-overflow: ellipsis;
+  -o-text-overflow: ellipsis;
+  -moz-text-overflow: ellipsis;
+}
+
+@headingPadding { 0.4em; }
+
 /********************/
 /* GENERAL ELEMENTS */
 /********************/
@@ -25,6 +34,13 @@ body {
   > header h1, > header p { display: none; }
   overflow: hidden; /* no scrollbars, just for desktop prettiness */
 }
+#formfactors {
+  display: block;
+  [data-formfactor="desktop"] {
+    position: absolute; top: @headingPadding; right: 1em; z-index: 5;
+    font-style: italic; opacity: 0.5;
+  }
+}
 
 /***********************************/
 /* MAIN (CATEGORY AND STORY) STATE */
@@ -37,7 +53,7 @@ body {
 
   li {
     background: red;
-    padding: 0.2em 0;
+    padding: @headingPadding 0;
     a { margin: 1em; }
   }
 
@@ -56,12 +72,15 @@ nav ul {
   /* section.category > h2 { padding: 1em 2em; background: red; } */
   section.category > h2 { display: none; }
 
-  article { height: 3em; overflow: hidden; }
   /* article h1 { font-weight: bold; position: absolute; top: 0.4em; left: 6em; } */
   article header h1 a, .summary { display: none; }
   img.thumbnail { float: right; width: 5em; height: 3em; margin: 0 1em; }
 
   article {
+    height: 2em;
+    overflow: hidden; 
+    white-space: no-wrap;
+    .ellipsis();
     .linearGradient(#000,#333); color: white; 
     padding: 0.5em 0 1em 0; /* don't set left/right; needs to stay 100% */
     width: 100%; 
@@ -74,7 +93,6 @@ nav ul {
 
     section {
       margin-left: 1em;
-      h1 { font-weight: bold; }
     }
 
   }
@@ -92,16 +110,32 @@ nav ul {
 
 }
 
+.story { display: none; }
 
 /******************/
 /* ARTICLE STATE */
 /******************/*
-.articleState article.active { overflow: visible; height: auto;
-  .story { display: block; padding: 0 1em 1em 0; text-align: justify; line-height: 1.3em; font-family: "Droid Sans"; font-weight: 400; }
-}
-.story { display: none; 
-  a,a:visited { color: #aaf; }
-  p { margin-top: 0.5em; }
+.articleState {
+
+  article.active {
+
+    overflow: visible;
+    height: auto;
+
+    section h1 { font-weight: bold; }
+
+    .story {
+      display: block;
+      padding: 0 1em 1em 0;
+      text-align: justify;
+      line-height: 1.3em;
+      font-family: "Droid Sans"; font-weight: 400;
+        a,a:visited { color: #aaf; }
+        p { margin-top: 0.5em; }
+    }
+
+  }
+
 }
 
 /*****************************/

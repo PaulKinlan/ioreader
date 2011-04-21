@@ -96,6 +96,10 @@ var PhoneController = function() {
       $article.closest(".category").animate({marginTop: -$article.prevAll().length * articleHeight});
     });
 
+    window.onresize = function() {
+      $scrollables.css({marginLeft: -categoryIndex*$(window).width()})
+    }
+
     $("nav a,nav a:visited").css("color", "yellow").css("fontWeight", "bold"); // quick hack to verify page loaded ok
 
   });

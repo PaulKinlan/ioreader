@@ -43,8 +43,8 @@
   .border-radius(@thumbnail-radius);
 
   img {
-    visibility: hidden;
-    
+    opacity: 0; /*visibility: hidden; doesn't work as well. Need click area.*/
+
     &.large {
       min-height: 200px;
     }
@@ -226,7 +226,7 @@ body {
 
           header {
             -webkit-transition: -webkit-transform 0.2s ease-in-out, opacity 0.4s;
-            
+
             h1 a {
               padding: 2px 5px;
               color: black;
@@ -302,6 +302,11 @@ article {
       text-shadow: 1px 1px 1px black;
       text-decoration: none;
     }
+
+    p {
+      display: none;
+    }
+
     .summary {
       font-size: 10pt;
       position: absolute;
@@ -349,11 +354,16 @@ article.active {
 
     h1 {
       font-size: 18pt;
+      margin-bottom: 0.5em;
     }
 
     .summary {
-      padding: 0.5em 0 1em 0;
-      font-size: 110%;
+      margin: 0.5em 0;
+      font-size: 120%;
+      padding-bottom: 10px;
+      -webkit-box-shadow: 0 1px 0 white;
+      box-shadow: 0 1px 0 white;
+      border-bottom: 1px solid #ccc;
     }
 
     h1,
@@ -367,7 +377,18 @@ article.active {
       /*max-width: 100%;*/
       width: 100%;
       .border-radius(@thumbnail-radius);
+      margin-bottom: 5px;
     }
+
+    .author,
+    time {
+      font-size: 80%;
+    }
+
+    .author {
+      float: right;
+    }
+
     .story {
       text-shadow: 0 1px 1px rgba(255,255,255,0.8);
       text-align: justify;

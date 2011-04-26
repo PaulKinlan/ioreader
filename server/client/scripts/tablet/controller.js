@@ -17,21 +17,18 @@ var TabletController = function() {
     window.location = '/'; //TODO(ericbidelman): Figure out how to do this with routes.
   });
 
-  // Add touch scoller on page load if an article is active.
-  $(document).ready(function() {
+  window.addEventListener('load', function(e) {
+
+    // Add touch scoller on page load if an article is active.
     var article = document.querySelector('article.active');
     if (article && !(article.id in scrollers_)) {
       scrollers_[article.id] = new TouchScroll(article.querySelector('section'), {elastic: true});
     }
-/*
-    var categories = document.querySelector('.categories');
-    if (categories) {
-      scrollers_['categories'] = new TouchScroll(categories, {elastic: true});
-    }
-*/
-  });
 
-  window.addEventListener('load', function(e) {
+    /*var categories = document.querySelector('.categories');
+    if (!('categories' in scrollers_)) {
+      scrollers_['categories'] = new TouchScroll(categories, {elastic: true});
+    }*/
 
     // Switch out low-res thumbnails for hi-res with fade in effect.
     $('img.large').each(function(i, el) {
@@ -92,12 +89,19 @@ console.log(e)
   window.addEventListener('articlechanged', function(e) {
 //console.log('articlechanged', e);
 
+/*  var categories = document.querySelector('.category.active .articles');
+  if (!(controller_.getActiveCategory()[0].id in scrollers_)) {
+    scrollers_[controller_.getActiveCategory()[0].id] = new TouchScroll(categories, {elastic: true});
+  }
+  */
+
     // Cache touch scroller so we don't init it more than once for this el.
     if (!(e.data.article in scrollers_)) {
       //var div = $('article.active section').wrap('<div/>');
       //scrollers_[e.data.article] = $('article.active section').touchScroll();
       scrollers_[e.data.article] = new TouchScroll(document.querySelector('article.active section'), {elastic: true});
     }
+
   }, false);
 
   window.addEventListener("articleready", function(e) {

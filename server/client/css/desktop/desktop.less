@@ -78,11 +78,11 @@ body {
 
     &:hover {
       background-color: @bgcolor1 + #111;
-      padding-left: 10px;
+      border-left: solid 10px @bgcolor4 + #222;
     }
       
     &.active {
-      border-left: 10px @bgcolor2;
+      border-left: solid 10px @bgcolor4;
       background-color: @bgcolor1 + #222;
     }
   }
@@ -273,7 +273,6 @@ body {
             line-height: 1.2em;
             overflow-y: scroll;
             border-bottom-left-radius: 10px;
-            width: 100%;
  
             p {
               margin-bottom: 5px;

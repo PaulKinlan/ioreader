@@ -3,9 +3,11 @@ io-reader server
 
 This is a basic proxying server that has some state.
 
-The server serves the configuration document, and each of the mapped objec
+The server runs an instance of the configuration document, which includes the type of API proxy to use and the categories to display.
 
-The server will proactivly fetch and map content to the output format.
+There are two API proxies included:
+*  Guardian
+*  NPR
 
 Installation
 ------------

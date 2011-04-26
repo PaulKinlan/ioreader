@@ -36,7 +36,8 @@ if(!!factor) {
   $(document).ready(function() {
     $("#formfactors a").live("click", function(e) {
       formfactor.override($(this).data().formfactor, { path: "/" });
-      window.location = window.location;
+      window.location = window.location + "";
+      return false;
     });
   
     $("#formfactors").append("<a href=\"#\" data-formfactor=\"phone\">Phone</a>");

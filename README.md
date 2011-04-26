@@ -10,9 +10,9 @@ The server will proactivly fetch and map content to the output format.
 Installation
 ------------
 
-Install node https://github.com/joyent/node/wiki/Installation
-Install npm http://npmjs.org/
-npm install express mustache async less uglify-js
+*  Install node https://github.com/joyent/node/wiki/Installation
+*  Install npm http://npmjs.org/
+*  npm install express mustache async less uglify-js
 
 Running the app
 ---------------

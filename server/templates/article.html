@@ -2,15 +2,16 @@
 <article id="{{id}}" name="{{categoryId}}" data-article="{{id}}" data-category="{{categoryId}}" class="{{articleState}} {{imageState}}">
   <header>
   <h1><a name="{{articleState}}" href="/reader/{{categoryId}}/{{id}}#{{articleState}}">{{title}}</a></h1>
-    <p><time pubdate time="{{puddate}}"></time></p> 
+  <p><time pubdate datetime="{{{#pubDate}}{{toISOString}}{{/pubDate}}">{{pubDate}}</time></p> 
     <img class="thumbnail" src="{{thumbnail}}" data-src-hi="{{largeImage}}" />
     <div class="summary">{{{shortDescription}}}</div>
   </header>
   <section>
     <h1>{{title}}</h1>
-    <p><time pubdate time="{{puddate}}"></time></p> 
-    <div class="summary">{{{shortDescription}}}</div>
     <img class="large" src="{{largeImage}}" data-src-lo="{{thumbnail}}" />
+    <p class="author">{{author}}</p>
+    <time pubdate datetime="{{#pubDate}}{{toISOString}}{{/pubDate}}">{{pubDate}}</time> 
+    <div class="summary">{{{shortDescription}}}</div>
     <div class="story">{{{body}}}</div>
   </section>
   <footer>

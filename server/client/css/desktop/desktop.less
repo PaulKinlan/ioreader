@@ -7,6 +7,8 @@ body {
   background-color: @bgcolor5;
   color: white;
   overflow: hidden;
+  
+  time { display: none; }  
 
   > header {
     position: absolute;
@@ -260,6 +262,34 @@ body {
             display: block;
             width: 100%;
             border-top-left-radius: 10px;
+          }
+
+          .author {
+            position: absolute;
+            color: white;
+            font-family: 'Droid Sans';
+            right: 0;
+            padding: 5px;
+            background-color: rgba(0,0,0,0.5);
+          }
+ 
+          time {
+            display: block;
+            top: 2em;
+            position: absolute;
+            color: white;
+            font-family: 'Droid Sans';
+            right: 0;
+            padding: 5px;
+            background-color: rgba(0,0,0,0.5);
+          }
+
+          .author:before {
+            content: 'by ';
+          }
+
+          .author:after {
+            content: ' for the Guardian';
           }
 
           .story {

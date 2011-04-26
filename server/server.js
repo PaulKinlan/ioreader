@@ -62,25 +62,8 @@ var Cache = function(timeout) {
   };
 };
 
-/* 
-  By default the code runs in test mode.  This means it use the development versions of the code but uses a dummy "test" data source.
-*/
-app.configure(function() {
-  app.use(app.router);
-});
-
-app.configure('test', function() {
-  app.use(express.static(conf.clientDir));
-  app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
-  conf.id = "test"; // force test mode.
-  console.log("Running in Test");
-});
-
-/* 
-  Development mode runs all the code uncompressed
-*/
-app.configure('development', function() {
-  app.get("/css/:file", function(req, res) {
+var CSSHandler = function() {
+  return function(req, res) {
     // This makes massive assumptions.
     var file = req.params.file;
     var formfactor = file.replace(".css", "");
@@ -105,7 +88,29 @@ app.configure('development', function() {
         });
       });
     });
-  });
+  };
+};
+
+/* 
+  By default the code runs in test mode.  This means it use the development versions of the code but uses a dummy "test" data source.
+*/
+app.configure(function() {
+  app.use(app.router);
+});
+
+app.configure('test', function() {
+  app.get("/css/:file", CSSHandler() );
+  app.use(express.static(conf.clientDir));
+  app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+  conf.id = "test"; // force test mode.
+  console.log("Running in Test");
+});
+
+/* 
+  Development mode runs all the code uncompressed
+*/
+app.configure('development', function() {
+  app.get("/css/:file", CSSHandler() );
 
   app.use(express.static(conf.clientDir));
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));

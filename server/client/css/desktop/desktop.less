@@ -15,8 +15,9 @@ body {
     top: 0;
     bottom: 0;
     color: white;
-    background-color: @bgcolor4;
+    background-color: @bgcolor1;
     width: @headerWidth;
+    box-shadow: 0px 0px 5px black;
 
     h1 {
       font-family: 'Lato';
@@ -25,7 +26,7 @@ body {
       -webkit-transform: rotate(90deg);
       display: inline;
       bottom: 80px;
-      color: @bgcolor4 - #111;
+      color: @bgcolor1 - #111;
       text-shadow: 0px 1px 0px rgba(255,255,255,.3), 0px -1px 0px rgba(0,0,0,.7); 
     }
   
@@ -46,7 +47,7 @@ body {
     a {
       display: block;
       -webkit-transition: all 0.2s ease-in-out; 
-      border-bottom: solid 1px @bgcolor4 - #111;   
+      border-bottom: solid 1px @bgcolor1 - #111;   
       padding: 5px;
       font-family: Arial, serif; 
       color: @color4;
@@ -54,12 +55,12 @@ body {
       font-size: 0.8em;
     
       &:hover {
-        background-color: @bgcolor4 - #111;
+        background-color: @bgcolor1 - #111;
         padding-left: 10px;
       }
 
       &.active {
-        background-color: @bgcolor4 - #222;
+        background-color: @bgcolor1 - #222;
         padding-left: 10px;
       }
     }
@@ -67,7 +68,7 @@ body {
 
   ul li {
     -webkit-transition: all 0.2s ease-in-out; 
-    border-bottom: solid 1px @bgcolor4 - #111;   
+    border-bottom: solid 1px @bgcolor1 + #111;   
     padding: 5px;
     a {
      font-family: Arial, serif; 
@@ -76,13 +77,13 @@ body {
     }
 
     &:hover {
-      background-color: @bgcolor4 - #111;
+      background-color: @bgcolor1 + #111;
       padding-left: 10px;
     }
       
     &.active {
-      background-color: @bgcolor4 - #222;
-      padding-left: 10px;
+      border-left: 10px @bgcolor2;
+      background-color: @bgcolor1 + #222;
     }
   }
 }
@@ -110,7 +111,7 @@ body {
       height: 1.6em;
       box-sizing: border-box;
       font-size: 1.6em;
-      background-color: @bgcolor2;
+      background-color: @bgcolor3;
       color: white;
       font-family: 'Lato', Arial, serif; 
       -webkit-transition: background-color 0.2s ease-in-out;
@@ -125,12 +126,14 @@ body {
       }
 
       .articles {
-        background-color: @bgcolor2;
+        background-color: @bgcolor3;
+        box-shadow: 0px 0px 10px #000;
       }
     }
 
     .articles {
       box-sizing: border-box;
+      box-shadow: 0px 0px 5px #000;
       height: 100%;
       position: static;
       overflow-y: scroll;
@@ -285,6 +288,7 @@ body {
         &.active {
           z-index: 1000;
           
+
           section {
             left: 50%; 
           }

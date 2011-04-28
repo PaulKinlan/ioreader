@@ -166,7 +166,7 @@ body > header {
       left: 0;
       bottom: 220px;
       right: 0;
-      overflow: auto;
+      overflow: hidden;
       padding: 20px;
 
       h1 {
@@ -231,13 +231,14 @@ body > header {
       font-size: @fontSizeSubTitle;
       display: block;
       position: fixed;
-      top: 50%;
+      top: 60%;
       left: 0;
       padding: 0 20px 10px 20px;
-      background: #900;
+      background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#333), to(maroon));
       a { color: #ccc; }
       -webkit-transform-origin: 0 0;
       -webkit-transform: rotate(-90deg);
+      -webkit-border-radius: 0 0 10px 10px;
     }
   }
 }

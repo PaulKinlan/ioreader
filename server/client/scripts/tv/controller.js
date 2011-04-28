@@ -16,7 +16,7 @@ var TvController = function() {
     var request = {params: 
       {
         category: article.data('category'),
-        article: article.data('article'),
+        article: article.data('article')
       }
     };
     Controller.onArticleChanged(request);
@@ -29,7 +29,8 @@ var TvController = function() {
     screenLeft = article.position().left;
     console.log('screenLeft: ' + screenLeft);
     windowWidth = $(window).width();
-    articleWidth = $('article').width();
+    //articleWidth = $('article').width();
+    articleWidth = 200;
 
     if (screenLeft > windowWidth - articleWidth) {
       // We hit the right side of the div
@@ -58,25 +59,46 @@ var TvController = function() {
     }
   };
 
+  var KEY = {
+    Left: 37,
+    Up: 38,
+    Right: 39,
+    Down: 40,
+    Ok: 13
+  }
+
+  var SCROLL_INCREMENT = 40;
+
   // Bind to the keydown event
   window.addEventListener('keydown', function(event) {
     var newControl;
     var theArticle = Controller.getActiveArticle();
     var theCategory = Controller.getActiveCategory();
+    var key = event.keyCode;
 
-    // If in full screen view, any key should bring back nav
-    if (37 <= event.keyCode && event.keyCode <= 40 && isFull()) {
-      event.preventDefault();
-      isFull(false);
+    // If in full screen view, 
+    if (isFull()) {
+      // Left, right and OK bring up menu
+      if (key == KEY.Left || key == KEY.Right || key == KEY.Ok) {
+        event.preventDefault();
+        isFull(false);
+      }
+      // Up and down scroll
+      if (key == KEY.Up || key == KEY.Down) {
+        var $sec = $('article.active section');
+        var scrollTop = $sec.scrollTop();
+        var multiplier = (key == KEY.Down) ? 1 : -1;
+        $sec.scrollTop(scrollTop + multiplier * SCROLL_INCREMENT);
+      }
       return;
     }
 
-    if (event.keyCode !== 38) {
+    if (key !== KEY.Up) {
       delete controller.lastArticle;
     }
 
-    switch(event.keyCode) {
-      case 37: // left
+    switch(key) {
+      case KEY.Left:
         if (theArticle.length) {
           // Select the previous article
           newControl = theArticle.prev();
@@ -85,7 +107,7 @@ var TvController = function() {
           newControl = theCategory.prev();
         }
         break;
-      case 38: // up
+      case KEY.Up:
         if (theArticle.length) {
           // Hide navigation bar
           isFull(true);
@@ -98,7 +120,7 @@ var TvController = function() {
           }
         }
         break;
-      case 39: // right
+      case KEY.Right:
         if (theArticle.length) {
           // Select the next article
           newControl = theArticle.next();
@@ -107,11 +129,17 @@ var TvController = function() {
           newControl = theCategory.next();
         }
         break;
-      case 40: // down
+      case KEY.Down:
         if (theArticle.length) {
           // Deselect the category
           newControl = theCategory;
           controller.lastArticle = theArticle;
+        }
+        break;
+      case KEY.Ok:
+        // Hide the menu
+        if (theArticle.length) {
+          isFull(true);
         }
         break;
     }

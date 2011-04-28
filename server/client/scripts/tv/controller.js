@@ -25,7 +25,7 @@ var TvController = function() {
   // Ensure article in the list of articles is visible
   window.addEventListener('articlechanged', function() {
     var article = Controller.getActiveArticle();
-    scrollLeft = Math.abs(parseInt($('.articles').css('margin-left')));
+    scrollLeft = Math.abs(parseInt($('.articles').css('margin-left'), 10));
     screenLeft = article.position().left;
     console.log('screenLeft: ' + screenLeft);
     windowWidth = $(window).width();
@@ -118,6 +118,23 @@ var TvController = function() {
 
     if (!!newControl && newControl.length > 0) {
       Controller.activate(newControl);
+    }
+  });
+
+  // Show placeholders for all thumbnails that didn't load
+  $('article > header > img.thumbnail').each(function(i, el) {
+    var $el = $(this);
+    if (! $el.attr('src')) {
+      // Set a no image class on the header
+      $el.parent('header').addClass('missing-image');
+    }
+  });
+
+  // Show placeholders for large images that didn't load
+  $('img.large').each(function(i, el) {
+    var $el = $(this);
+    if (! $el.attr('src')) {
+      $el.wrap('<div class="missing-image"/>');
     }
   });
 };

@@ -10,7 +10,7 @@
 @colorLink: #9f9;
 @color: #eee;
 
-@bg: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#000), to(#222));
+@bg: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(0,0,0,50)), to(rgba(50,50,50,50)));
 @bgItems: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#222), to(#666));
 @bgCategories: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#666), to(maroon));
 
@@ -30,7 +30,7 @@
 
 body {
   color: #eee;
-  background-image: @bg;
+  background-image: url(/images/bg-rep-tv.png);
   font-family: 'Droid Sans', sans-serif;
   overflow: hidden;
 }
@@ -113,7 +113,10 @@ body > header {
 
     header {
       .animate;
+      position: relative;
       width: @itemWidth;
+      height: 120px;
+      overflow: hidden;
       margin-right: 10px;
       top: 0;
       -webkit-border-radius: 8px;
@@ -137,8 +140,13 @@ body > header {
         width: 100%;
       }
 
-      div.summary {
-        display: none;
+      div.summary { display: none; }
+      time { display: none; }
+
+      &.missing-image {
+        img.thumbnail {
+          display: none;
+        }
       }
     }
 
@@ -167,8 +175,10 @@ body > header {
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
-        padding-bottom: 10px;
-        padding-right: 20px;
+        border-bottom: 1px solid #444;
+        margin: -20px -20px 20px;
+        padding: 20px;
+        background: @bg;
       }
 
       div.summary {
@@ -187,14 +197,28 @@ body > header {
         min-width: @bigImageWidth;
         min-height: @bigImageWidth * 0.5;
         float: left;
+        -webkit-box-shadow: #000 0px 0px 45px;
       }
 
-      div.story {
+      time, .author {
+        font-size: 20px;
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+      time { float: right; padding-left: 20px; }
+      .author { float: left; padding-left: 20px; }
+
+      .story, .summary {
+        clear: right;
         margin-left: @bigImageWidth;
+        margin-top: 30px;
         padding-left: 20px;
+        color: #ddd;
+      }
+
+      .story {
         font-size: @fontSizeArticle;
         line-height: @fontSizeArticle + 3;
-        color: #ddd;
 
         p {
           margin-bottom: 10px;
@@ -210,7 +234,8 @@ body > header {
       top: 50%;
       left: 0;
       padding: 0 20px 10px 20px;
-      background: #500;
+      background: #900;
+      a { color: #ccc; }
       -webkit-transform-origin: 0 0;
       -webkit-transform: rotate(-90deg);
     }
@@ -223,6 +248,18 @@ section.category {
 
   &.active {
     display: block;
+  }
+}
+
+footer#formfactors {
+  position: absolute;
+  bottom: 5px;
+  left: 5px;
+
+  a {
+    margin-right: 5px;
+    font-size: 14px;
+    color: gray;
   }
 }
 

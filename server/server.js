@@ -7,8 +7,8 @@ var app = express.createServer();
 
 var conf = { 
   id: "guardian",
-  name: "The Guardian News Reader",
-  description: "All the latest from around the world",
+  name: "DEMO: Reader for Guardian",
+  description: "All the latest news from around the world",
   version: "0.0.0.1",
   baseDir: __dirname + "/templates/",
   clientDir: __dirname + "/client/",

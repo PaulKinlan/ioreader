@@ -33,10 +33,15 @@ var factor = formfactor.detect([
 ]);
 
 if(!!factor) {
+
+
+
   $(document).ready(function() {
     $("#formfactors a").live("click", function(e) {
       formfactor.override($(this).data().formfactor, { path: "/" });
-      window.location = window.location + "";
+      $("#formfactors a").removeClass("active");
+      $(this).addClass("active");
+      window.location.reload();
       return false;
     });
   
@@ -44,5 +49,6 @@ if(!!factor) {
     $("#formfactors").append("<a href=\"#\" data-formfactor=\"tablet\">Tablet</a>");
     $("#formfactors").append("<a href=\"#\" data-formfactor=\"desktop\">Desktop</a>");
     $("#formfactors").append("<a href=\"#\" data-formfactor=\"tv\">TV</a>");
+    $("#formfactors [data-formfactor="+factor+"]").addClass("active");
   });
 }

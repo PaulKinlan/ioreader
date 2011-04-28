@@ -9,15 +9,15 @@ var BaseController = function() {
   };
 
   // URL Events
-  var onRootChanged = function(request) {
+  var onRootURLChanged = function(request) {
     gotoRoot();
   };
 
-  var onCategoryChanged = function(request) {
+  var onCategoryURLChanged = function(request) {
     changeCategory(request.params.category);
   };
 
-  var onArticleChanged = function(request) {
+  var onArticleURLChanged = function(request) {
     var data = request.params;
     changeArticle(data.category, data.article);
   };
@@ -26,7 +26,7 @@ var BaseController = function() {
   var gotoRoot = function() {
     $("html").addClass("menuState");
     $(".category").removeClass("active");
-
+    $("article").removeClass("active");
     fireEvent("rootchanged", {});
   };
 
@@ -104,7 +104,18 @@ var BaseController = function() {
   };
 
   var activate = function(element) {
+    if(!!element == false) {
+      
+      if (window.history.pushState) {
+        window.history.pushState(undefined, "", "/");
+      }
+      
+      gotoRoot();
+      return;
+    }
+
     activeElement = $(element);
+
     var data = activeElement.data();
     
     if(data.article) {
@@ -176,15 +187,15 @@ var BaseController = function() {
   };
 
   var app = new routes(); 
-  app.get("^/", onRootChanged);
-  app.get("^/reader/:category", onCategoryChanged);
-  app.get("^/reader/:category.html", onCategoryChanged);
-  app.get("^/reader/:category/:article", onArticleChanged);
+  app.get("^/", onRootURLChanged);
+  app.get("^/reader/:category", onCategoryURLChanged);
+  app.get("^/reader/:category.html", onCategoryURLChanged);
+  app.get("^/reader/:category/:article", onArticleURLChanged);
 
   return {
-    onRootChanged: onRootChanged,
-    onCategoryChanged: onCategoryChanged,
-    onArticleChanged: onArticleChanged,
+    onRootChanged: onRootURLChanged,
+    onCategoryChanged: onCategoryURLChanged,
+    onArticleChanged: onArticleURLChanged,
     activate: activate,
     refresh: refresh,
     getActiveArticle: getActiveArticle,

@@ -67,7 +67,7 @@ var DesktopController = function() {
         break;
     } 
     
-    if(!!newControl && newControl.length > 0) controller.activate(newControl);
+    controller.activate(newControl);
     return false;
   });
 

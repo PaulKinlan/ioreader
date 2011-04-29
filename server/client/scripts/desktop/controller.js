@@ -11,6 +11,14 @@ var DesktopController = function() {
     return false;
   });
 
+  window.addEventListener('categorychanged', function(e) {
+    var category = $("#" + e.data.category);
+    var categories = $(".categories");
+    var categoryH2 = $("h2", category);
+    
+    categories.css("marginLeft", (categories.offset().left - category.offset().left) + categoryH2.height() + 160);
+  });
+
   window.addEventListener('load', function(e) {
     // Switch out low-res thumbnails for hi-res with fade in effect.
     $('article > header > img.thumbnail[data-src-hi]').each(function(i, el) {

@@ -196,9 +196,9 @@ var BaseController = function() {
   app.get("^/reader/:category/:article", onArticleURLChanged);
 
   return {
-    onRootChanged: onRootChanged,
-    onCategoryChanged: onCategoryChanged,
-    onArticleChanged: onArticleChanged,
+    onRootChanged: onRootURLChanged,
+    onCategoryChanged: onCategoryURLChanged,
+    onArticleChanged: onArticleURLChanged,
     activate: activate,
     refresh: refresh,
     getActiveArticle: getActiveArticle,

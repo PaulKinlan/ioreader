@@ -9,15 +9,15 @@ var BaseController = function() {
   };
 
   // URL Events
-  var onRootURLChanged = function(request) {
+  var onRootChanged = function(request) {
     gotoRoot();
   };
 
-  var onCategoryURLChanged = function(request) {
+  var onCategoryChanged = function(request) {
     changeCategory(request.params.category);
   };
 
-  var onArticleURLChanged = function(request) {
+  var onArticleChanged = function(request) {
     var data = request.params;
     changeArticle(data.category, data.article);
   };
@@ -26,7 +26,7 @@ var BaseController = function() {
   var gotoRoot = function() {
     $("html").addClass("menuState");
     $(".category").removeClass("active");
-    $("article").removeClass("active");
+    $("artcile").removeClass("active");
     fireEvent("rootchanged", {});
   };
 
@@ -105,11 +105,6 @@ var BaseController = function() {
 
   var activate = function(element) {
     if(!!element == false) {
-      
-      if (window.history.pushState) {
-        window.history.pushState(undefined, "", "/");
-      }
-      
       gotoRoot();
       return;
     }
@@ -123,8 +118,11 @@ var BaseController = function() {
         window.history.pushState(undefined, "", "/reader/" + data.category + "/" + data.article );
       }
       changeArticle(data.category, data.article);
-      console.log("loading article");
       $("html").addClass("loadingArticle");
+      var story = $(".story > *", activeElement);
+      if(story.length > 0)
+        return;
+      
       fetchArticle(data.category, data.article, function(result) {
         var categories = result.categories;
         var category;
@@ -187,15 +185,15 @@ var BaseController = function() {
   };
 
   var app = new routes(); 
-  app.get("^/", onRootURLChanged);
-  app.get("^/reader/:category", onCategoryURLChanged);
-  app.get("^/reader/:category.html", onCategoryURLChanged);
-  app.get("^/reader/:category/:article", onArticleURLChanged);
+  app.get("^/", onRootChanged);
+  app.get("^/reader/:category", onCategoryChanged);
+  app.get("^/reader/:category.html", onCategoryChanged);
+  app.get("^/reader/:category/:article", onArticleChanged);
 
   return {
-    onRootChanged: onRootURLChanged,
-    onCategoryChanged: onCategoryURLChanged,
-    onArticleChanged: onArticleURLChanged,
+    onRootChanged: onRootChanged,
+    onCategoryChanged: onCategoryChanged,
+    onArticleChanged: onArticleChanged,
     activate: activate,
     refresh: refresh,
     getActiveArticle: getActiveArticle,

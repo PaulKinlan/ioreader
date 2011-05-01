@@ -1,7 +1,4 @@
 formfactor.register({
-  'desktop': [
-    'screen'
-  ],
   'phone': [
     (navigator.userAgent.indexOf(" Mobile ") > 0),
     (navigator.userAgent.indexOf("Android") > 0)
@@ -13,6 +10,9 @@ formfactor.register({
   'tablet': [
     (navigator.userAgent.indexOf("iPad") > 0),
     (navigator.userAgent.indexOf("Xoom") > 0)
+  ],
+  'desktop': [
+    'screen'
   ]
 });
 

@@ -100,6 +100,8 @@ var PhoneController = function() {
       $scrollables.css({marginLeft: -categoryIndex*$(window).width()})
     }
 
+    window.scrollTo(0);
+
     $("nav a,nav a:visited").css("color", "yellow").css("fontWeight", "bold"); // quick hack to verify page loaded ok
 
   });

@@ -3,13 +3,16 @@ formfactor.register({
     'screen'
   ],
   'phone': [
-    'screen' // TODO(mm): use real media query.
+    (navigator.userAgent.indexOf(" Mobile ") > 0)
+    (navigator.userAgent.indexOf("Android") > 0)
   ],
   'tv': [
-    'screen' // TODO(smus): use real media query.
+    'tv', // TODO(smus): use real media query.
+    (navigator.userAgent.indexOf("Google TV/") > 0)
   ],
   'tablet': [
-    'screen' // TODO(ericbidelman): use real media query.
+    (navigator.userAgent.indexOf("iPad") > 0)
+    (navigator.userAgent.indexOf("Xoom") > 0)
   ]
 });
 
@@ -33,9 +36,6 @@ var factor = formfactor.detect([
 ]);
 
 if(!!factor) {
-
-
-
   $(document).ready(function() {
     $("#formfactors a").live("click", function(e) {
       formfactor.override($(this).data().formfactor, { path: "/" });

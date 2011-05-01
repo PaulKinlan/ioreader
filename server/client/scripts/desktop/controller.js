@@ -54,8 +54,9 @@ var DesktopController = function() {
     e.preventDefault();
     switch(e.keyCode) {
       case 37://left
+        debugger;
         newControl = currentCategory.prev();
-        if(newControl.length == 0) $("section.category").last();
+        if(newControl.length == 0) newControl = $("section.category").last();
         $(".articles", currentCategory).scrollTop(0);
         break;
       case 38://up

@@ -3,15 +3,15 @@ formfactor.register({
     'screen'
   ],
   'phone': [
-    (navigator.userAgent.indexOf(" Mobile ") > 0)
+    (navigator.userAgent.indexOf(" Mobile ") > 0),
     (navigator.userAgent.indexOf("Android") > 0)
   ],
   'tv': [
-    'tv', // TODO(smus): use real media query.
-    (navigator.userAgent.indexOf("Google TV/") > 0)
+    'tv', 
+    (navigator.userAgent.indexOf("Google TV") > 0)
   ],
   'tablet': [
-    (navigator.userAgent.indexOf("iPad") > 0)
+    (navigator.userAgent.indexOf("iPad") > 0),
     (navigator.userAgent.indexOf("Xoom") > 0)
   ]
 });

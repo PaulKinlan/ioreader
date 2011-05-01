@@ -1,7 +1,7 @@
 CACHE MANIFEST
 
 # Version {{version}}
-# Timestamp {{now}}
+# Timestamp {{#now}}{{toDateString}}{{/now}}
 
 # CSS
 {{#files}}

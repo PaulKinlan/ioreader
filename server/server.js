@@ -150,8 +150,8 @@ app.get('/index.:format', Cache(6), function(req, res) {
  */
 app.get('/app.cache', function(req, res) {
   var controller = new logic.Controller(conf);
+  res.header("Content-Type", "text/cache-manifest");
   controller.renderAppCache(function(output) {
-    res.header("Content-type: text/manifest\n\n");
     res.send(output);
   });  
 });

@@ -104,8 +104,10 @@ var Controller = function(configuration) {
         }
       }
 
+      console.log(data);
+
       loadTemplate(configuration.baseDir + "app.cache", function(template) {
-        callback(m.to_html(template, {"categories" : data, "configuration": configuration}));
+        callback(m.to_html(template, data));
       });
     });
   };

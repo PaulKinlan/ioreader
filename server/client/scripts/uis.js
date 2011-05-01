@@ -3,16 +3,16 @@ formfactor.register({
     'screen'
   ],
   'phone': [
-    (navigator.userAgent.indexOf(" Mobile ") > 0),
-    (navigator.userAgent.indexOf("Android") > 0)
+    function() { return navigator.userAgent.indexOf(" Mobile ") > 0 } ,
+    function() { return navigator.userAgent.indexOf(" iPhone ") > 0 },
   ],
   'tv': [
     'tv', 
-    (navigator.userAgent.indexOf("Google TV") > 0)
+    function() { return navigator.userAgent.indexOf("Google TV") > 0 }
   ],
   'tablet': [
-    (navigator.userAgent.indexOf("iPad") > 0),
-    (navigator.userAgent.indexOf("Xoom") > 0)
+    function () { return navigator.userAgent.indexOf("iPad") > 0 },
+    function() { return navigator.userAgent.indexOf("Xoom") > 0 }
   ]
 });
 

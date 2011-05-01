@@ -1,4 +1,7 @@
 formfactor.register({
+  'desktop': [
+    'screen'
+  ],
   'phone': [
     (navigator.userAgent.indexOf(" Mobile ") > 0),
     (navigator.userAgent.indexOf("Android") > 0)
@@ -10,17 +13,10 @@ formfactor.register({
   'tablet': [
     (navigator.userAgent.indexOf("iPad") > 0),
     (navigator.userAgent.indexOf("Xoom") > 0)
-  ],
-  'desktop': [
-    'screen'
   ]
 });
 
 var factor = formfactor.detect([
-  {
-    "formfactor": "desktop",
-    "resources": ["/scripts/desktop/controller.js", "/css/desktop.css"]
-  },
   {
     "formfactor": "phone",
     "resources": ["/scripts/phone/jquery.touch.js", "/scripts/phone/controller.js", "/css/phone.css"]
@@ -32,6 +28,10 @@ var factor = formfactor.detect([
   {
     "formfactor": "tablet",
     "resources": ["/css/tablet.css", '/css/tablet/touchscroll.css', "/scripts/tablet/css-beziers.js", "/scripts/tablet/touchscroll.js", "/scripts/tablet/controller.js"]
+  },
+  {
+    "formfactor": "desktop",
+    "resources": ["/scripts/desktop/controller.js", "/css/desktop.css"]
   }
 ]);
 

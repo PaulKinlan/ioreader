@@ -7,21 +7,21 @@ CACHE MANIFEST
 # CSS
 {{#files}}
 {{#css}}
-{{name}}
+/{{name}}
 {{/css}}
 {{/files}} 
 
 # Images
 {{#files}}
 {{#images}}
-{{name}}
+/{{name}}
 {{/images}}
 {{/files}} 
 
 # Scripts
 {{#files}}
 {{#scripts}}
-{{name}}
+/{{name}}
 {{/scripts}}
 {{/files}} 
 

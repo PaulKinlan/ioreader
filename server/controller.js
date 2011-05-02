@@ -53,7 +53,13 @@ var Controller = function(configuration) {
    */
   this.renderAppCache = function(callback) {
     if(!!callback == false) throw new exceptions.NoCallbackException("No Callback");
-
+    
+    var dynamicFiles = function(type, files) {
+      return function(fileCallback) {
+        fileCallback(null, {type: type, files: files});
+      };
+    };
+     
     // currently only gets the the files in the root
     var getFiles = function (directory, type, globs) {
       globs = globs || [];
@@ -83,12 +89,9 @@ var Controller = function(configuration) {
     };
 
     var fileActions = [];
+    fileActions.push(dynamicFiles("css", [{name: "css/desktop.css"}, {name:"css/tablet.css"},{name: "css/phone.css"},{name: "css/tv.css"}]));
     fileActions.push(getFiles("lib", "scripts", ["\.js"]));
     fileActions.push(getFiles("css", "css", ["\.css"]));
-    fileActions.push(getFiles("css/desktop", "css", ["\.css"]));
-    fileActions.push(getFiles("css/tv", "css", ["\.css"]));
-    fileActions.push(getFiles("css/tablet", "css", ["\.css"]));
-    fileActions.push(getFiles("css/phone", "css", ["\.css"]));
     fileActions.push(getFiles("scripts", "scripts"));
     fileActions.push(getFiles("scripts/phone", "scripts"));
     fileActions.push(getFiles("scripts/tv", "scripts"));

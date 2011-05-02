@@ -3,6 +3,7 @@ CACHE MANIFEST
 # Version {{version}}
 # Timestamp {{#now}}{{toDateString}}{{/now}}
 
+
 # CSS
 {{#files}}
 {{#css}}
@@ -23,6 +24,10 @@ CACHE MANIFEST
 {{name}}
 {{/scripts}}
 {{/files}} 
+
+http://fonts.googleapis.com/css?family=Lato|Droid+Sans
+http://themes.googleusercontent.com/font?kit=qIIYRU-oROkIk8vfvxw6QvesZW2xOQ-xsNqO47m55DA
+http://themes.googleusercontent.com/font?kit=s-BiyweUPV0v-yRb-cjciL3hpw3pgy2gAi-Ip7WPMi0
 
 NETWORK:
 *

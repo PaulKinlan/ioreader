@@ -55,7 +55,8 @@ var Controller = function(configuration) {
     if(!!callback == false) throw new exceptions.NoCallbackException("No Callback");
 
     // currently only gets the the files in the root
-    var getFiles = function (directory, type) {
+    var getFiles = function (directory, type, globs) {
+      globs = globs || [];
       return function(fileCallback) {
         fs.readdir(configuration.clientDir + directory, function(err, files) {
           if(!!files == false) {
@@ -63,10 +64,16 @@ var Controller = function(configuration) {
           }
           var output = [];
           var file;
-          
           for(var i = 0; file = files[i]; i++) {
             // ignore folders
             if(file.indexOf(".") <= 0) continue;
+            var found = true;
+            for(var g = 0; glob = globs[g]; g++) {
+              found = !!file.match(glob + "$");
+            }
+
+            if(found == false) continue;
+
             output.push({name: directory + "/" + file});
           } 
 
@@ -76,12 +83,12 @@ var Controller = function(configuration) {
     };
 
     var fileActions = [];
-    fileActions.push(getFiles("lib", "scripts"));
-    fileActions.push(getFiles("css", "css"));
-    fileActions.push(getFiles("css/desktop", "css"));
-    fileActions.push(getFiles("css/tv", "css"));
-    fileActions.push(getFiles("css/tablet", "css"));
-    fileActions.push(getFiles("css/phone", "css"));
+    fileActions.push(getFiles("lib", "scripts", ["\.js"]));
+    fileActions.push(getFiles("css", "css", ["\.css"]));
+    fileActions.push(getFiles("css/desktop", "css", ["\.css"]));
+    fileActions.push(getFiles("css/tv", "css", ["\.css"]));
+    fileActions.push(getFiles("css/tablet", "css", ["\.css"]));
+    fileActions.push(getFiles("css/phone", "css", ["\.css"]));
     fileActions.push(getFiles("scripts", "scripts"));
     fileActions.push(getFiles("scripts/phone", "scripts"));
     fileActions.push(getFiles("scripts/tv", "scripts"));

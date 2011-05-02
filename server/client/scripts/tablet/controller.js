@@ -2,6 +2,12 @@ var TabletController = function() {
   var controller_ = this;
   var scrollers_ = {};
 
+  $(document).ready(function() {
+    $('<div class="refresh"/>').insertBefore('body > header > nav').click(function() {
+      controller_.refresh();
+    });
+  });
+
   // Hook up click events to activate categories and items
   $(".categories, .category, article").live('click', function(e) {
     e.preventDefault();

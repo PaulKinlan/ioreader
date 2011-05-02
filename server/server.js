@@ -84,7 +84,8 @@ var CSSHandler = function() {
         // Merge 
         //res.send(baseData + "\n" + cssData);
         less.render(baseData + "\n" + cssData, function(err, cssOutput) {
-          res.send(cssOutput);  
+          res.header('Content-Type', 'text/css');
+          res.send(cssOutput);
         });
       });
     });

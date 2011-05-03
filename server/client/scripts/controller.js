@@ -15,6 +15,7 @@
 */
 
 var BaseController = function() {
+  var maxWaitTime = 3000;
   // An external controller can be mixed in that provides the interaction with the different form factors
     
   var fireEvent = function(name, data) {
@@ -70,43 +71,68 @@ var BaseController = function() {
     fireEvent("articlechanged", {category: category, article: article});
   };
 
-  var fetchArticle = function(category, article, callback) { 
+  var fetch = function(url, callback) {
     var xhr = new XMLHttpRequest();
+
+    var noResponseTimer = setTimeout(function() {
+      xhr.abort();
+      if(!!localStorage[url]) {
+        // We have some data cached, return that to the callback.
+        callback(localStorage[url]);
+        return;
+      }
+    }, maxWaitTime);
+
     xhr.onreadystatechange = function() {
-      if(xhr.readyState == 4 && xhr.status == 200) {
-        var article = JSON.parse(xhr.responseText);
-        callback(article);
-        fireEvent("articleready", article); 
+      if(xhr.readyState != 4) {
+        return;
+      }
+
+      if(xhr.status == 200) {
+        clearTimeout(noResponseTimer);
+        // Save the data to local storage
+        localStorage[url] = xhr.responseText;
+        // call the handler
+        callback(xhr.responseText);
+      }
+      else {
+        // There is an error of some kind, use our cached copy (if available).
+        if(!!localStorage[url]) {
+          // We have some data cached, return that to the callback.
+          callback(localStorage[url]);
+          return;
+        }
       }
     };
-    xhr.open("GET", "/reader/" + category + "/" + article + ".json");
+    xhr.open("GET", url); 
     xhr.send();
   };
 
+  var fetchArticle = function(category, article, callback) { 
+    var url = "/reader/" + category + "/" +  article + ".json";
+    fetch(url, function(data) {
+      var article = JSON.parse(data);
+      callback(article);
+      fireEvent("articleready", article); 
+    });
+  };
+
   var fetchCategory = function(category, callback) { 
-    var xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function() {
-      if(xhr.readyState == 4 && xhr.status == 200) {
-        var article = JSON.parse(xhr.responseText);
-        callback(article);
-        fireEvent("categoryready", article); 
-      }
-    };
-    xhr.open("GET", "/reader/" + category + ".json");
-    xhr.send();
+    var url = "/reader/" + category + ".json";
+    fetch(url, function(data) {
+      var category = JSON.parse(data);
+      callback(category);
+      fireEvent("categoryready", category); 
+    });
   };
   
   var fetchAll = function(callback) { 
-    var xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function() {
-      if(xhr.readyState == 4 && xhr.status == 200) {
-        var article = JSON.parse(xhr.responseText);
-        callback(article);
-        fireEvent("allready", article); 
-      }
-    };
-    xhr.open("GET", "/index.json");
-    xhr.send();
+    var url = "/index.json";
+    fetch(url, function(data) {
+      var category = JSON.parse(data);
+      callback(category);
+      fireEvent("allready", category);
+    });
   };
 
   var activeElement;

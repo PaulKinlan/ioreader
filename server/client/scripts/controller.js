@@ -78,6 +78,7 @@ var BaseController = function() {
       xhr.abort();
       if(!!localStorage[url]) {
         // We have some data cached, return that to the callback.
+        fireEvent("connectiontimeout", {});
         callback(localStorage[url]);
         return;
       }
@@ -89,6 +90,7 @@ var BaseController = function() {
       }
 
       if(xhr.status == 200) {
+        fireEvent("goodconnection", {});
         clearTimeout(noResponseTimer);
         // Save the data to local storage
         localStorage[url] = xhr.responseText;
@@ -96,6 +98,8 @@ var BaseController = function() {
         callback(xhr.responseText);
       }
       else {
+        fireEvent("servererror", {});
+        // TODO: We might want to warn the user of a problem with the connection
         // There is an error of some kind, use our cached copy (if available).
         if(!!localStorage[url]) {
           // We have some data cached, return that to the callback.

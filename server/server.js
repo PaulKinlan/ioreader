@@ -25,7 +25,7 @@ var conf = {
   id: "guardian",
   name: "DEMO: Reader for Guardian",
   description: "All the latest news from around the world",
-  version: "0.0.0.1",
+  version: "0.0.0.2",
   baseDir: __dirname + "/templates/",
   clientDir: __dirname + "/client/",
   categories: ["technology", "business", "politics", "lifeandstyle", "music", "culture"]

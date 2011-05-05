@@ -19,6 +19,7 @@ var DesktopController = function() {
   var controller = this;
   var articleOffset = 0;
   var categoryOffset = 0;
+  var refreshInterval = 3 * 60000; // 3 Minutes
 
   $(".categories, .category, article").live("click", function(e) {
     controller.activate(e.currentTarget);
@@ -26,6 +27,12 @@ var DesktopController = function() {
     e.preventDefault();
     return false;
   });
+
+  var refreshData = function() {
+    controller.refresh();
+  };
+
+  window.setInterval(refreshData, refreshInterval);
 
   window.addEventListener('categorychanged', function(e) {
     var category = $("#" + e.data.category);

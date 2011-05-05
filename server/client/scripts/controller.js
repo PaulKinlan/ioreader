@@ -15,9 +15,9 @@
 */
 
 var BaseController = function() {
-  var maxWaitTime = 3000;
-  // An external controller can be mixed in that provides the interaction with the different form factors
-    
+  var maxWaitTime = 10000;
+  
+  // An external controller can be mixed in that provides the interaction with the different form factors  
   var fireEvent = function(name, data) {
     var e = document.createEvent("Event");
     e.initEvent(name, true, true);
@@ -76,9 +76,9 @@ var BaseController = function() {
 
     var noResponseTimer = setTimeout(function() {
       xhr.abort();
+      fireEvent("connectiontimeout", {});
       if(!!localStorage[url]) {
         // We have some data cached, return that to the callback.
-        fireEvent("connectiontimeout", {});
         callback(localStorage[url]);
         return;
       }
@@ -223,7 +223,7 @@ var BaseController = function() {
         console.log("Looking for category " + category.id);
         var articles = category.articles;
         var article;
-        var categoryElement = $("#" + category.id); 
+        var categoryElement = $("#" + category.id + " div.articles "); 
         for(var a = 0; article = articles[a]; a++) {
           var articleElement = $("[data-article='" + article.id + "']", categoryElement);
           if(articleElement.length == 0) {

@@ -25,7 +25,7 @@ var conf = {
   id: "guardian",
   name: "DEMO: Reader for Guardian",
   description: "All the latest news from around the world",
-  version: "0.0.0.6",
+  version: "0.0.0.9",
   baseDir: __dirname + "/templates/",
   clientDir: __dirname + "/client/",
   categories: ["technology", "business", "politics", "lifeandstyle", "music", "culture"]
@@ -89,7 +89,8 @@ var CSSHandler = function() {
     var paths = {
       "desktop" : "desktop/desktop.less", 
       "tablet" : "tablet/tablet.less", 
-      "tv" : "tv/tv.less", 
+      "tv" : "tv/tv.less",
+      "default": "default/default.less",
       "phone" : "phone/phone.less",
       "reset" : "reset.css"
     }

@@ -216,11 +216,13 @@
       };
     }
     else {
-      for(var i = 0; formfactorAction = formfactorActions[i]; i++) {
-        if(formfactorAction.formfactor == formfactorOverride) {
-          initializeFormfactor(formfactorAction);
-          callback(formfactorAction.formfactor);
-          return formfactorAction.formfactor;
+      if(formfactorOverride != "default") {
+        for(var i = 0; formfactorAction = formfactorActions[i]; i++) {
+          if(formfactorAction.formfactor == formfactorOverride) {
+            initializeFormfactor(formfactorAction);
+            callback(formfactorAction.formfactor);
+            return formfactorAction.formfactor;
+          }
         }
       }
     }

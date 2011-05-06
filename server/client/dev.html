@@ -5,7 +5,7 @@
   <style>
     p { margin: 0.5em 0; cursor: pointer; font-size: 12pt; }
   </style>
-  <script src="lib/jquery-1.5.min.js"></script>
+  <script src="lib/jquery-1.5.2.min.js"></script>
   <script>
     $(function() {
       $("span").click(function() { $(this).prev().click(); });
@@ -28,7 +28,7 @@
   <p><button id="clear">Clear</button>
 
   <h4>Which UI do you want to see?</h4>
-
+  <p><input type="radio" name="ui" value="default" /><span>Default (no formfactor detected)</span></p>
   <p><input type="radio" name="ui" value="phone" /><span>Phone</span></p>
   <p><input type="radio" name="ui" value="tablet"><span>Tablet</span></p>
   <p><input type="radio" name="ui" value="tv"><span>TV</span></p>

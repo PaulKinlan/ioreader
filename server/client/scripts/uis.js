@@ -49,7 +49,12 @@ var factor = formfactor.detect([
     "formfactor": "desktop",
     "resources": ["/scripts/desktop/controller.js", "/css/desktop.css"]
   }
-]);
+],
+{
+  "formfactor": "default",
+  "resources": ["/css/default.css"]  
+}
+);
 
 if(!!factor) {
   $(document).ready(function() {

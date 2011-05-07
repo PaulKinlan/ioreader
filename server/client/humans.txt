@@ -1,0 +1,24 @@
+/* TEAM */
+Developers:
+  Paul Kinlan, Google (@paul_kinlan)
+  Michael Mahemoff, Google (@mahemoff)
+  Eric Bidel, Google (@ebidel)
+  Boris Smus, Google (@borismus)
+
+/* THANKS */
+Name: Google IO, for giving us the reason
+
+/* SITE */
+Standards:
+  HTML5
+  CSS3
+Components:
+  Node
+  jQuery
+  Modernizr
+  Mustache
+  Less
+  TouchScroll.js (for tablet)
+Software:
+  OSX
+  Vim

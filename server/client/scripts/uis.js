@@ -18,6 +18,13 @@ formfactor.register({
   'desktop': [
     'screen'
   ],
+  'handheld': [
+    'handheld',
+    function() { 
+     return navigator.userAgent.indexOf("Opera Mini") > 0; },
+    function() { 
+    return navigator.userAgent.indexOf("Opera Mobi") > 0; }
+  ],
   'phone': [
     function() { return navigator.userAgent.indexOf(" Mobile ") > 0 } ,
     function() { return navigator.userAgent.indexOf(" iPhone ") > 0 },
@@ -44,6 +51,10 @@ var factor = formfactor.detect([
   {
     "formfactor": "tablet",
     "resources": ["/css/tablet.css", '/css/tablet/touchscroll.css', "/scripts/tablet/css-beziers.js", "/scripts/tablet/touchscroll.js", "/scripts/tablet/controller.js"]
+  },
+  {
+    "formfactor": "handheld",
+    "resources": ["/css/default.css"]  
   },
   {
     "formfactor": "desktop",

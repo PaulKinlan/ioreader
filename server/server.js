@@ -18,29 +18,11 @@ var express = require('express');
 var proxies = require('./proxies');
 var exception = require('./exceptions');
 var logic = require('./controller');
+var config = require('../config');
 
 var app = express.createServer();
 
-var conf = { 
-  id: "guardian",
-  name: "DEMO: Reader for Guardian",
-  description: "All the latest news from around the world",
-  version: "0.0.0.11",
-  baseDir: __dirname + "/templates/",
-  clientDir: __dirname + "/client/",
-  categories: ["technology", "business", "politics", "lifeandstyle", "music", "culture"]
-};
-/*
-var conf = { 
-  id: "npr",
-  name: "The NPR News Reader",
-  description: "All the latest from around the world",
-  version: "0.0.0.1",
-  baseDir: __dirname + "/templates/",
-  clientDir: __dirname + "/client/",
-  categories: ["1019"]
-};
-*/
+var conf; // A handle to the configuration;
 
 function bustCache(req, res, next) {
   res.setHeader("Expires","Mon, 26 Jul 1997 05:00:00 GMT");
@@ -117,10 +99,10 @@ app.configure(function() {
 });
 
 app.configure('test', function() {
+  conf = config.load('test');
   app.get("/css/:file", CSSHandler() );
   app.use(express.static(conf.clientDir));
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
-  conf.id = "test"; // force test mode.
   console.log("Running in Test");
 });
 
@@ -128,8 +110,8 @@ app.configure('test', function() {
   Development mode runs all the code uncompressed
 */
 app.configure('development', function() {
+  conf = config.load('development');
   app.get("/css/:file", CSSHandler() );
-
   app.use(express.static(conf.clientDir));
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
   console.log("Running in Development");
@@ -140,7 +122,7 @@ app.configure('development', function() {
   is minified.  Exceptions are not shown either.
 */
 app.configure('production', function() {
-  conf.clientDir = __dirname + "/client-min";
+  cong = config.load('production');
   app.use(express.static(conf.clientDir));
   console.log("Running in Production");
 });

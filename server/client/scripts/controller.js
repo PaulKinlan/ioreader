@@ -42,6 +42,8 @@ var BaseController = function() {
   // Event triggers
   var gotoRoot = function() {
     $("html").addClass("menuState");
+    $("html").removeClass("categoryState");
+    $("html").removeClass("articleState");
     $(".category").removeClass("active");
     $("article").removeClass("active");
     fireEvent("rootchanged", {});
@@ -51,6 +53,8 @@ var BaseController = function() {
     var category = categoryElement
 
     $("html").addClass("categoryState");
+    $("html").removeClass("menuState");
+    $("html").removeClass("articleState");
     $(".category").removeClass("active");
     $("article").removeClass("active");
     $("li[data-category='"+ category +"']").addClass("active");
@@ -62,6 +66,8 @@ var BaseController = function() {
   var changeArticle = function(category, article) {
 
     $("html").addClass("articleState");
+    $("html").removeClass("categoryState");
+    $("html").removeClass("menuState");
     $(".category").removeClass("active");
     $("article").removeClass("active");
     $("li[data-category='"+ category +"']").addClass("active");

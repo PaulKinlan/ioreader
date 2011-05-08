@@ -59,6 +59,7 @@
 
     el[touch ? "ontouchstart" : "onmousedown"] = function(ev) {
       mouseDownEvent = enhance(ev);
+      console.log("mousedown"+mouseDownEvent.x+","+mouseDownEvent.y);
       startTime = new Date;
       return false;
     };
@@ -70,7 +71,6 @@
       if (!mouseDownEvent) return; // we're only interested in diffs
       if (!mouseMoveEvent) {
         ev = enhance(ev,mouseDownEvent);
-        console.log(ev.dx, ev.dy, opts.minMove);
         if (abs(ev.dx) >= abs(ev.dy) && abs(ev.dx) > opts.minMove) {
           mouseMoveEvent = ev;
           direction = "x";
@@ -83,6 +83,7 @@
         } // finish checking for first mouse event
       } else {
         mouseMoveEvent = enhance(ev,mouseMoveEvent);
+        console.log("mousemove"+mouseMoveEvent.dx+","+mouseMoveEvent.dy+","+mouseMoveEvent.x+","+mouseMoveEvent.y);
       }
 
       direction=="x" ? opts.moveX(ev) : opts.moveY(ev);

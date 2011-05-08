@@ -256,6 +256,7 @@ var BaseController = function() {
     activate: activate,
     refresh: refresh,
     getActiveArticle: getActiveArticle,
-    getActiveCategory: getActiveCategory
+    getActiveCategory: getActiveCategory,
+    processRoutes: function() { app.run(document.location.pathname); }
   };
 };

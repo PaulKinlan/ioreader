@@ -78,10 +78,7 @@ then
   ) 
 
   # Compress the JS
-elif [ "$1" == "test" ] || [ "$1" == "development" ]
-then
+else 
   export NODE_ENV=$1
   node server/server.js
-else
-  echo "Arguments must be: 'development', 'production' or 'test'. For example setmode.sh test"
 fi

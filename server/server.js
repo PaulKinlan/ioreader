@@ -178,6 +178,6 @@ app.get('/reader/:category/:article.:format?', Cache(6), function(req, res) {
   });
 });
 
-app.listen(3000);
+app.listen(conf.options.port);
 
 console.log('Server running at http://127.0.0.1:3000/');

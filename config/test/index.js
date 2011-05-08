@@ -23,5 +23,9 @@ exports.config = {
   version: "0.0.0.11",
   baseDir: "server/templates/",
   clientDir: "server/client/",
-  categories: ["technology", "business", "politics", "lifeandstyle", "music", "culture"]
+  categories: ["technology", "business", "politics", "lifeandstyle", "music", "culture"],
+  options: {
+    appCache: "manifest=\"app.cache\"",
+    port: 3000
+  }
 };

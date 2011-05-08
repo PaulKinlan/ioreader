@@ -15,9 +15,6 @@
 */
 
 var PhoneController = function() {
-
-  $("article").eq(3).addClass("active");
-
   var controller = this;
 
   var $categories = $(".categories"),

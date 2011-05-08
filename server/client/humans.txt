@@ -19,6 +19,8 @@ Components:
   Mustache
   Less
   TouchScroll.js (for tablet)
+  FormfactorJS
+  LeviRoutes
 Software:
   OSX
   Vim

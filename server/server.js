@@ -96,13 +96,12 @@ var CSSHandler = function() {
 */
 app.configure(function() {
   app.use(app.router);
+  conf = config.load(app.settings.env);
+  app.use(express.static(conf.clientDir));
+  app.get("/css/:file", CSSHandler() );
 });
 
 app.configure('test', function() {
-  conf = config.load('test');
-  app.get("/css/:file", CSSHandler() );
-  app.use(express.static(conf.clientDir));
-  app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
   console.log("Running in Test");
 });
 
@@ -110,10 +109,6 @@ app.configure('test', function() {
   Development mode runs all the code uncompressed
 */
 app.configure('development', function() {
-  conf = config.load('development');
-  app.get("/css/:file", CSSHandler() );
-  app.use(express.static(conf.clientDir));
-  app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
   console.log("Running in Development");
 });
 
@@ -122,8 +117,6 @@ app.configure('development', function() {
   is minified.  Exceptions are not shown either.
 */
 app.configure('production', function() {
-  cong = config.load('production');
-  app.use(express.static(conf.clientDir));
   console.log("Running in Production");
 });
 

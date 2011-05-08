@@ -28,28 +28,31 @@ var PhoneController = function() {
       categoryIndex = $(".categories .category.active").prev().length,
       pageY = window.pageYOffset;
 
-  function animateToCurrentCategory(callback) {
-    console.log("anim");
+  function animateToCurrentCategory(animate, options) {
+    if (!animate) {
+      return $scrollables.css({marginLeft: -categoryIndex*$(window).width()});
+    }
+    $formfactors.hide();
     unregisterTouch(); // ignore touch during animation
     $scrollables.animate({marginLeft: -categoryIndex*$(window).width()},function() {
       console.log("anim reg touch");
+      $formfactors.show();
       registerTouch();
-      if (callback) callback();
+      if (options && options.callback) options.callback();
     });
   }
 
   var categoryTouchOpts = {
     swipeX: function(ev) {
       // don't refresh story at the end if we pull to the end
-      if (categoryIndex==$category.length-1 && ev.dx < 0) return animateToCurrentCategory();
+      if (categoryIndex==$category.length-1 && ev.dx < 0) return animateToCurrentCategory(true);
       if (categoryIndex==0 && ev.dx > 0 ) {
-        if (ev.dx<=50) return animateToCurrentCategory();
+        if (ev.dx<=50) return animateToCurrentCategory(true);
         else controller.refresh(); // funky pullback gesture
       }
       var increment = ev.dx < 0 ? 1 : -1;
       categoryIndex = inside(0, categoryIndex+increment, $category.length-1);
-      animateToCurrentCategory(function() {
-        $formfactors.show();
+      animateToCurrentCategory(true, function() {
         controller.activate($category.get(categoryIndex));
       });
     },
@@ -70,17 +73,12 @@ var PhoneController = function() {
     },
     click: function(ev) {
       var $target = $(ev.target);
-          $header = $target.closest("header"),
-          $article = $target.closest("article"),
-          $story = $target.closest(".story");
-      if ($story.length) return;
-
-      $formfactors.show();
-      animateToCurrentCategory(unregisterTouch); // revert small movement
+          $article = $target.closest("article");
+      animateToCurrentCategory(false);  // revert small movement
       controller.activate($article);
     },
     longHold: function(ev) {
-      animateToCurrentCategory(); // ^^ ditto
+      animateToCurrentCategory(false); // ^^ ditto
     }
   };
   var navTouchOpts = $.extend({}, categoryTouchOpts, {
@@ -92,21 +90,31 @@ var PhoneController = function() {
   });
 
   function onArticleChanged() {
+    unregisterTouch();
     $("section.active").css("marginTop", 0);
     var activeArticle = $("article.active").get(0);
     new TouchScroll(activeArticle, {elastic: false});
-    if (! $.touch.isTouchDevice()) activeArticle.style.overflow = "auto";
+    console.log("article changed", activeArticle);
+
+    if (! $.touch.isTouchDevice()) activeArticle.style.overflow = "auto"; // todo->stylesheet
   }
 
   function onCategoryChanged() {
+    console.log("category changed");
+
     var $touchArticle = $(".touchScroll")
       .removeClass("touchScroll")
       .css("position", "static");
     console.log("category changed, touch article", $touchArticle);
     if ($touchArticle.length) {
+
+      // Since TouchScroll library doesn't have a way to untouchscroll, we do it ourselves
+      $touchArticle.css("overflow", "hidden"); // revert from fix for desktop
+      $touchArticle.touch(null);
       $originalContents = $(".touchScrollInner").children().clone();
-      $article.empty().append($originalContents);;
-      console.log("orig contents", $originalContents);
+      $touchArticle.empty().append($originalContents);;
+      $clone = $touchArticle.clone().insertBefore($touchArticle);
+      $touchArticle.remove();
     }
     registerTouch();
   }

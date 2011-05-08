@@ -28,7 +28,7 @@ var PhoneController = function() {
       categoryIndex = $(".categories .category.active").prev().length,
       pageY = window.pageYOffset;
 
-  function animateToCurrentCategory(animate, options) {
+  function animateToCurrentCategory(animate, callback) {
     if (!animate) {
       return $scrollables.css({marginLeft: -categoryIndex*$(window).width()});
     }
@@ -38,7 +38,7 @@ var PhoneController = function() {
       console.log("anim reg touch");
       $formfactors.show();
       registerTouch();
-      if (options && options.callback) options.callback();
+      if (callback) callback();
     });
   }
 
@@ -53,6 +53,7 @@ var PhoneController = function() {
       var increment = ev.dx < 0 ? 1 : -1;
       categoryIndex = inside(0, categoryIndex+increment, $category.length-1);
       animateToCurrentCategory(true, function() {
+        console.log("ACTIVE CAT", categoryIndex);
         controller.activate($category.get(categoryIndex));
       });
     },

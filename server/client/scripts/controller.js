@@ -177,8 +177,10 @@ var BaseController = function() {
       changeArticle(data.category, data.article);
       $("html").addClass("loadingArticle");
       var story = $(".story > *", activeElement);
-      if(story.length > 0)
+      if(story.length > 0) {
+        $("html").removeClass("loadingArticle");
         return;
+      }
       
       fetchArticle(data.category, data.article, function(result) {
         var categories = result.categories;

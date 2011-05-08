@@ -25,7 +25,7 @@ exports.config = {
   clientDir: "server/client/",
   categories: ["technology", "business", "politics", "lifeandstyle", "music", "culture"],
   options: {
-    appCache: "",
+    appCache: "manifest=\"app.cache\"",
     port: 3000
   }
 };

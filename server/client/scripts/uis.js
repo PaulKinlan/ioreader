@@ -50,7 +50,7 @@ var factor = formfactor.detect([
   },
   {
     "formfactor": "tablet",
-    "resources": ["/css/tablet.css", '/css/tablet/touchscroll.css', "/scripts/tablet/css-beziers.js", "/scripts/tablet/touchscroll.js", "/scripts/tablet/controller.js"]
+    "resources": ["/css/tablet.css", '/css/tablet/touchscroll.css', "/scripts/tablet/jquery.touch.tablet.js", "/scripts/tablet/css-beziers.js", "/scripts/tablet/touchscroll.js", "/scripts/tablet/controller.js"]
   },
   {
     "formfactor": "handheld",

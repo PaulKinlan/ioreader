@@ -54,6 +54,12 @@
   box-pack: center;
 }
 
+.user-select {
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
 .missing-image {
   background: url('/images/sadface.png') center center no-repeat, #bbb;
   .border-radius(@thumbnail-radius);
@@ -67,7 +73,6 @@
   }
 }
 /* ************************************************************************** */
-
 
 ::-webkit-scrollbar {
   display: none;
@@ -161,7 +166,7 @@ body {
       .box-v-center;
       opacity: 0.3;
       cursor: pointer;
-      margin: 10px 0 0 10px;
+      margin: 10px 5px 0 0;
       padding: 5px;
       border: 1px solid rgba(0,0,0,0.5);
       .border-radius(5px);
@@ -193,18 +198,32 @@ body {
 }
 
 .categories {
-  height: 100%; /*breaks glovebox*/
+  height: 100%;
   position: relative;
   overflow-y: auto;
   overflow-x: hidden;
   top: @navbar-height;
+  .display-box;
+  -webkit-transition: opacity 0.6s;
+  /*text-align: center;*/
 
   .category {
     padding: 1em;
+    /*width: 261px;*/
+    h2 {
+      font-size: 14pt;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
   }
 
 }
 
+.refreshing {
+  .categories {
+    opacity: 0.4;
+  }
+}
 
 .menuState {
 
@@ -297,7 +316,7 @@ article {
       min-height: 176px;
       max-height: 176px;
       /*min-width: 260px;*/
-      width: 260px;
+      width: 240px;
       border-radius: inherit;
     }
 
@@ -378,7 +397,7 @@ article.active {
     position: fixed;
     height: 87%;
     left: 220px;
-    top: 57px;
+    top: 25px; /*57px;*/
 
     width: 530px; /* TODO: try to get this to extend based on media query */
     overflow: auto;
@@ -402,6 +421,7 @@ article.active {
       /*text-shadow: 1px 1px 1px black;
       color: white;*/
       font-family: 'Lato', 'Droid Sans';
+      text-align: left;
     }
 
     img.large {

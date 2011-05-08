@@ -24,7 +24,15 @@
       } catch (e) {
         return false;
       }
+    },
+
+    untouch: function(el) {
+      var handlers = "touchstart,touchmove,touchend,mousedown,mousemove,mouseup".split(",")
+      $.each(handlers, function(i, handler) {
+        el["on"+handler] = null;
+      });
     }
+
   }
 
   var startTime,
@@ -34,7 +42,7 @@
   $.fn.touch = function(options) {
 
     var el = $(this).get(0); // not a true jQuery lib yet (ie no "this" loop)
-    if (options == null) return untouch(el);
+    if (options == null) return $.touch.untouch(el);
 
     // might genericise this - no jQuery requirement
     var opts = $.extend({}, $.fn.touch.defaults, options);
@@ -107,13 +115,6 @@
     minSwipe: 20,
     maxClickTime: 500
   };
-
-  function untouch(el) {
-    var handlers = "touchstart,touchmove,touchend,mousedown,mousemove,mouseup".split(",")
-    $.each(handlers, function(i, handler) {
-      el["on"+handler] = null;
-    });
-  }
 
   var abs = Math.abs;
 

@@ -92,6 +92,11 @@ var PhoneController = function() {
     }
   });
 
+  function onRootChanged() {
+    // Select the first category
+    controller.activate($("section.category")[0]);
+  };
+
   function onArticleChanged() {
     unregisterTouch();
     $("section.active").css("marginTop", 0);
@@ -138,11 +143,8 @@ var PhoneController = function() {
     return Math.min(max,Math.max(val,min));
   }
 
-  $(function() {
-
-    // TODO fix (wont work as there's an active article on init for some reason, even if url is /
-    if (document.location.pathname=="/") controller.activate($(".category"));
-
+  $(document).ready(function() {
+    window.addEventListener("rootchanged", onRootChanged)
     window.addEventListener("articlechanged", onArticleChanged);
     window.addEventListener("categorychanged", onCategoryChanged);
     $("nav a").click(function() {
@@ -160,7 +162,6 @@ var PhoneController = function() {
     // $scrollables.css({marginLeft: -categoryIndex*$(window).width()})
     // window.onresize();
     // window.scrollTo(0,0);
-
   });
 
 }

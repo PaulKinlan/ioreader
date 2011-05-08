@@ -16,16 +16,28 @@
 
 !function($) {
 
+  $.touch = {
+    isTouchDevice: function() {
+      try {
+        document.createEvent("TouchEvent");
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+  }
+
   var startTime,
       direction = mouseDownEvent = mouseMoveEvent = null,
-      touch = isTouchDevice();
+      touch = $.touch.isTouchDevice();
 
   $.fn.touch = function(options) {
 
+    var el = $(this).get(0); // not a true jQuery lib yet (ie no "this" loop)
+    if (options == null) return untouch(el);
+
     // might genericise this - no jQuery requirement
     var opts = $.extend({}, $.fn.touch.defaults, options);
-    var el = $(this).get(0);
-    if (opts == null) return untouch(el);
 
     function enhance(ev,epochEvent) {
       // touches[] is null for touchend and mouseMoveEvent *may* be null if a simple click
@@ -71,6 +83,7 @@
     };
 
     el[touch ? "ontouchend" : "onmouseup"] = function(ev) {
+      console.log("target", ev.target, mouseMoveEvent, mouseDownEvent);
       ev.x = touch && mouseMoveEvent ? mouseMoveEvent.x : mouseDownEvent.x;
       ev.y = touch && mouseMoveEvent ? mouseMoveEvent.y : mouseDownEvent.y;
       enhance(ev,mouseDownEvent);
@@ -97,18 +110,9 @@
 
   function untouch(el) {
     var handlers = "touchstart,touchmove,touchend,mousedown,mousemove,mouseup".split(",")
-    for (var handler in handlers) {
+    $.each(handlers, function(i, handler) {
       el["on"+handler] = null;
-    }
-  }
-
-  function isTouchDevice() {
-    try {
-      document.createEvent("TouchEvent");
-      return true;
-    } catch (e) {
-      return false;
-    }
+    });
   }
 
   var abs = Math.abs;

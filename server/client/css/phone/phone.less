@@ -52,7 +52,9 @@ body {
 }
 #formfactors {
   display: block;
-  [data-formfactor="desktop"] {
+  a { display: none; }
+  a[data-formfactor="desktop"] {
+    display: block;
     position: absolute; top: @headingPadding; right: 1em; z-index: 5;
     font-style: italic; opacity: 0.5;
   }
@@ -66,7 +68,6 @@ body {
   display: -webkit-box;
   -webkit-box-orient: horizontal;
   -webkit-box-align: start;
-
 
   li {
     -webkit-transition: background-color 0.2s ease-in-out;
@@ -87,11 +88,14 @@ time {
 }
 
 nav ul {
-  position: absolute; top: 0; left: 0; width: 100%; height: 1.4em;
+  z-index: 2;
+  position: fixed; top: 0; left: 0; width: 100%; height: 1.4em;
   li { width: 100%; }
+  li { box-shadow: 5px 5px 10px #fff;  }
 }
 
-@media screen and (orientation:landscape) {
+/*
+@media screen and (orientation:profile) {
   article {
     height: 1em !important;
     overflow: hidden;
@@ -99,6 +103,7 @@ nav ul {
     img.thumbnail { display: none; }
   }
 }
+*/
 
 .categories {
 
@@ -169,13 +174,39 @@ nav ul {
 /******************/*
 .articleState {
 
-  article.active {
+  .categories article {
+    display: none;
+    height: 1000px;
+  }
 
-    overflow: visible;
-    height: auto;
+  category {
+    display: none;
+    &.active { display: block; }
+  }
+
+  /* weird thing related to TouchScroll lib - make it work on both mob+desktop*/
+  /*
+  @media screen and (min-device-width: 500px) {
+    .categories article { overflow: visible !important; }
+  }
+  */
+
+  .categories article.active {
+
+    img.large { 
+      display: block;
+      max-width: 100%;
+    }
+
+    display: block; 
+    background: black;
+    border: 0;
+    height: 1em !important;
+    overflow: visible !important;
+    padding: 0;
+    img.thumbnail { display: none; }
 
     section h1 { font-weight: bold; }
-
     .story {
       display: block;
       padding: 0 1em 1em 0;

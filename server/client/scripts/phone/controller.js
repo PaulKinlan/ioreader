@@ -24,14 +24,17 @@ var PhoneController = function() {
       $nav = $("nav ul"),
       $scrollables = $categories.add($("nav ul"));
       $category = $(".category", $categories),
+      $formfactors = $("#formfactors"),
       categoryIndex = $(".categories .category.active").prev().length,
       pageY = window.pageYOffset;
 
   function animateToCurrentCategory(callback) {
+    console.log("anim");
     unregisterTouch(); // ignore touch during animation
     $scrollables.animate({marginLeft: -categoryIndex*$(window).width()},function() {
-      if (callback) callback();
+      console.log("anim reg touch");
       registerTouch();
+      if (callback) callback();
     });
   }
 
@@ -44,90 +47,78 @@ var PhoneController = function() {
         else controller.refresh(); // funky pullback gesture
       }
       var increment = ev.dx < 0 ? 1 : -1;
-      console.log("CAT I", categoryIndex,increment);
       categoryIndex = inside(0, categoryIndex+increment, $category.length-1);
       animateToCurrentCategory(function() {
-          // since an active article will now be hidden, causing layout chaos:
-        if ($("article.active").length) $("section.active").css("marginTop", 0);
+        $formfactors.show();
         controller.activate($category.get(categoryIndex));
       });
     },
     swipeY: function() { // do nothing; we only want move events
     }, 
     moveX: function(ev) {
-      $scrollables.css("marginLeft", ev.dx + parseInt($scrollables.css("marginLeft")));
+      $formfactors.hide();
+      $scrollables.css
+        ("marginLeft", ev.dx + parseInt($scrollables.css("marginLeft")));
     },
     moveY: function(ev) {
-      //var minMarginY = -10+$(window).height()-$(document).height();
-      var bodyHeight=Math.max($("body").height(), $(window).height());
-      // var minMarginY = $(window).height()-$("body").height();
-      var maxHeightAboveWindow = $("section.active").height() + $("nav ul").height() - $(window).height();
+      var maxHeightAboveWindow =
+        $("section.active").height()+$("nav ul").height()-$(window).height();
       var newMarginTop = parseInt($("section.active").css("marginTop"))+ev.dy
-      console.log(maxHeightAboveWindow, newMarginTop);
-      $("section.active").css("marginTop", inside(-maxHeightAboveWindow, newMarginTop, 0));
-      console.log($("section.active").css("marginTop"));
+      console.log("moveY", ev.dy, maxHeightAboveWindow, newMarginTop);
+      $("section.active").css("marginTop",
+        inside(-maxHeightAboveWindow, newMarginTop, 0));
     },
     click: function(ev) {
       var $target = $(ev.target);
-          $header = $target.closest("header"), $article = $target.closest("article"), $story = $target.closest(".story");
-      console.log("hD", $header, "XARTICLE", $article);
+          $header = $target.closest("header"),
+          $article = $target.closest("article"),
+          $story = $target.closest(".story");
       if ($story.length) return;
-      if ($article.length) { 
-        if ($article.hasClass("active") && !$target.is(".story")) {
-          console.log("TOGGLE OFF", $target);
-          controller.activate($category.eq(categoryIndex)); // toggle active article off
-        } else {
-          controller.activate($article);
-          console.log("TOGGLE ON", $target, $article);
-        }
-      }
-      animateToCurrentCategory(); // revert any small movement
+
+      $formfactors.show();
+      animateToCurrentCategory(unregisterTouch); // revert small movement
+      controller.activate($article);
     },
     longHold: function(ev) {
       animateToCurrentCategory(); // ^^ ditto
     }
   };
   var navTouchOpts = $.extend({}, categoryTouchOpts, {
-    moveY: function() { console.log("IGNORED"); },
+    moveY: function() { },
     click: function() {
       controller.activate(this);
       return false;
     }
   });
 
-  $(function() {
+  function onArticleChanged() {
+    $("section.active").css("marginTop", 0);
+    var activeArticle = $("article.active").get(0);
+    new TouchScroll(activeArticle, {elastic: false});
+    if (! $.touch.isTouchDevice()) activeArticle.style.overflow = "auto";
+  }
 
-    $scrollables.css({marginLeft: -categoryIndex*$(window).width()})
-    registerTouch();
-
-    $("nav a").click(function() {
-      var categoryID = $(this).parent().data("category");
-      controller.activate($("#"+categoryID, $(".categories")).animate({marginTop: 0}));
-      return false;
-    });
-
-    var articleHeight = $("article[class!=active]").outerHeight();
-    window.addEventListener("articlechanged", function(e) {
-      var $article = $("article.active");
-      $article.closest(".category").animate({marginTop: -$article.prevAll().length * articleHeight});
-    });
-
-    window.onresize = function() {
-      $scrollables.css({marginLeft: -categoryIndex*$(window).width()})
+  function onCategoryChanged() {
+    var $touchArticle = $(".touchScroll")
+      .removeClass("touchScroll")
+      .css("position", "static");
+    console.log("category changed, touch article", $touchArticle);
+    if ($touchArticle.length) {
+      $originalContents = $(".touchScrollInner").children().clone();
+      $article.empty().append($originalContents);;
+      console.log("orig contents", $originalContents);
     }
-
-    window.scrollTo(0,0);
-
-    $("nav a,nav a:visited").css("color", "yellow").css("fontWeight", "bold"); // quick hack to verify page loaded ok
-
-  });
+    registerTouch();
+  }
 
   function registerTouch() {
+    console.log("register touch");
     $categories.touch(categoryTouchOpts);
     $nav.touch(navTouchOpts);
   }
 
   function unregisterTouch() {
+    console.log("unregister touch");
     $categories.touch(null);
     $nav.touch(null);
   }
@@ -135,6 +126,31 @@ var PhoneController = function() {
   function inside(min, val, max) {
     return Math.min(max,Math.max(val,min));
   }
+
+  $(function() {
+
+    // TODO fix (wont work as there's an active article on init for some reason, even if url is /
+    if (document.location.pathname=="/") controller.activate($(".category"));
+
+    window.addEventListener("articlechanged", onArticleChanged);
+    window.addEventListener("categorychanged", onCategoryChanged);
+    $("nav a").click(function() {
+      var categoryID = $(this).parent().data("category");
+      controller.activate
+        ($("#"+categoryID, $(".categories")).animate({marginTop: 0}));
+      return false;
+    });
+
+    (window.onresize = function() {
+      $scrollables.css({marginLeft: -categoryIndex*$(window).width()})
+    })();
+    $("nav a,nav a:visited").css("color", "yellow"); // verify pageload
+
+    // $scrollables.css({marginLeft: -categoryIndex*$(window).width()})
+    // window.onresize();
+    // window.scrollTo(0,0);
+
+  });
 
 }
 

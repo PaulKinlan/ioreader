@@ -42,7 +42,7 @@ formfactor.register({
 var factor = formfactor.detect([
   {
     "formfactor": "phone",
-    "resources": ["/scripts/phone/jquery.touch.js", "/scripts/phone/controller.js", "/css/phone.css"]
+    "resources": ["/scripts/phone/jquery.touch.js", "/scripts/tablet/css-beziers.js", "/scripts/tablet/touchscroll.js", "/scripts/phone/controller.js", "/css/phone.css"]
   },
   {
     "formfactor": "tv",

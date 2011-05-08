@@ -23,7 +23,6 @@ var PhoneController = function() {
   var $categories = $(".categories"),
       $nav = $("nav ul"),
       $scrollables = $categories.add($("nav ul"));
-      $category = $(".category", $categories),
       $formfactors = $("#formfactors"),
       categoryIndex = $(".categories .category.active").prev().length,
       pageY = window.pageYOffset;
@@ -44,11 +43,14 @@ var PhoneController = function() {
 
   var categoryTouchOpts = {
     swipeX: function(ev) {
-      // don't refresh story at the end if we pull to the end
-      if (categoryIndex==$category.length-1 && ev.dx < 0) return animateToCurrentCategory(true);
-      if (categoryIndex==0 && ev.dx > 0 ) {
-        if (ev.dx<=50) return animateToCurrentCategory(true);
-        else controller.refresh(); // funky pullback gesture
+      var $category = $(".category", $categories);
+      // if (categoryIndex==$category.length-1 && ev.dx < 0) return animateToCurrentCategory(true);
+      console.log("cat", $category);
+      if (categoryIndex==0 && ev.dx>0 ) {
+        controller.refresh(); // funky pullback gesture
+      }
+      if (categoryIndex==$category.length-1 && ev.dx<0 ) {
+        controller.refresh(); // funky pullback gesture
       }
       var increment = ev.dx < 0 ? 1 : -1;
       categoryIndex = inside(0, categoryIndex+increment, $category.length-1);

@@ -31,7 +31,6 @@ var PhoneController = function() {
     $formfactors.hide();
     unregisterTouch(); // ignore touch during animation
     $scrollables.animate({marginLeft: -categoryIndex*$(window).width()},function() {
-      console.log("anim reg touch");
       $formfactors.show();
       registerTouch();
       if (callback) callback();
@@ -42,7 +41,6 @@ var PhoneController = function() {
     swipeX: function(ev) {
       var $category = $(".category", $categories);
       // if (categoryIndex==$category.length-1 && ev.dx < 0) return animateToCurrentCategory(true);
-      console.log("cat", $category);
       if (categoryIndex==0 && ev.dx>0 ) {
         controller.refresh(); // funky pullback gesture
       }
@@ -52,7 +50,6 @@ var PhoneController = function() {
       var increment = ev.dx < 0 ? 1 : -1;
       categoryIndex = inside(0, categoryIndex+increment, $category.length-1);
       animateToCurrentCategory(true, function() {
-        console.log("ACTIVE CAT", categoryIndex);
         controller.activate($category.get(categoryIndex));
       });
     },
@@ -67,7 +64,6 @@ var PhoneController = function() {
       var maxHeightAboveWindow =
         $("section.active").height()+$("nav ul").height()-$(window).height();
       var newMarginTop = parseInt($("section.active").css("marginTop"))+ev.dy
-      console.log("moveY", ev.dy, maxHeightAboveWindow, newMarginTop);
       $("section.active").css("marginTop",
         inside(-maxHeightAboveWindow, newMarginTop, 0));
     },
@@ -94,23 +90,11 @@ var PhoneController = function() {
     controller.activate($("section.category")[0]);
   };
 
-  function onArticleChanged() {
-    unregisterTouch();
-    $("section.active").css("marginTop", 0);
-    var activeArticle = $("article.active").get(0);
-    new TouchScroll(activeArticle, {elastic: false});
-    console.log("article changed", activeArticle);
-
-    if (! $.touch.isTouchDevice()) activeArticle.style.overflow = "auto"; // todo->stylesheet
-  }
-
   function onCategoryChanged() {
-    console.log("category changed");
 
     var $touchArticle = $(".touchScroll")
       .removeClass("touchScroll")
       .css("position", "static");
-    console.log("category changed, touch article", $touchArticle);
     if ($touchArticle.length) {
 
       // Since TouchScroll library doesn't have a way to untouchscroll, we do it ourselves
@@ -124,14 +108,21 @@ var PhoneController = function() {
     registerTouch();
   }
 
+  function onArticleChanged() {
+    unregisterTouch();
+    $("section.active").css("marginTop", 0);
+    var activeArticle = $("article.active").get(0);
+    new TouchScroll(activeArticle, {elastic: false});
+
+    if (! $.touch.isTouchDevice()) activeArticle.style.overflow = "auto"; // todo->stylesheet
+  }
+
   function registerTouch() {
-    console.log("register touch");
     $categories.touch(categoryTouchOpts);
     $nav.touch(navTouchOpts);
   }
 
   function unregisterTouch() {
-    console.log("unregister touch");
     $categories.touch(null);
     $nav.touch(null);
   }
@@ -140,10 +131,11 @@ var PhoneController = function() {
     return Math.min(max,Math.max(val,min));
   }
 
+  window.addEventListener("rootchanged", onRootChanged)
+  window.addEventListener("articlechanged", onArticleChanged);
+  window.addEventListener("categorychanged", onCategoryChanged);
+  
   $(document).ready(function() {
-    window.addEventListener("rootchanged", onRootChanged)
-    window.addEventListener("articlechanged", onArticleChanged);
-    window.addEventListener("categorychanged", onCategoryChanged);
     $("nav a").click(function() {
       var categoryID = $(this).parent().data("category");
       controller.activate

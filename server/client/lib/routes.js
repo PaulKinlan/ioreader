@@ -16,6 +16,7 @@
 
 var routes = function() {
   var routes = [];
+  var me = this;
 
   this.parseRoute = function(path) {
     this.parseGroups = function(loc) {
@@ -73,7 +74,7 @@ var routes = function() {
     var cancelHashChange = false;
     var cancelPopstate = false;
 
-    this.run = function() {
+    me.run = function() {
       if(!triggered) {
         matchRoute(document.location.pathname);
         triggered = true;
@@ -97,7 +98,6 @@ var routes = function() {
         matchRoute(document.location.pathname);
         triggered = true;
       }
-
       cancelHashChange = true;
       cancelPopstate = true;
     }, false);

@@ -56,11 +56,13 @@ var PhoneController = function() {
     swipeY: function() { // do nothing; we only want move events
     }, 
     moveX: function(ev) {
+      console.log("moveX "+ev.dx);
       $formfactors.hide();
       $scrollables.css
         ("marginLeft", ev.dx + parseInt($scrollables.css("marginLeft")));
     },
     moveY: function(ev) {
+      console.log("moveY "+ev.dy+$("section.active").attr("id"));
       var maxHeightAboveWindow =
         $("section.active").height()+$("nav ul").height()-$(window).height();
       var newMarginTop = parseInt($("section.active").css("marginTop"))+ev.dy
@@ -118,11 +120,13 @@ var PhoneController = function() {
   }
 
   function registerTouch() {
+    console.log("registerTouch");
     $categories.touch(categoryTouchOpts);
     $nav.touch(navTouchOpts);
   }
 
   function unregisterTouch() {
+    console.log("unregisterTouch");
     $categories.touch(null);
     $nav.touch(null);
   }
@@ -134,8 +138,10 @@ var PhoneController = function() {
   window.addEventListener("rootchanged", onRootChanged)
   window.addEventListener("articlechanged", onArticleChanged);
   window.addEventListener("categorychanged", onCategoryChanged);
+  controller.processRoutes();
   
   $(document).ready(function() {
+
     $("nav a").click(function() {
       var categoryID = $(this).parent().data("category");
       controller.activate

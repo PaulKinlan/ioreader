@@ -99,7 +99,12 @@ var BaseController = function() {
         fireEvent("goodconnection", {});
         clearTimeout(noResponseTimer);
         // Save the data to local storage
-        localStorage[url] = xhr.responseText;
+        try { 
+          localStorage[url] = xhr.responseText;
+        }
+        catch(err) {
+          console.log(err);
+        }
         // call the handler
         callback(xhr.responseText);
       }

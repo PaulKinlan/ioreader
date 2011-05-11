@@ -140,7 +140,7 @@ var TabletController = function() {
   }, false);
 
   window.addEventListener("categorychanged", function(e) {
-    controller_.activate($('.category.active article')); // Activate 1st article.
+    controller_.activate($('.category.active article').first()); // Actsvate 1st article.
   }, false);
 
 };

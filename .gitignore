@@ -1,3 +1,4 @@
 *.swp
 */*.swp
-*client-min/*
+client-min/
+client-min/*

@@ -22,7 +22,7 @@ exports.config = {
   description: "All the latest news from around the world",
   version: "0.0.0.11",
   baseDir: "server/templates/",
-  clientDir: "server/client/",
+  clientDir: "client/",
   categories: ["1019","1006","1045","1147","1026"], 
   options: {
     appCache: "",

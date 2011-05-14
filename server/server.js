@@ -76,12 +76,14 @@ var CSSHandler = function() {
       "phone" : "phone/phone.less",
       "reset" : "reset.css"
     }
+
+    var baseDir = __dirname + "/../" + conf.clientDir + "css/";
+    console.log(baseDir);
     // Fetch Base.less
-    fs.readFile(__dirname + "/client/css/base.less", function(err, baseData) {
+    fs.readFile(baseDir + "base.less", function(err, baseData) {
       // Fetch actual CSS
-      fs.readFile(__dirname + "/client/css/" + paths[formfactor], function(err, cssData) {
+      fs.readFile(baseDir + paths[formfactor], function(err, cssData) {
         // Merge 
-        //res.send(baseData + "\n" + cssData);
         less.render(baseData + "\n" + cssData, function(err, cssOutput) {
           res.header('Content-Type', 'text/css');
           res.send(cssOutput);

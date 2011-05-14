@@ -20,7 +20,7 @@ exports.config = {
   description: "All the latest news from around the world",
   version: "0.0.0.11",
   baseDir: "server/templates/",
-  clientDir: "server/client-min/",
+  clientDir: "client-min/",
   categories: ["technology", "business", "politics", "lifeandstyle", "music", "culture"],
   options: {
     appCache: "manifest=\"app.cache\"",

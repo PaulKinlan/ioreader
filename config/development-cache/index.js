@@ -29,7 +29,7 @@ exports.config = {
     port: 3000,
     proxies: {
       "guardian": {
-        api_key: ""
+        apiKey: ""
       }
     }
   }

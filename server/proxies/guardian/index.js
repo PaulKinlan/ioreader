@@ -47,7 +47,7 @@ var Cache = function(timeout) {
 var httpCache = new Cache(60 * 5);
 
 var GuardianProxy = function(configuration) {
-  if(!!configuration.options.proxies.guardian.api_key == false) throw "An API is required to use the Guardian API.  Visit: http://guardian.mashery.com/apps/register";
+  if(!!configuration.options.proxies.guardian.apiKey == false) throw "An API is required to use the Guardian API.  Visit: http://guardian.mashery.com/apps/register";
 
   var domain = "content.guardianapis.com";
   var options = configuration.options.proxies.guardian;
@@ -103,9 +103,9 @@ var GuardianProxy = function(configuration) {
     var query = {
       "q": categories.join("+"),
       "format": "json",
-      "show-media": "all",
+      "show-media": options.showMedia,
       "page-size": "8",
-      "api-key": options.api_key
+      "api-key": options.apiKey
     };
 
     var params = {
@@ -126,9 +126,9 @@ var GuardianProxy = function(configuration) {
       "format": "json",
       "page-size": "8",
       "tag": "type%2farticle",
-      "show-media": "all",
+      "show-media": option.showMedia,
       "use-date": "last-modified",
-      "api-key": options.api_key
+      "api-key": options.apiKey
     };
 
     var params = {
@@ -146,8 +146,8 @@ var GuardianProxy = function(configuration) {
     var query = {
       "format": "json",
       "show-fields": "all",
-      "show-media": "all",
-      "api-key": options.api_key
+      "show-media": options.showMedia,
+      "api-key": options.apiKey
     };
    
     var params = {

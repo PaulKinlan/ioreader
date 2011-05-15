@@ -27,7 +27,7 @@ exports.config = {
     port: 80,
     proxies: {
       "guardian": {
-        api_key: ""
+        apiKey: ""
       }
     }
   }

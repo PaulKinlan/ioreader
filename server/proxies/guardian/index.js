@@ -26,7 +26,6 @@ var Cache = function(timeout) {
   var timeout = timeout;
 
   var clearCacheItem = function(key) {
-    console.log("Removing: " + key);
     delete cache[key];
     delete cacheCallback[key]
   };
@@ -62,12 +61,15 @@ var GuardianProxy = function(configuration) {
     });
 
     res.on('end', function() {
+      var output = {};
+
       try {
-        callback(JSON.parse(data));
+        output = JSON.parse(data);
       } catch(ex) {
-        console.log("error parsing data - maybe remote API is throttling or down?", res);
-        callback({});
+        console.log("error parsing data - maybe remote API is throttling or down?", ex,  data);
       }
+
+      callback(output);
     });
   };
 
@@ -108,6 +110,8 @@ var GuardianProxy = function(configuration) {
       "api-key": options.apiKey
     };
 
+    if(!!options.showMedia == false) delete query["show-media"];
+
     var params = {
       host: domain, 
       port: 80,
@@ -126,11 +130,13 @@ var GuardianProxy = function(configuration) {
       "format": "json",
       "page-size": "8",
       "tag": "type%2farticle",
-      "show-media": option.showMedia,
+      "show-media": options.showMedia,
       "use-date": "last-modified",
       "api-key": options.apiKey
     };
 
+    if(!!options.showMedia == false) delete query["show-media"];
+    
     var params = {
       host: domain,
       port: 80,
@@ -150,6 +156,8 @@ var GuardianProxy = function(configuration) {
       "api-key": options.apiKey
     };
    
+    if(!!options.showMedia == false) delete query["show-media"];
+    
     var params = {
       host: domain,
       port: 80,

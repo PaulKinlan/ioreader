@@ -57,6 +57,9 @@ cachingProxy.prototype.fetchArticle = function(id, category, callback){
 var proxyFactory = new (function() {
   this.create = function(configuration) {
     if(!!configuration == false) throw new exceptions.Exception("Unable to create proxy. No configuration specified");
+    if(!!configuration.options == false) throw "Options need to be defined in the configuration";
+    if(!!configuration.options.proxies == false) throw "Proxy options need to be defined in the configuration";
+    if(!!configuration.options.proxies[configuration.id] == false) throw "Proxy options for the " + configuration.id  + " need to be defined in the configuration";
     var module = require("./" + configuration.id)
     return new cachingProxy(new module.proxy(configuration));
   };

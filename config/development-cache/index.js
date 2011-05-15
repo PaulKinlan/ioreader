@@ -26,6 +26,11 @@ exports.config = {
   categories: ["technology", "business", "politics", "lifeandstyle", "music", "culture"],
   options: {
     appCache: "manifest=\"app.cache\"",
-    port: 3000
+    port: 3000,
+    proxies: {
+      "guardian": {
+        api_key: ""
+      }
+    }
   }
 };

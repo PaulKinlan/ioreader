@@ -17,19 +17,21 @@
 
 
 exports.config = { 
-  id: "guardian",
+  id: "googlefeed",
   name: "DEMO: Reader for Guardian",
   description: "All the latest news from around the world",
   version: "0.0.0.11",
   baseDir: "server/templates/",
   clientDir: "client/",
-  categories: ["technology", "business", "politics", "lifeandstyle", "music", "culture"],
+  categories: [
+    { id : "http://paul.kinlan.me/rss.xml", title: "Me" }],
   options: {
     appCache: "",
     port: 3000,
     proxies: {
-      "guardian": {
-        apiKey: ""
+      "googlefeed": {
+        apiKey: "ABQIAAAAsiHqxvXX0oZ3kEtFwnOcjRT2lTflwaphDlNjWpGbs99SsOTe9RRXV8vQE_JNE1T3BY_A8GXqoKxjQg",
+        referer: "http://paul.kinlan.me/"
       }
     }
   }

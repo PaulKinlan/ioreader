@@ -1,0 +1,8 @@
+span{
+    color:#138CB4;
+    text-decoration:none;
+}
+a:visited{
+    span;
+    color:#84B6CD;
+}

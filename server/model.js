@@ -18,9 +18,10 @@
 /*
   A Basic data holder
 */
-exports.CategoryData = function(id, name) {
+exports.CategoryData = function(id, name, url) {
   this.id = id; 
   this.name = name;
+  this.url = url;
   this.articles = [];
   this.categoryState = "";
   /*

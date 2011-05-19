@@ -24,7 +24,7 @@ exports.config = {
   baseDir: "server/templates/",
   clientDir: "client/",
   categories: [
-    { id : "http://paul.kinlan.me/rss.xml", title: "Me" }],
+    { id: "me", url : "http://paul.kinlan.me/rss.xml", title: "Me" }],
   options: {
     appCache: "",
     port: 3000,

@@ -103,23 +103,6 @@ var GoogleFeedProxy = function(configuration) {
      }); 
     }
   };
- 
-  this._fetchCategories = function(categories, callback) {
-    if(!!callback == false) throw new exceptions.NoCallbackException();
-
-    var qs = {
-      v: "1.0",
-      q: ""
-    };
-
-    var params = {
-      path: path + "?" + toQueryString(qs) ,
-      host: domain, 
-      port: 80
-    };
-
-    makeRequest(params, callback);
-  };
 
   this._fetchCategory = function(id, callback) {
     if(!!callback == false) throw new exceptions.NoCallbackException();
@@ -138,17 +121,28 @@ var GoogleFeedProxy = function(configuration) {
     makeRequest(params, callback);
   };
 
-  this._fetchArticle = function(id, category, callback) {
-    if(!!callback == false) throw new exceptions.NoCallbackException();
-    
-    var params = {
-      path: path,
-      host: domain,
-      port: 80
-    }
-     
-    makeRequest(params, callback);
+  var buildId = function(url) {
+    var id;
+    // The URL is the ID.
+    return url.substring(url.lastIndexOf("/") + 1);
+
   };
+  
+  var findArticle = function(results, id) {
+    var result, articles, article;
+    for(var r = 0; result = results[r]; r++) {
+      // We have a list of articles
+      articles = result.responseData.feed.entries; 
+      for(var a = 0; article = articles[a]; a++) {
+        if(buildId(article.link) == id) {
+          return article;
+        }
+      }
+    }
+
+    return null;
+  };
+
 
   var parseResults = function(results, output, id) {
     var result, articles, article;
@@ -156,8 +150,9 @@ var GoogleFeedProxy = function(configuration) {
       // We have a list of articles
       articles = result.responseData.feed.entries; 
       for(var a = 0; article = articles[a]; a++) {
+        var newId = buildId(article.link);
         var item = new model.CategoryItem(
-          article.link,
+          newId, 
           article.title,
           article.contentSnippet,
           output[r]
@@ -168,7 +163,6 @@ var GoogleFeedProxy = function(configuration) {
         item.url = article.link;
         item.pubDate = new Date(article.publishedDate);
        
-        console.log(id, item.id); 
         if(id == item.id) {
           item.body = article.content; 
         }
@@ -192,63 +186,68 @@ var GoogleFeedProxy = function(configuration) {
       var tasks = [];
 
       for(var i = 0; category = categories[i]; i++) {
-        output.push( new model.CategoryData(category.id, category.title));
-        tasks.push(self._buildCategory(category.id));
+        var categoryData = new model.CategoryData(category.id, category.title, category.url); 
+        output.push(categoryData);
+        tasks.push(self._buildCategory(category));
       }
 
       async.series(
         tasks,
         function (err, results) {
-          parseResults(results, output, id);
-          callback(null, output);
+          var feedData = results[0];
+          parseResults(feedData, output, id);
+          callback(null, output, feedData);
         }
       );
     };
   };
 
   this._buildCategory = function(category) {
-    return function(callback) {
-      self._fetchCategory(category, function(data) {
-        callback(null, data); 
+    return function(callback, feedData) {
+      self._fetchCategory(category.url, function(data) {
+        callback(null, data, feedData); 
       });
     }; 
   };
 
-  this._buildCategoryFromCategories = function(cateogry) {
-    return function(results, callback) {
+  this._buildCategoryFromCategories = function(category) {
+    return function(results, feedData, callback) {
       // We already have the category data, so just mark it up.
       var currentCategory;
       for(var c = 0; currentCategory = results[c]; c++) {
         if(currentCategory.id == category) {
-          curentCategory.categoryState = "active";
+          currentCategory.categoryState = "active";
         }
       } 
-      callback(null, results);
+      callback(null, results, feedData);
     };
   };
 
   this._buildArticle = function(category, article) {
-    return function(categoryData, callback) {
-      this._fetchArticle(category, article, function(data) {
-        var currentCategory;
-        var articles;
+    return function(categoryData, feedData,  callback) {
+      var currentCategory;
+      var articles;
 
-        // Update the article in the data structure.
-        for(var c = 0; currentCategory = results[c]; c++) {
-          if(currentCategory.id == category) {
-            curentCategory.categoryState = "active";
-            articles = currentCategory.articles;
-            for(var a = 0; article = articles[a]; a++) {
-              article.articleState = "active";
-              article.body = data.content;
+      var feedArticle = findArticle(feedData, article);
+
+      // Update the article in the data structure.
+      for(var c = 0; currentCategory = categoryData[c]; c++) {
+        console.log(currentCategory.id, category);
+        if(currentCategory.id == category) {
+          currentCategory.categoryState = "active";
+          articles = currentCategory.articles;
+          for(var a = 0; currentArticle = articles[a]; a++) {
+            if(article == buildId(currentArticle.id)) {
+              currentArticle.articleState = "active";
+              currentArticle.body = feedArticle.content;
             }
           }
-        } 
-        callback(null, categoryData); 
-      });
+          break;
+        }
+      } 
+      callback(null, categoryData, feedData); 
     }; 
   };
-
 };
 
 GoogleFeedProxy.prototype = new proxies.Proxy();
@@ -284,14 +283,10 @@ GoogleFeedProxy.prototype.fetchCategory = function(id, callback) {
 GoogleFeedProxy.prototype.fetchArticle = function(id, currentCategory, callback) {
   if(!!callback == false) throw new exceptions.NoCallbackException();
   var self = this;
-  console.log(id, currentCategory);
   async.waterfall([
-    // Fetch Categories
     self._buildCategories(self.configuration.categories, id),
-    // Fetch Category
     self._buildCategoryFromCategories(currentCategory),
-    // Fetch Article
-    self._buildArticle()
+    self._buildArticle(currentCategory, id)
    ],
    function(err, result) {
      callback(result);

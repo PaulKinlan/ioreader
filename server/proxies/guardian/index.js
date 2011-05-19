@@ -20,30 +20,7 @@ var proxies = require('../../proxies');
 var exceptions = require('../../exceptions');
 var model = require('../../model');
 
-var Cache = function(timeout) {
-  var cache = {};
-  var cacheCallback = {};
-  var timeout = timeout;
-
-  var clearCacheItem = function(key) {
-    delete cache[key];
-    delete cacheCallback[key]
-  };
-
-  this.add = function(key, value, itemTimeout) {
-    timeout = itemTimeout || timeout;
-    if(cacheCallback[key]) clearTimeout(cacheCallback[key]);
-    cache[key] = value;
-    cacheCallback[key] = setTimeout(function() { clearCacheItem(key); }, timeout * 1000);
-  };
-
-  this.get = function(key) {
-    var result = cache[key];
-    return result; 
-  };
-};
-
-var httpCache = new Cache(60 * 5);
+var httpCache = new proxies.Cache(60 * 5);
 
 var GuardianProxy = function(configuration) {
   if(!!configuration.options.proxies.guardian.apiKey == false) throw "An API is required to use the Guardian API.  Visit: http://guardian.mashery.com/apps/register";

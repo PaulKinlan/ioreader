@@ -16,6 +16,31 @@
 
 var exceptions = require('../exceptions');
 
+exports.Cache = function(timeout) {
+  var cache = {};
+  var cacheCallback = {};
+  var timeout = timeout;
+
+  var clearCacheItem = function(key) {
+    delete cache[key];
+    delete cacheCallback[key]
+  };
+
+  this.add = function(key, value, itemTimeout) {
+    timeout = itemTimeout || timeout;
+    if(cacheCallback[key]) clearTimeout(cacheCallback[key]);
+    cache[key] = value;
+    cacheCallback[key] = setTimeout(function() { clearCacheItem(key); }, timeout * 1000);
+  };
+
+  this.get = function(key) {
+    var result = cache[key];
+    return result; 
+  };
+};
+
+
+
 exports.Proxy = function() {
 };
 

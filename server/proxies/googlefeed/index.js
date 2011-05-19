@@ -121,11 +121,12 @@ var GoogleFeedProxy = function(configuration) {
   };
 
 
-  var parseResults = function(results, output, id) {
+  var parseResults = function(results, output, categoryId, articleId) {
     var result, articles, article;
     for(var r = 0; result = results[r]; r++) {
       // We have a list of articles
       articles = result.responseData.feed.entries; 
+      if(output[r].id == categoryId) output[r].categoryState = "";
       for(var a = 0; article = articles[a]; a++) {
         var newId = buildId(article.link);
         var item = new model.CategoryItem(
@@ -140,8 +141,9 @@ var GoogleFeedProxy = function(configuration) {
         item.url = article.link;
         item.pubDate = new Date(article.publishedDate);
        
-        if(id == item.id) {
-          item.body = article.content; 
+        if(articleId == item.id) {
+          item.body = article.content;
+          item.articleState = "active";
         }
 
         if(!!item.thumbnail == false) {
@@ -155,7 +157,7 @@ var GoogleFeedProxy = function(configuration) {
     return output;
   };
 
-  this._buildCategories = function(categories, id) {
+  this._buildCategories = function(categories, activeCategory, activeArticle) {
     return function(callback) {
       var output = [];
       // For each category (RSS feed), fetch
@@ -171,60 +173,21 @@ var GoogleFeedProxy = function(configuration) {
       async.series(
         tasks,
         function (err, results) {
-          var feedData = results[0];
-          parseResults(feedData, output, id);
-          callback(null, output, feedData);
+          parseResults(results, output, activeCategory, activeArticle);
+          callback(null, output, results[0]);
         }
       );
     };
   };
 
   this._buildCategory = function(category) {
-    return function(callback, feedData) {
+    return function(callback) {
       self._fetchCategory(category.url, function(data) {
-        callback(null, data, feedData); 
+        callback(null, data); 
       });
     }; 
   };
 
-  this._buildCategoryFromCategories = function(category) {
-    return function(results, feedData, callback) {
-      // We already have the category data, so just mark it up.
-      var currentCategory;
-      for(var c = 0; currentCategory = results[c]; c++) {
-        if(currentCategory.id == category) {
-          currentCategory.categoryState = "active";
-        }
-      } 
-      callback(null, results, feedData);
-    };
-  };
-
-  this._buildArticle = function(category, article) {
-    return function(categoryData, feedData,  callback) {
-      var currentCategory;
-      var articles;
-
-      var feedArticle = findArticle(feedData, article);
-
-      // Update the article in the data structure.
-      for(var c = 0; currentCategory = categoryData[c]; c++) {
-        console.log(currentCategory.id, category);
-        if(currentCategory.id == category) {
-          currentCategory.categoryState = "active";
-          articles = currentCategory.articles;
-          for(var a = 0; currentArticle = articles[a]; a++) {
-            if(article == buildId(currentArticle.id)) {
-              currentArticle.articleState = "active";
-              currentArticle.body = feedArticle.content;
-            }
-          }
-          break;
-        }
-      } 
-      callback(null, categoryData, feedData); 
-    }; 
-  };
 };
 
 GoogleFeedProxy.prototype = new proxies.Proxy();
@@ -243,13 +206,12 @@ GoogleFeedProxy.prototype.fetchCategories = function(callback) {
   );
 };
 
-GoogleFeedProxy.prototype.fetchCategory = function(id, callback) {
+GoogleFeedProxy.prototype.fetchCategory = function(currentCategory, callback) {
   if(!!callback == false) throw new exceptions.NoCallbackException();
   var self = this;
   
   async.waterfall([
-      self._buildCategories(self.configuration.categories),
-      self._buildCategoryFromCategories(id)
+      self._buildCategories(self.configuration.categories, currentCategory),
     ],
     function(err, result) {
       callback(result);
@@ -257,13 +219,11 @@ GoogleFeedProxy.prototype.fetchCategory = function(id, callback) {
   );
 };
 
-GoogleFeedProxy.prototype.fetchArticle = function(id, currentCategory, callback) {
+GoogleFeedProxy.prototype.fetchArticle = function(currentArticle, currentCategory, callback) {
   if(!!callback == false) throw new exceptions.NoCallbackException();
   var self = this;
   async.waterfall([
-    self._buildCategories(self.configuration.categories, id),
-    self._buildCategoryFromCategories(currentCategory),
-    self._buildArticle(currentCategory, id)
+    self._buildCategories(self.configuration.categories, currentCategory, currentArticle),
    ],
    function(err, result) {
      callback(result);

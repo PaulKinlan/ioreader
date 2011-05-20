@@ -6,6 +6,7 @@ This is a basic proxying server that has some state.
 The server runs an instance of the configuration document, which includes the type of API proxy to use and the categories to display.
 
 There are two API proxies included:
+
 *  Guardian
 *  NPR
 
@@ -19,32 +20,59 @@ Installation
 Running the app
 ---------------
 
-There are three modes to run the application. Test, Development and Production.
+./run.sh [config name]
 
-Test 
-----
+Where [config name] is the name of a folder in [project root]/config
 
-Test mode runs with a dummy data provider that allows you quick and consistent access to the app and allows you to work offline.
-In an emergency, this can be used to host demo for IO.
-Test mode runs with all the same parameters as development mode.
+Configuring your app
+--------------------
 
-To enter Test mode, run ./run.sh test
+Each application needs a configuration to run, the configuration defines properties such as:
 
-Development
------------
-Development mode runs the code against a real data source.
-Exceptions are show, and the stackTrace too.
-All Logging is sent to the STDOUT.
+1.  The port and hostname for the application to listen on.
+2.  The name and description of the application
+3.  The directory where the client code is (it can be anywhere you want)
+4.  The API proxy to use (Guardian, NPR, GoogleFeedApi etc)
+    1.   The parameters for the API, such as API Keys
+5.  The columns to display in the app
+    1.   And proxy specific parameters
 
-To enter development mode, run ./run.sh development
+Example Configuration - Google Feed API
+---------------------------------------
 
-Production
-----------
+    exports.config = { 
+        id: "googlefeed",
+        name: "Chrome Developer Relationsn",
+        description: "All the latest news from around the Chrome team",
+        version: "0.0.0.11",
+        baseDir: "server/templates/",
+        clientDir: "client/",
+        categories: [
+            { 
+                id: "pk", url : "http://paul.kinlan.me/rss.xml", title: "Paul Kinlan"
+            },
+            { 
+                id: "mm", url : "http://softwareas.com/rss.xml", title: "Mike Mahemoff"
+            }, 
+            {
+                id: "ig", url : "http://greenido.wordpress.com/rss.xml", title : "Ido Green"
+            },
+            {
+                id: "smus", url : "http://smus.com/rss.xml", title : "Boris Smus"
+            }
+        ],
+        options: {
+            appCache: "",
+            port: 3000,
+            proxies: {
+                "googlefeed": {
+                    apiKey: "AAAAAAABsiHqxxXX0oZ3xEtFwnOcjRT2lTflwaphDlNjWpts99SxOTe9RRXV8vQE_JNE1T3BY_A8GXqoKxjQg",
+                    referer: "http://paul.kinlan.me/"
+                }
+            }
+        }
+    };
 
-Exceptions and Stack traces are disabled.
-All client code and HTML is minified.
-All logging is disabled.
+Most of it is pretty self explanitory, the categories array is specific to the provider.  The Guardian API proxy is a simple collection of category names.  The NPR API proxy is a collection of category numbers.
 
-To enter production mode, run ./run.sh production
-
-When production mode is run, it will compile all the latest changes to the CSS and minify the JS - no live changes to the less files are allowed.
+For a given proxy, there might require some specific paramters such as API Keys.

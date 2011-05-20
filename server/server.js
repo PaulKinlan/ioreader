@@ -78,7 +78,6 @@ var CSSHandler = function() {
     }
 
     var baseDir = __dirname + "/../" + conf.clientDir + "css/";
-    console.log(baseDir);
     // Fetch Base.less
     fs.readFile(baseDir + "base.less", function(err, baseData) {
       // Fetch actual CSS

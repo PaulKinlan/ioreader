@@ -14,8 +14,6 @@
    limitations under the License.
 */
 
-
-
 exports.config = { 
   id: "googlefeed",
   name: "DEMO: Reader for Guardian",
@@ -24,7 +22,19 @@ exports.config = {
   baseDir: "server/templates/",
   clientDir: "client/",
   categories: [
-    { id: "me", url : "http://paul.kinlan.me/rss.xml", title: "Me" }],
+    { 
+      id: "pk", url : "http://paul.kinlan.me/rss.xml", title: "Paul Kinlan"
+    },
+    { 
+      id: "mm", url : "http://softwareas.com/feed", title: "Mike Mahemoff"
+    }, 
+    {
+      id: "ig", url : "http://greenido.wordpress.com/rss.xml", title : "Ido Green"
+    },
+    {
+      id: "smus", url : "http://feeds.feedburner.com/smuscom", title : "Boris Smus"
+    }
+  ],
   options: {
     appCache: "",
     port: 3000,

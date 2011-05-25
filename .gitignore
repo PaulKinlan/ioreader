@@ -2,3 +2,5 @@
 */*.swp
 client-min/
 client-min/*
+output/
+output/*

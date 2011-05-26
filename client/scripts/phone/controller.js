@@ -135,9 +135,9 @@ var PhoneController = function() {
     return Math.min(max,Math.max(val,min));
   }
 
-  window.addEventListener("rootchanged", onRootChanged)
-  window.addEventListener("articlechanged", onArticleChanged);
-  window.addEventListener("categorychanged", onCategoryChanged);
+  window.addEventListener("rootchanged", onRootChanged, false)
+  window.addEventListener("articlechanged", onArticleChanged, false);
+  window.addEventListener("categorychanged", onCategoryChanged, false);
   controller.processRoutes();
   
   $(document).ready(function() {

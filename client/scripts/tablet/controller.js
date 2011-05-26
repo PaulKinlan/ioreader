@@ -108,7 +108,7 @@ var TabletController = function() {
       }
     };
     Controller_.onArticleChanged(request);*/
-  });
+  }, false);
 
   window.addEventListener('articlechanged', function(e) {
     var $articles = $('.category.active .articles');

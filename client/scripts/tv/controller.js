@@ -36,7 +36,7 @@ var TvController = function() {
       }
     };
     Controller.onArticleChanged(request);
-  });
+  }, false);
 
   // Ensure article in the list of articles is visible
   window.addEventListener('articlechanged', function() {
@@ -59,7 +59,7 @@ var TvController = function() {
       var newScrollLeft = Math.min(0, -(scrollLeft + screenLeft));
       $('.articles').css('margin-left', newScrollLeft + 'px');
     }
-  });
+  }, false);
 
   var isFull = function(value) {
     var body = $(document.body);
@@ -163,7 +163,7 @@ var TvController = function() {
     if (!!newControl && newControl.length > 0) {
       Controller.activate(newControl);
     }
-  });
+  }, false);
 
   // Show placeholders for all thumbnails that didn't load
   $('article > header > img.thumbnail').each(function(i, el) {

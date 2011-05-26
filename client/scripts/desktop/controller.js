@@ -40,7 +40,7 @@ var DesktopController = function() {
     var categoryH2 = $("h2", category);
     
     categories.css("marginLeft", (categories.offset().left - category.offset().left) + categoryH2.height() + 160);
-  });
+  }, false);
 
   window.addEventListener('load', function(e) {
     // Switch out low-res thumbnails for hi-res with fade in effect.
@@ -68,7 +68,7 @@ var DesktopController = function() {
         img.src = srcHi;
       }
     });
-  });
+  }, false);
 
   window.addEventListener("keyup", function(e) {
     var newControl;
@@ -100,13 +100,13 @@ var DesktopController = function() {
     
     controller.activate(newControl);
     return false;
-  });
+  }, false);
 
   window.addEventListener("categorychanged", function(e) {
     //  Scroll to the category into views
     var top = $("#" +  e.data.category).offset().top;
     $(".categories").scrollTop(top);
-  });
+  }, false);
 };
 
 DesktopController.prototype = new BaseController();

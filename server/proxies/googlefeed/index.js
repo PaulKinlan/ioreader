@@ -120,6 +120,23 @@ var GoogleFeedProxy = function(configuration) {
     return null;
   };
 
+  var findLargestImage = function(mediaGroups) {
+    var asset;
+    var largest;
+
+    if(!!mediaGroups == false) return largest;
+    for(var g = 0; group = mediaGroups[g]; g++) {
+      for(var i = 0; asset = group.contents[i]; i++) {
+        var size = parseInt(asset.width,10) * parseInt(asset.height,10);
+        if(!!largest == false || size > largest.size ) {
+          largest = {size: size, width: asset.width, height: asset.height, url: asset.url };
+          if(!!asset.thumbnails)
+            largest.thumbnail = assets.thumbnails[0].url;
+        }
+      }
+    }
+    return largest;
+  };
 
   var parseResults = function(results, output, categoryId, articleId) {
     var result, articles, article;
@@ -129,6 +146,7 @@ var GoogleFeedProxy = function(configuration) {
       if(output[r].id == categoryId) output[r].categoryState = "";
       for(var a = 0; article = articles[a]; a++) {
         var newId = buildId(article.link);
+        var image = findLargestImage(article.mediaGroups);
         var item = new model.CategoryItem(
           newId, 
           article.title,
@@ -138,7 +156,12 @@ var GoogleFeedProxy = function(configuration) {
         item.author = result.author; 
         item.url = article.link;
         item.pubDate = new Date(article.publishedDate);
-       
+        
+        if(!!image) {
+          item.thumbnail = image.thumbnail;
+          item.largeImage = image; 
+        }
+
         if(articleId == item.id) {
           item.body = article.content;
           item.articleState = "active";

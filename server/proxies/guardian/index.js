@@ -246,6 +246,9 @@ GuardianProxy.prototype.createItem = function(article_result, cat) {
   if(!!item.thumbnail == false) {
     item.imageState = "textonly";
   }
+  else {
+    iten.imageState = "imaged";
+  }
   
   item.largeImage = this.findLargestImage(article_result.mediaAssets).url;
   item.pubDate = new Date(article_result.webPublicationDate);

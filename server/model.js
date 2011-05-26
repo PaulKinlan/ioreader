@@ -42,7 +42,27 @@ exports.CategoryItem = function(id, title, shortDescription, category) {
   this.thumbnail;
   this.categoryId = category.id;
   this.articleState = "";
-  this.imageState = "imaged";
+  this.largeImage;
+  this.imageState = "textonly"; // Assume there are no images
   this.url = function () { return "reader/" + categoryId + "/" + this.id + ".html"; }; 
   this.dataUrl = function () { return "reader/" + categoryId + "/" + this.id + ".json"; };
+  this.thumbnailSrc = function() { 
+    if(!!this.thumbnail == false) return "";
+    return "src=\""+ this.thumbmail +"\"";
+  }
+  
+  this.dataSrcLoStr = function() { 
+    if(!!this.thumbnail == false) return "";
+    return "data-src-lo=\""+ this.thumbmail +"\"";
+  }
+
+  this.largeImageSrc = function() { 
+    if(!!this.largeImage == false) return "";
+    return "src=\""+ this.largeImage +"\"";
+  }
+  
+  this.dataSrcHiStr = function() { 
+    if(!!this.largeImage == false) return "";
+    return "data-src-hi=\""+ this.largeImage +"\"";
+  }
 };

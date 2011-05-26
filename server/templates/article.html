@@ -3,12 +3,12 @@
   <header>
   <h1><a name="{{articleState}}" href="/reader/{{categoryId}}/{{id}}#active">{{title}}</a></h1>
   <p><time pubdate datetime="{{{#pubDate}}{{toISOString}}{{/pubDate}}">{{pubDate}}</time></p> 
-    <img class="thumbnail" src="{{thumbnail}}" data-src-hi="{{largeImage}}" />
+  <img class="thumbnail" {{thumbnailSrc}} {{dataSrcLStro}} />
     <div class="summary">{{{shortDescription}}}</div>
   </header>
   <section>
     <h1>{{title}}</h1>
-    <img class="large" src="{{largeImage}}" data-src-lo="{{thumbnail}}" />
+    <img class="large" {{largeImageSrc}} {{dataSrcHiStr}} />
     <p class="author">{{author}}</p>
     <time pubdate datetime="{{#pubDate}}{{toISOString}}{{/pubDate}}">{{pubDate}}</time> 
     <div class="summary">{{{shortDescription}}}</div>

@@ -136,8 +136,6 @@ var GoogleFeedProxy = function(configuration) {
           output[r]
         );
         item.author = result.author; 
-        item.thumbnail = "";
-        item.largeImage = "";
         item.url = article.link;
         item.pubDate = new Date(article.publishedDate);
        

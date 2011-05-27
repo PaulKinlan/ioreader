@@ -139,10 +139,11 @@ var GoogleFeedProxy = function(configuration) {
   };
 
   var parseResults = function(results, output, categoryId, articleId) {
-    var result, articles, article;
+    var result, articles, article, feed;
     for(var r = 0; result = results[r]; r++) {
       // We have a list of articles
-      articles = result.responseData.feed.entries; 
+      feed = result.responseData.feed;
+      articles = feed.entries; 
       if(output[r].id == categoryId) output[r].categoryState = "";
       for(var a = 0; article = articles[a]; a++) {
         var newId = buildId(article.link);
@@ -153,7 +154,7 @@ var GoogleFeedProxy = function(configuration) {
           article.contentSnippet,
           output[r]
         );
-        item.author = result.author; 
+        item.author = article.author; 
         item.url = article.link;
         item.pubDate = new Date(article.publishedDate);
         

@@ -16,7 +16,7 @@
 
 exports.config = { 
   id: "guardian",
-  name: "DEMO: Reader for Guardian",
+  name: "DEMO",
   description: "All the latest news from around the world",
   version: "0.0.0.11",
   baseDir: "server/templates/",

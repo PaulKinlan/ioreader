@@ -100,9 +100,15 @@ var GoogleFeedProxy = function(configuration) {
 
   var buildId = function(url) {
     var id;
-    // The URL is the ID.
-    return url.substring(url.lastIndexOf("/") + 1);
+    var urlParts = url.split("/");
 
+    while(urlParts.length > 0) {
+      var path = urlParts.pop();
+      if(path != "")
+        return path;
+    }
+    
+    return;
   };
   
   var findArticle = function(results, id) {
@@ -154,7 +160,7 @@ var GoogleFeedProxy = function(configuration) {
           article.contentSnippet,
           output[r]
         );
-        item.author = article.author; 
+        item.author = article.author || feed.author; 
         item.url = article.link;
         item.pubDate = new Date(article.publishedDate);
         

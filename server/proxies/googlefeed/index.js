@@ -148,6 +148,7 @@ var GoogleFeedProxy = function(configuration) {
     var result, articles, article, feed;
     for(var r = 0; result = results[r]; r++) {
       // We have a list of articles
+      if(!!result.reseponseData == false) continue;
       feed = result.responseData.feed;
       articles = feed.entries; 
       if(output[r].id == categoryId) output[r].categoryState = "";

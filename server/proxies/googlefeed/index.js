@@ -23,11 +23,9 @@ var model = require('../../model');
 var httpCache = new proxies.Cache(60 * 5);
 
 var GoogleFeedProxy = function(configuration) {
-  if(!!configuration.options.proxies.googlefeed.apiKey == false) throw "An API Key is required to use the Google Feed API. Please visit http://code.google.com/apis/loader/signup.html"; 
-  if(!!configuration.options.proxies.googlefeed.referer == false) throw "A HTTP Referer needs to be set use the Google Feed API.  Check your configuration file"; 
+  if(!!!configuration.options.proxies.googlefeed.referer) throw "A HTTP Referer needs to be set use the Google Feed API.  Check your configuration file.";
   
   var options = configuration.options.proxies.googlefeed;
-  var apiKey = options.apiKey;
   var referer = options.referer;
   var domain = "ajax.googleapis.com";
   var path = "/ajax/services/feed/load";
@@ -82,7 +80,7 @@ var GoogleFeedProxy = function(configuration) {
   };
 
   this._fetchCategory = function(id, callback) {
-    if(!!callback == false) throw new exceptions.NoCallbackException();
+    if(!!!callback) throw new exceptions.NoCallbackException();
 
     var qs = {
       v: "1.0",
@@ -130,11 +128,11 @@ var GoogleFeedProxy = function(configuration) {
     var asset;
     var largest;
 
-    if(!!mediaGroups == false) return largest;
+    if(!!!mediaGroups) return largest;
     for(var g = 0; group = mediaGroups[g]; g++) {
       for(var i = 0; asset = group.contents[i]; i++) {
         var size = parseInt(asset.width,10) * parseInt(asset.height,10);
-        if(!!largest == false || size > largest.size ) {
+        if(!!!largest || size > largest.size ) {
           largest = {size: size, width: asset.width, height: asset.height, url: asset.url };
           if(!!asset.thumbnails)
             largest.thumbnail = assets.thumbnails[0].url;
@@ -148,7 +146,7 @@ var GoogleFeedProxy = function(configuration) {
     var result, articles, article, feed;
     for(var r = 0; result = results[r]; r++) {
       // We have a list of articles
-      if(!!result.reseponseData == false) continue;
+      if(!!!result.reseponseData) continue;
       feed = result.responseData.feed;
       articles = feed.entries; 
       if(output[r].id == categoryId) output[r].categoryState = "";
@@ -175,7 +173,7 @@ var GoogleFeedProxy = function(configuration) {
           item.articleState = "active";
         }
 
-        if(!!item.thumbnail == false) {
+        if(!!!item.thumbnail) {
           item.imageState = "textonly";
         }
 
@@ -223,7 +221,7 @@ GoogleFeedProxy.prototype = new proxies.Proxy();
 GoogleFeedProxy.prototype.constructor = proxies.GoogleFeedProxy;
 
 GoogleFeedProxy.prototype.fetchCategories = function(callback) {
-  if(!!callback == false) throw new exceptions.NoCallbackException();
+  if(!!!callback) throw new exceptions.NoCallbackException();
   var self = this;
 
   async.waterfall([
@@ -236,7 +234,7 @@ GoogleFeedProxy.prototype.fetchCategories = function(callback) {
 };
 
 GoogleFeedProxy.prototype.fetchCategory = function(currentCategory, callback) {
-  if(!!callback == false) throw new exceptions.NoCallbackException();
+  if(!!!callback) throw new exceptions.NoCallbackException();
   var self = this;
   
   async.waterfall([
@@ -249,7 +247,7 @@ GoogleFeedProxy.prototype.fetchCategory = function(currentCategory, callback) {
 };
 
 GoogleFeedProxy.prototype.fetchArticle = function(currentArticle, currentCategory, callback) {
-  if(!!callback == false) throw new exceptions.NoCallbackException();
+  if(!!!callback) throw new exceptions.NoCallbackException();
   var self = this;
   async.waterfall([
     self._buildCategories(self.configuration.categories, currentCategory, currentArticle),

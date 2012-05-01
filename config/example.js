@@ -1,4 +1,4 @@
-export.config = { 
+exports.config = {
   id: "guardian",
   name: "DEMO: Reader for Guardian",
   description: "All the latest news from around the world",

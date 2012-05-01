@@ -4,3 +4,4 @@ client-min/
 client-min/*
 output/
 output/*
+.idea/

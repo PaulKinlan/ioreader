@@ -25,7 +25,7 @@ TestProxy.prototype = new proxies.Proxy();
 TestProxy.prototype.constructor = proxies.Proxy;
 
 TestProxy.prototype.fetchCategories = function(callback){
-  if(!!callback == false) throw new exception.NoCallbackException();
+  if(!!!callback) throw new exception.NoCallbackException();
   var categories = [];
   var filename = "server/proxies/test/index.json";
   
@@ -36,7 +36,7 @@ TestProxy.prototype.fetchCategories = function(callback){
 };
  
 TestProxy.prototype.fetchCategory = function(id, callback) {
-  if(!!callback == false) throw new exception.NoCallbackException();
+  if(!!!callback) throw new exception.NoCallbackException();
   var categories = [];
   var filename = "server/proxies/test/category.json";
   
@@ -47,7 +47,7 @@ TestProxy.prototype.fetchCategory = function(id, callback) {
 };
 
 TestProxy.prototype.fetchArticle = function(id, callback) {
-  if(!!callback == false) throw new exception.NoCallbackException();
+  if(!!!callback) throw new exception.NoCallbackException();
   var categories = [];
   var filename = "server/proxies/test/article.json";
   

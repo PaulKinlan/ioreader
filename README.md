@@ -13,16 +13,19 @@ There are two API proxies included:
 Installation
 ------------
 
-*  Install node https://github.com/joyent/node/wiki/Installation
-*  Install npm http://npmjs.org/
-*  npm install express mustache async less uglify-js
+*  [Install Node v0.4.12](https://github.com/joyent/node/wiki/Installation)
+*  [Install npm](http://npmjs.org/)
+
+Now you can install the dependencies:
+
+    npm install express mustache async less uglify-js
 
 Running the app
 ---------------
 
-./run.sh [config name]
+    ./run.sh <CONFIG_NAME>
 
-Where [config name] is the name of a folder in [project root]/config
+Where `<CONFIG_NAME>` is the name of a folder in `<PROJECT_ROOT>/config`.
 
 Configuring your app
 --------------------
@@ -37,12 +40,12 @@ Each application needs a configuration to run, the configuration defines propert
 5.  The columns to display in the app
     1.   And proxy specific parameters
 
-Example Configuration - Google Feed API
+Example Configuration: Google Feed API
 ---------------------------------------
 
     exports.config = { 
         id: "googlefeed",
-        name: "Chrome Developer Relationsn",
+        name: "Chrome Developer Relations",
         description: "All the latest news from around the Chrome team",
         version: "0.0.0.11",
         baseDir: "server/templates/",
@@ -66,13 +69,12 @@ Example Configuration - Google Feed API
             port: 3000,
             proxies: {
                 "googlefeed": {
-                    apiKey: "AAAAAAABsiHqxxXX0oZ3xEtFwnOcjRT2lTflwaphDlNjWpts99SxOTe9RRXV8vQE_JNE1T3BY_A8GXqoKxjQg",
                     referer: "http://paul.kinlan.me/"
                 }
             }
         }
     };
 
-Most of it is pretty self explanitory, the categories array is specific to the provider.  The Guardian API proxy is a simple collection of category names.  The NPR API proxy is a collection of category numbers.
+Most of it is pretty self explanatory, the categories array is specific to the provider.  The Guardian API proxy is a simple collection of category names.  The NPR API proxy is a collection of category numbers.
 
-For a given proxy, there might require some specific paramters such as API Keys.
+For a given proxy, there might require some specific parameters such as API Keys.

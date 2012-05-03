@@ -75,7 +75,7 @@ var CSSHandler = function() {
       "default": "default/default.less",
       "phone" : "phone/phone.less",
       "reset" : "reset.css"
-    }
+    };
 
     var baseDir = __dirname + "/../" + conf.clientDir + "css/";
     // Fetch Base.less
@@ -156,7 +156,7 @@ app.get('/reader/:category.:format?', Cache(6), function(req, res) {
   var controller = new logic.Controller(conf);
   // request the category list i
 
-  controller.fetchCategory(category, format, function(output) { 
+  controller.fetchCategory(category, format, function(output) {
     res.send(output);
   });
 });
@@ -172,6 +172,7 @@ app.get('/reader/:category/:article.:format?', Cache(6), function(req, res) {
   });
 });
 
-app.listen(conf.options.port, conf.options.host || undefined);
+var host = conf.options.host || '127.0.0.1';
+app.listen(conf.options.port, host);
 
-console.log('Server running at http://127.0.0.1:3000/');
+console.log('Server running at http://' + host + ':' + conf.options.port + '/');

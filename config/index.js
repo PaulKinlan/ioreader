@@ -14,8 +14,8 @@
    limitations under the License.
 */
 
-exports.load = function(config) {
-  if(!!config == false) throw "Unable to create '"+ config  +"' configuration";
-  var module = require("./" + config)
-  return module.config;
+exports.load = function(_config) {
+  if(!!_config == false) throw "Unable to create '"+ _config  +"' configuration";
+  var _module = require("./" + _config);
+  return _module.config;
 };
